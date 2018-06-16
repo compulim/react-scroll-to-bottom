@@ -11,7 +11,7 @@ const ROOT_CSS = css({
 });
 
 export default props =>
-  <Composer>
+  <Composer mode={ props.mode === 'top' ? 'top' : 'bottom'}>
     <div className={ classNames(ROOT_CSS + '', props.className) }>
       <Panel>
         { props.children }

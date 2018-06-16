@@ -52,6 +52,10 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    this.handleAdd(10);
+  }
+
   handleAdd(count) {
     this.setState(state => ({
       paragraphs: [
