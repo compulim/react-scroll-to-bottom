@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Context from './Context';
-import DOMSetter from '../DOMSetter';
 import EventSpy from '../EventSpy';
+import ScrollTo from '../ScrollTo';
 
 function isBottom(current, threshold) {
   const { offsetHeight, scrollHeight, scrollTop } = current;
@@ -16,19 +16,14 @@ export default class ScrollToBottomComposer extends React.Component {
     super(props);
 
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleScrollEnd = this.handleScrollEnd.bind(this);
 
     this.state = {
       bottom: true,
       handleUpdate: () => this.state.bottom && this.state.scrollToBottom(),
       scrollToBottom: () => this.setState(() => ({
         bottom: true,
-        scrollSetter: () => {
-          const { current } = this.state.target || {};
-
-          if (current) {
-            current.scrollTop = current.scrollHeight;
-          }
-        }
+        scrollTop: this.state.target && this.state.target.current && (this.state.target.current.scrollHeight - this.state.target.current.offsetHeight)
       })),
       setTarget: target => this.setState(() => ({ target })),
       target: null
@@ -41,6 +36,12 @@ export default class ScrollToBottomComposer extends React.Component {
     }));
   }
 
+  handleScrollEnd() {
+    this.setState(() => ({
+      scrollTop: null
+    }));
+  }
+
   render() {
     return (
       <Context.Provider value={ this.state }>
@@ -50,9 +51,13 @@ export default class ScrollToBottomComposer extends React.Component {
           onEvent={ this.handleScroll }
           target={ this.state.target }
         />
-        <DOMSetter
-          setter={ this.state.scrollSetter }
-        />
+        { typeof this.state.scrollTop === 'number' &&
+          <ScrollTo
+            onEnd={ this.handleScrollEnd }
+            scrollTop={ this.state.scrollTop }
+            target={ this.state.target }
+          />
+        }
       </Context.Provider>
     );
   }
