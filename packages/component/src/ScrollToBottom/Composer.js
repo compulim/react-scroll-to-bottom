@@ -27,20 +27,24 @@ export default class ScrollToBottomComposer extends React.Component {
       })),
       scrollTop: null,
       setTarget: target => this.setState(() => ({ target })),
-      target: null
+      target: null,
+      threshold: 10
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(() => ({ mode: nextProps.mode === 'top' ? 'top' : 'bottom' }));
+    this.setState(() => ({
+      mode: nextProps.mode === 'top' ? 'top' : 'bottom',
+      threshold: nextProps.threshold
+    }));
   }
 
   handleScroll() {
-    this.setState(({ mode, target }) => {
+    this.setState(({ mode, target, threshold }) => {
       if (target) {
         const { offsetHeight, scrollHeight, scrollTop } = target;
-        const atBottom = scrollHeight - scrollTop - offsetHeight <= this.props.threshold;
-        const atTop = scrollTop <= this.props.threshold;
+        const atBottom = scrollHeight - scrollTop - offsetHeight <= threshold;
+        const atTop = scrollTop <= threshold;
 
         return {
           atBottom,

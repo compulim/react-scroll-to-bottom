@@ -10,7 +10,7 @@ This project scaffolding is from [react-component-template](https://github.com/c
 
 Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https://compulim.github.io/react-scroll-to-bottom/).
 
-# Sample
+# Sample code
 
 ```jsx
 import { css } from 'glamor';
@@ -30,6 +30,25 @@ export default props =>
 ```
 
 > We use [`glamor`](https://github.com/threepointone/glamor/) for component styles. It is not required, but we don't support `style` props for performance reason.
+
+## Props
+
+| Name | Default | Description |
+| - | - | - |
+| `mode` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top. |
+
+## Context
+
+| Name | Type | Description |
+| - | - | - |
+| `atBottom` | Boolean | `true` if the panel is currently near bottom (see `threshold`) |
+| `atEnd` | Boolean | `true` if the panel is currently near the end (see `mode` and `threshold` |
+| `atTop` | Boolean | `true` if the panel is currently near top (see `threshold`) |
+| `mode` | String | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top |
+| `scrollToBottom` | Function | Call to scroll panel to bottom |
+| `scrollToEnd` | Function | Call to scroll panel to end |
+| `scrollToTop` | Function | Call to scroll panel to top |
+| `threshold` | Number | Threshold in pixels to consider the panel is near top/bottom, read-only and only set thru `props` |
 
 # Contributions
 
