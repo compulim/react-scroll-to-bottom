@@ -15,20 +15,21 @@ export default class ScrollToBottomComposer extends React.Component {
     this.state = {
       bottom: true,
       handleUpdate: () => this.state.bottom && this.state.scrollToBottom(),
-      scrollToBottom: () => this.setState(() => ({
-        scrollTop: this.state.target && this.state.target.current && (this.state.target.current.scrollHeight - this.state.target.current.offsetHeight)
+      scrollToBottom: () => this.setState(state => ({
+        scrollTop: state.target && state.target && (state.target.scrollHeight - state.target.offsetHeight)
       })),
       scrollTop: null,
-      target: React.createRef()
+      setTarget: target => this.setState(() => ({ target })),
+      target: null,
     };
   }
 
   handleScroll() {
     this.setState(() => {
-      const { current } = this.state.target;
+      const { target } = this.state;
 
-      if (current) {
-        const { offsetHeight, scrollHeight, scrollTop } = current;
+      if (target) {
+        const { offsetHeight, scrollHeight, scrollTop } = target;
         const bottom = scrollHeight - scrollTop - offsetHeight <= this.props.threshold;
 
         return { bottom };
@@ -41,21 +42,26 @@ export default class ScrollToBottomComposer extends React.Component {
   }
 
   render() {
+    const { scrollTop, target } = this.state;
+
     return (
       <Context.Provider value={ this.state }>
         { this.props.children }
-        <EventSpy
-          name="scroll"
-          onEvent={ this.handleScroll }
-          target={ this.state.target.current }
-        />
         {
-          typeof this.state.scrollTop === 'number' &&
+          target &&
+            <EventSpy
+              name="scroll"
+              onEvent={ this.handleScroll }
+              target={ target }
+            />
+        }
+        {
+          target && typeof scrollTop === 'number' &&
             <SpineTo
               name="scrollTop"
               onEnd={ this.handleScrollEnd }
-              target={ this.state.target.current }
-              value={ this.state.scrollTop }
+              target={ target }
+              value={ scrollTop }
             />
         }
       </Context.Provider>

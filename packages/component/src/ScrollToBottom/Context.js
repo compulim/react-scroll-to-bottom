@@ -5,5 +5,6 @@ export default React.createContext({
   handleUpdate: () => 0,
   scrollToBottom: () => 0,
   scrollTop: null,
+  setTarget: () => 0,
   target: null
 });

@@ -26,7 +26,7 @@ export default class ScrollToBottomPanel extends React.PureComponent {
           return (
             <div
               className={ classNames(ROOT_CSS + '', props.className) }
-              ref={ context.target }
+              ref={ context.setTarget }
             >
               { props.children }
             </div>
