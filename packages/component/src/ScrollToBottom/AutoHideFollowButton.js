@@ -5,15 +5,15 @@ import Context from './Context';
 
 const ROOT_CSS = css({
   backgroundColor: 'rgba(0, 0, 0, .2)',
-  borderRadius: 5,
+  borderRadius: 10,
   borderWidth: 0,
   bottom: 5,
   cursor: 'pointer',
-  height: 10,
+  height: 20,
   outline: 0,
   position: 'absolute',
   right: 20,
-  width: 60,
+  width: 20,
 
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, .4)'
