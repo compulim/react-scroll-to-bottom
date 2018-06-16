@@ -1,0 +1,41 @@
+{
+  "name": "react-scroll-to-bottom",
+  "version": "0.0.1-0",
+  "description": "",
+  "keywords": [
+    "react",
+    "follow",
+    "scroll",
+    "scroll to bottom",
+    "tail"
+  ],
+  "main": "index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "bootstrap": "lerna bootstrap --hoist",
+    "build": "lerna run build",
+    "test": "lerna run test"
+  },
+  "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/compulim/react-scroll-to-bottom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/compulim/react-scroll-to-bottom/issues"
+  },
+  "homepage": "https://github.com/compulim/react-scroll-to-bottom#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-env": "^2.4.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "jest": "^22.4.4",
+    "lerna": "^2.11.0",
+    "rimraf": "^2.6.2"
+  }
+}
