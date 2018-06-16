@@ -4,6 +4,27 @@ import { css } from 'glamor';
 import loremIpsum from 'lorem-ipsum';
 import ScrollToBottom from 'component';
 
+const ROOT_CSS = css({
+  '& > ul.button-bar': {
+    display: 'flex',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+
+    '& > li:not(:last-child)': {
+      marginRight: 10
+    }
+  },
+
+  '& > .panes': {
+    display: 'flex',
+
+    '& > *:not(:last-child)': {
+      marginRight: 10
+    }
+  }
+});
+
 const SCROLL_VIEW_CSS = css({
   borderColor: 'Black',
   borderStyle: 'solid',
@@ -46,15 +67,30 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <button onClick={ this.handleAdd1 }>Add new paragraph</button>&nbsp;
-        <button onClick={ this.handleAdd10 }>Add 10 new paragraphs</button>&nbsp;
-        <button onClick={ this.handleClear }>Clear</button>
-        <ScrollToBottom className={ SCROLL_VIEW_CSS + '' }>
-          <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
-            { this.state.paragraphs.map((paragraph, index) => <p key={ index }>{ paragraph }</p>) }
-          </div>
-        </ScrollToBottom>
+      <div className={ ROOT_CSS + '' }>
+        <ul className="button-bar">
+          <li>
+            <button onClick={ this.handleAdd1 }>Add new paragraph</button>
+          </li>
+          <li>
+            <button onClick={ this.handleAdd10 }>Add 10 new paragraphs</button>
+          </li>
+          <li>
+            <button onClick={ this.handleClear }>Clear</button>
+          </li>
+        </ul>
+        <div className="panes">
+          <ScrollToBottom className={ SCROLL_VIEW_CSS + '' }>
+            <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
+              { this.state.paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+            </div>
+          </ScrollToBottom>
+          <ScrollToBottom className={ SCROLL_VIEW_CSS + '' } mode="top">
+            <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
+              { [...this.state.paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+            </div>
+          </ScrollToBottom>
+        </div>
       </div>
     );
   }
