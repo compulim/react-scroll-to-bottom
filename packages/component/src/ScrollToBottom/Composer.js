@@ -50,13 +50,13 @@ export default class ScrollToBottomComposer extends React.Component {
         <EventSpy
           name="scroll"
           onEvent={ this.handleScroll }
-          target={ this.state.target }
+          target={ this.state.target && this.state.target.current }
         />
         { typeof this.state.scrollTop === 'number' &&
           <SpineTo
             name="scrollTop"
             onEnd={ this.handleScrollEnd }
-            target={ this.state.target }
+            target={ this.state.target && this.state.target.current }
             value={ this.state.scrollTop }
           />
         }

@@ -8,39 +8,37 @@ export default class ScrollSpy extends React.Component {
   }
 
   componentDidMount() {
-    const { current } = this.props.target || {};
+    const { target } = this.props;
 
-    if (current) {
-      current.addEventListener(this.props.name, this.handleEvent, { passive: true });
-      this.handleEvent(current);
+    if (target) {
+      target.addEventListener(this.props.name, this.handleEvent, { passive: true });
+      this.handleEvent(target);
     }
   }
 
   componentDidUpdate(prevProps) {
     const { name: prevName, target: prevTarget } = prevProps;
-    const { current: prevCurrent } = prevTarget || {};
     const { name, target } = this.props;
-    const { current } = target || {};
 
     if (
-      current !== prevCurrent
+      target !== prevTarget
       || name !== prevName
     ) {
-      if (prevCurrent) {
-        prevCurrent.removeEventListener(prevName, this.handleEvent);
+      if (prevTarget) {
+        prevTarget.removeEventListener(prevName, this.handleEvent);
       }
 
-      if (current) {
-        current.addEventListener(name, this.handleEvent, { passive: true });
-        this.handleEvent(current);
+      if (target) {
+        target.addEventListener(name, this.handleEvent, { passive: true });
+        this.handleEvent(target);
       }
     }
   }
 
   componentWillUnmount() {
-    const { current } = this.props.target || {};
+    const { target } = this.props;
 
-    current && current.removeEventListener(this.props.name, this.handleEvent);
+    target && target.removeEventListener(this.props.name, this.handleEvent);
   }
 
   handleEvent() {
