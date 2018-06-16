@@ -4,7 +4,6 @@ import React from 'react';
 
 import AutoHideFollowButton from './ScrollToBottom/AutoHideFollowButton';
 import Composer from './ScrollToBottom/Composer';
-import Context from './ScrollToBottom/Context';
 import Panel from './ScrollToBottom/Panel';
 
 const ROOT_CSS = css({
