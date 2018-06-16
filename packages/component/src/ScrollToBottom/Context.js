@@ -2,5 +2,8 @@ import React from 'react';
 
 export default React.createContext({
   bottom: true,
-  scrollToBottom: () => 0
+  handleUpdate: () => 0,
+  scrollToBottom: () => 0,
+  scrollTop: null,
+  target: null
 });
