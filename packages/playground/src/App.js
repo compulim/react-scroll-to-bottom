@@ -4,6 +4,11 @@ import { css } from 'glamor';
 import loremIpsum from 'lorem-ipsum';
 import ScrollToBottom from 'component';
 
+const FADE_IN_ANIMATION = css.keyframes({
+  '0%': { opacity: .2 },
+  '100%': { opacity: 1 }
+});
+
 const ROOT_CSS = css({
   '& > ul.button-bar': {
     display: 'flex',
@@ -19,6 +24,10 @@ const ROOT_CSS = css({
   '& > .panes': {
     display: 'flex',
 
+    '& > *': {
+      flex: 1
+    },
+
     '& > *:not(:last-child)': {
       marginRight: 10
     }
@@ -30,13 +39,16 @@ const SCROLL_VIEW_CSS = css({
   borderStyle: 'solid',
   borderWidth: 1,
   height: 400,
-  marginTop: 10,
-  width: 600
+  marginTop: 10
 });
 
 const SCROLL_VIEW_PADDING_CSS = css({
   paddingLeft: 10,
-  paddingRight: 10
+  paddingRight: 10,
+
+  '& > p': {
+    animation: `${ FADE_IN_ANIMATION } 500ms`
+  }
 });
 
 class App extends Component {
