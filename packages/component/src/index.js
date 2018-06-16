@@ -1,9 +1,14 @@
-import React from 'react';
+import BasicScrollToBottom from './BasicScrollToBottom';
+import Composer from './ScrollToBottom/Composer';
+import Context from './ScrollToBottom/Context';
+import FollowButton from './ScrollToBottom/FollowButton';
+import Panel from './ScrollToBottom/Panel';
 
-export default class MyComponent extends React.Component {
-  render() {
-    return (
-      <div>This is my component</div>
-    );
-  }
+export default BasicScrollToBottom
+
+export {
+  Composer,
+  Context,
+  FollowButton,
+  Panel
 }
