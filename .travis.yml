@@ -5,7 +5,7 @@ before_script:
   - npm run bootstrap
   - npm run build
 before_deploy:
-  - npx version-from-git --travis
+  - npx version-from-git --travis --no-git-tag-version
   - cp -r packages/component/lib .
 deploy:
   - provider: npm
