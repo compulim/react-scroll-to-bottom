@@ -10,7 +10,7 @@ const ROOT_CSS = css({
   width: '100%'
 });
 
-export default class ScrollToBottomPanel extends React.PureComponent {
+export default class Panel extends React.PureComponent {
   componentDidUpdate() {
     this.context && this.context.handleUpdate();
   }

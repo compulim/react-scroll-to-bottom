@@ -5,7 +5,7 @@ import Context from './Context';
 import EventSpy from '../EventSpy';
 import SpineTo from '../SpineTo';
 
-export default class ScrollToBottomComposer extends React.Component {
+export default class Composer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -84,10 +84,10 @@ export default class ScrollToBottomComposer extends React.Component {
   }
 }
 
-ScrollToBottomComposer.defaultProps = {
+Composer.defaultProps = {
   threshold: 10
 };
 
-ScrollToBottomComposer.propTypes = {
+Composer.propTypes = {
   threshold: PropTypes.number
 };
