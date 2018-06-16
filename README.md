@@ -41,14 +41,14 @@ export default props =>
 
 | Name | Type | Description |
 | - | - | - |
-| `atBottom` | Boolean | `true` if the panel is currently near bottom (see `threshold`) |
-| `atEnd` | Boolean | `true` if the panel is currently near the end (see `mode` and `threshold` |
-| `atTop` | Boolean | `true` if the panel is currently near top (see `threshold`) |
-| `mode` | String | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top |
-| `scrollToBottom` | Function | Call to scroll panel to bottom |
-| `scrollToEnd` | Function | Call to scroll panel to end |
-| `scrollToTop` | Function | Call to scroll panel to top |
-| `threshold` | Number | Threshold in pixels to consider the panel is near top/bottom, read-only and only set thru `props` |
+| `atBottom` | `boolean` | `true` if the panel is currently near bottom (see `threshold`) |
+| `atEnd` | `boolean` | `true` if the panel is currently near the end (see `mode` and `threshold` |
+| `atTop` | `boolean` | `true` if the panel is currently near top (see `threshold`) |
+| `mode` | `string` | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top |
+| `scrollToBottom` | `function` | Call to scroll panel to bottom |
+| `scrollToEnd` | `function` | Call to scroll panel to end |
+| `scrollToTop` | `function` | Call to scroll panel to top |
+| `threshold` | `number` | Threshold in pixels to consider the panel is near top/bottom, read-only and only set thru `props` |
 
 # Contributions
 

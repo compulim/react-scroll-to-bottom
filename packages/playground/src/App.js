@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-
 import { css } from 'glamor';
+import Interval from 'react-interval';
 import loremIpsum from 'lorem-ipsum';
+import React from 'react';
 import ScrollToBottom from 'component';
 
 const FADE_IN_ANIMATION = css.keyframes({
@@ -51,15 +51,18 @@ const SCROLL_VIEW_PADDING_CSS = css({
   }
 });
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleAdd1 = this.handleAdd.bind(this, 1);
     this.handleAdd10 = this.handleAdd.bind(this, 10);
     this.handleClear = this.handleClear.bind(this);
+    this.handleIntervalCallback = this.handleIntervalCallback.bind(this);
+    this.handleIntervalEnabledChange = this.handleIntervalEnabledChange.bind(this);
 
     this.state = {
+      intervalEnabled: false,
       paragraphs: []
     };
   }
@@ -78,7 +81,15 @@ class App extends Component {
   }
 
   handleClear() {
-    this.setState(state => ({ paragraphs: [] }));
+    this.setState(() => ({ paragraphs: [] }));
+  }
+
+  handleIntervalCallback() {
+    this.handleAdd(1);
+  }
+
+  handleIntervalEnabledChange({ target: { checked: intervalEnabled } }) {
+    this.setState(() => ({ intervalEnabled }));
   }
 
   render() {
@@ -94,6 +105,16 @@ class App extends Component {
           <li>
             <button onClick={ this.handleClear }>Clear</button>
           </li>
+          <li>
+            <label>
+              <input
+                checked={ this.state.intervalEnabled }
+                onChange={ this.handleIntervalEnabledChange }
+                type="checkbox"
+              />
+              Add one every second
+            </label>
+          </li>
         </ul>
         <div className="panes">
           <ScrollToBottom className={ SCROLL_VIEW_CSS + '' }>
@@ -107,6 +128,13 @@ class App extends Component {
             </div>
           </ScrollToBottom>
         </div>
+        { this.state.intervalEnabled &&
+          <Interval
+            callback={ this.handleIntervalCallback }
+            enabled={ true }
+            timeout={ 1000 }
+          />
+        }
       </div>
     );
   }
