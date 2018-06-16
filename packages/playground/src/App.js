@@ -2,7 +2,7 @@ import { css } from 'glamor';
 import Interval from 'react-interval';
 import loremIpsum from 'lorem-ipsum';
 import React from 'react';
-import ScrollToBottom from 'component';
+import ScrollToEnd from 'component';
 
 const FADE_IN_ANIMATION = css.keyframes({
   '0%': { opacity: .2 },
@@ -117,16 +117,16 @@ class App extends React.Component {
           </li>
         </ul>
         <div className="panes">
-          <ScrollToBottom className={ SCROLL_VIEW_CSS + '' }>
+          <ScrollToEnd className={ SCROLL_VIEW_CSS + '' }>
             <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
               { this.state.paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
             </div>
-          </ScrollToBottom>
-          <ScrollToBottom className={ SCROLL_VIEW_CSS + '' } mode="top">
+          </ScrollToEnd>
+          <ScrollToEnd className={ SCROLL_VIEW_CSS + '' } mode="top">
             <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
               { [...this.state.paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
             </div>
-          </ScrollToBottom>
+          </ScrollToEnd>
         </div>
         { this.state.intervalEnabled &&
           <Interval
