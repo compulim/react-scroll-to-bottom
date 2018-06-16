@@ -13,6 +13,11 @@ const SCROLL_VIEW_CSS = css({
   width: 600
 });
 
+const SCROLL_VIEW_PADDING_CSS = css({
+  paddingLeft: 10,
+  paddingRight: 10
+});
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +51,9 @@ class App extends Component {
         <button onClick={ this.handleAdd10 }>Add 10 new paragraphs</button>&nbsp;
         <button onClick={ this.handleClear }>Clear</button>
         <ScrollToBottom className={ SCROLL_VIEW_CSS + '' }>
-          { this.state.paragraphs.map((paragraph, index) => <p key={ index }>{ paragraph }</p>) }
+          <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
+            { this.state.paragraphs.map((paragraph, index) => <p key={ index }>{ paragraph }</p>) }
+          </div>
         </ScrollToBottom>
       </div>
     );
