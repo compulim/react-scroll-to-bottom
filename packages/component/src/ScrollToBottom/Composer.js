@@ -3,7 +3,7 @@ import React from 'react';
 
 import Context from './Context';
 import EventSpy from '../EventSpy';
-import ScrollTo from '../ScrollTo';
+import SpineTo from '../SpineTo';
 
 function isBottom(current, threshold) {
   const { offsetHeight, scrollHeight, scrollTop } = current;
@@ -25,6 +25,7 @@ export default class ScrollToBottomComposer extends React.Component {
         bottom: true,
         scrollTop: this.state.target && this.state.target.current && (this.state.target.current.scrollHeight - this.state.target.current.offsetHeight)
       })),
+      scrollTop: null,
       setTarget: target => this.setState(() => ({ target })),
       target: null
     };
@@ -52,10 +53,11 @@ export default class ScrollToBottomComposer extends React.Component {
           target={ this.state.target }
         />
         { typeof this.state.scrollTop === 'number' &&
-          <ScrollTo
+          <SpineTo
+            name="scrollTop"
             onEnd={ this.handleScrollEnd }
-            scrollTop={ this.state.scrollTop }
             target={ this.state.target }
+            value={ this.state.scrollTop }
           />
         }
       </Context.Provider>

@@ -31,11 +31,12 @@ export default class ScrollTo extends React.Component {
   }
 
   componentDidMount() {
-    const { current } = this.props.target;
+    const { name, target } = this.props;
+    const { current } = target || {};
 
     if (current) {
       this.addEventListeners(current);
-      this.animate('scrollTop', current.scrollTop, this.props.scrollTop, 1);
+      this.animate(name, current[name], this.props.value, 1);
     }
   }
 
@@ -44,7 +45,7 @@ export default class ScrollTo extends React.Component {
     const { target } = this.props;
     const { current: prevCurrent } = prevTarget || {};
     const { current } = target || {};
-    const scrollChanged = prevProps.scrollTop !== this.props.scrollTop;
+    const scrollChanged = prevProps.value !== this.props.value;
     const targetChanged = prevCurrent !== current;
 
     if (targetChanged) {
@@ -53,7 +54,9 @@ export default class ScrollTo extends React.Component {
     }
 
     if ((scrollChanged || targetChanged) && current) {
-      this.animate('scrollTop', current.scrollTop, this.props.scrollTop, 1);
+      const { name } = this.props;
+
+      this.animate(name, current[name], this.props.value, 1);
     }
   }
 
@@ -107,7 +110,8 @@ export default class ScrollTo extends React.Component {
 }
 
 ScrollTo.propTypes = {
+  name: PropTypes.string.isRequired,
   onEnd: PropTypes.func,
-  scrollTop: PropTypes.number,
-  target: PropTypes.any
+  target: PropTypes.any.isRequired,
+  value: PropTypes.number.isRequired
 };
