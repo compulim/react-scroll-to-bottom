@@ -4,6 +4,12 @@
 
 React container that will auto scroll to bottom if new content is added and viewport is at the bottom, similar to `tail -f`. Otherwise, a "jump to bottom" button will be shown to allow user to quickly jump to bottom.
 
+This project scaffolding is from [react-component-template](https://github.com/compulim/react-component-template).
+
+# Demo
+
+Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https://compulim.github.io/react-scroll-to-bottom/).
+
 # Sample
 
 ```jsx
@@ -22,6 +28,8 @@ export default props =>
     <p>Laboris duis do consectetur aliquip non aliquip ad ad quis minim. Aute magna tempor occaecat magna fugiat culpa. Commodo id eiusmod ea pariatur consequat fugiat minim est anim. Ipsum amet ipsum eu nisi. Exercitation minim amet incididunt tempor do ut id in officia eu sit est. Dolor qui laboris laboris tempor sunt velit eiusmod non ipsum exercitation ut sint ipsum officia.</p>
   </ScrollToBottom>
 ```
+
+> We use [`glamor`](https://github.com/threepointone/glamor/) for component styles. It is not required, but we don't support `style` props for performance reason.
 
 # Contributions
 
