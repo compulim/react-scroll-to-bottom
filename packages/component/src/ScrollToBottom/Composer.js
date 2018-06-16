@@ -20,14 +20,12 @@ export default class ScrollToBottomComposer extends React.Component {
       })),
       scrollTop: null,
       setTarget: target => this.setState(() => ({ target })),
-      target: null,
+      target: null
     };
   }
 
   handleScroll() {
-    this.setState(() => {
-      const { target } = this.state;
-
+    this.setState(({ target }) => {
       if (target) {
         const { offsetHeight, scrollHeight, scrollTop } = target;
         const bottom = scrollHeight - scrollTop - offsetHeight <= this.props.threshold;

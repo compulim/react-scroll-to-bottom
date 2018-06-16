@@ -13,14 +13,10 @@ const ROOT_CSS = css({
 
 export default props =>
   <Composer>
-    <Context>
-      { context =>
-        <div className={ classNames(ROOT_CSS + '', props.className) }>
-          <Panel>
-            { props.children }
-          </Panel>
-          <AutoHideFollowButton className={ props.followButtonClassName } />
-        </div>
-      }
-    </Context>
+    <div className={ classNames(ROOT_CSS + '', props.className) }>
+      <Panel>
+        { props.children }
+      </Panel>
+      <AutoHideFollowButton className={ props.followButtonClassName } />
+    </div>
   </Composer>
