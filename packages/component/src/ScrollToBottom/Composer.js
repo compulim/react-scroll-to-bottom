@@ -13,10 +13,17 @@ export default class ScrollToBottomComposer extends React.Component {
     this.handleScrollEnd = this.handleScrollEnd.bind(this);
 
     this.state = {
-      bottom: true,
-      handleUpdate: () => this.state.bottom && this.state.scrollToBottom(),
+      atBottom: true,
+      atEnd: true,
+      atTop: true,
+      mode: props.mode,
+      handleUpdate: () => this.state.atEnd && this.state.scrollToEnd(),
       scrollToBottom: () => this.setState(state => ({
-        scrollTop: state.target && state.target && (state.target.scrollHeight - state.target.offsetHeight)
+        scrollTop: state.target && (state.target.scrollHeight - state.target.offsetHeight)
+      })),
+      scrollToEnd: () => this.state.mode === 'top' ? this.state.scrollToTop() : this.state.scrollToBottom(),
+      scrollToTop: () => this.setState(state => ({
+        scrollTop: 0
       })),
       scrollTop: null,
       setTarget: target => this.setState(() => ({ target })),
@@ -24,13 +31,22 @@ export default class ScrollToBottomComposer extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState(() => ({ mode: nextProps.mode === 'top' ? 'top' : 'bottom' }));
+  }
+
   handleScroll() {
-    this.setState(({ target }) => {
+    this.setState(({ mode, target }) => {
       if (target) {
         const { offsetHeight, scrollHeight, scrollTop } = target;
-        const bottom = scrollHeight - scrollTop - offsetHeight <= this.props.threshold;
+        const atBottom = scrollHeight - scrollTop - offsetHeight <= this.props.threshold;
+        const atTop = scrollTop <= this.props.threshold;
 
-        return { bottom };
+        return {
+          atBottom,
+          atEnd: mode === 'top' ? atTop : atBottom,
+          atTop
+        };
       }
     });
   }

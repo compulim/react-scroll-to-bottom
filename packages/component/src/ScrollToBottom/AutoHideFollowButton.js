@@ -26,10 +26,10 @@ const ROOT_CSS = css({
 
 export default props =>
   <Context.Consumer>
-    { context => !context.bottom &&
+    { context => !context.atEnd &&
         <button
           className={ ROOT_CSS + '' }
-          onClick={ context.scrollToBottom }
+          onClick={ context.scrollToEnd }
         />
     }
   </Context.Consumer>
