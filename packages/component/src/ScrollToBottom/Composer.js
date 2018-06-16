@@ -16,7 +16,6 @@ export default class ScrollToBottomComposer extends React.Component {
       bottom: true,
       handleUpdate: () => this.state.bottom && this.state.scrollToBottom(),
       scrollToBottom: () => this.setState(() => ({
-        bottom: true,
         scrollTop: this.state.target && this.state.target.current && (this.state.target.current.scrollHeight - this.state.target.current.offsetHeight)
       })),
       scrollTop: null,

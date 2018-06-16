@@ -4,7 +4,7 @@ import React from 'react';
 
 import Composer from './ScrollToBottom/Composer';
 import Context from './ScrollToBottom/Context';
-import FollowButton from './ScrollToBottom/FollowButton';
+import AutoHideFollowButton from './ScrollToBottom/AutoHideFollowButton';
 import Panel from './ScrollToBottom/Panel';
 
 const ROOT_CSS = css({
@@ -19,7 +19,7 @@ export default props =>
           <Panel>
             { props.children }
           </Panel>
-          { !context.bottom && <FollowButton /> }
+          <AutoHideFollowButton className={ props.followButtonClassName } />
         </div>
       }
     </Context>

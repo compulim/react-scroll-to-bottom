@@ -10,7 +10,6 @@ const SCROLL_VIEW_CSS = css({
   borderWidth: 1,
   height: 400,
   marginTop: 10,
-  padding: 10,
   width: 600
 });
 
