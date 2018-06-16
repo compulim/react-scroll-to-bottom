@@ -6,6 +6,7 @@ export default React.createContext({
   atTop: true,
   mode: 'bottom',
   handleUpdate: () => 0,
+  scrollTo: () => 0,
   scrollToBottom: () => 0,
   scrollToEnd: () => 0,
   scrollToTop: () => 0,
