@@ -11,18 +11,8 @@ const ROOT_CSS = css({
 });
 
 export default class ScrollToBottomPanel extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.containerRef = React.createRef();
-  }
-
-  componentDidMount() {
-    this.context.setTarget(this.containerRef);
-  }
-
   componentDidUpdate() {
-    this.context.handleUpdate();
+    this.context && this.context.handleUpdate();
   }
 
   render() {
@@ -36,7 +26,7 @@ export default class ScrollToBottomPanel extends React.PureComponent {
           return (
             <div
               className={ classNames(ROOT_CSS + '', props.className) }
-              ref={ this.containerRef }
+              ref={ context.target }
             >
               { props.children }
             </div>

@@ -5,12 +5,6 @@ import Context from './Context';
 import EventSpy from '../EventSpy';
 import SpineTo from '../SpineTo';
 
-function isBottom(current, threshold) {
-  const { offsetHeight, scrollHeight, scrollTop } = current;
-
-  return scrollHeight - scrollTop - offsetHeight <= threshold;
-}
-
 export default class ScrollToBottomComposer extends React.Component {
   constructor(props) {
     super(props);
@@ -26,21 +20,25 @@ export default class ScrollToBottomComposer extends React.Component {
         scrollTop: this.state.target && this.state.target.current && (this.state.target.current.scrollHeight - this.state.target.current.offsetHeight)
       })),
       scrollTop: null,
-      setTarget: target => this.setState(() => ({ target })),
-      target: null
+      target: React.createRef()
     };
   }
 
   handleScroll() {
-    this.setState(() => ({
-      bottom: isBottom(this.state.target.current, this.props.threshold)
-    }));
+    this.setState(() => {
+      const { current } = this.state.target;
+
+      if (current) {
+        const { offsetHeight, scrollHeight, scrollTop } = current;
+        const bottom = scrollHeight - scrollTop - offsetHeight <= this.props.threshold;
+
+        return { bottom };
+      }
+    });
   }
 
   handleScrollEnd() {
-    this.setState(() => ({
-      scrollTop: null
-    }));
+    this.setState(() => ({ scrollTop: null }));
   }
 
   render() {
@@ -50,15 +48,16 @@ export default class ScrollToBottomComposer extends React.Component {
         <EventSpy
           name="scroll"
           onEvent={ this.handleScroll }
-          target={ this.state.target && this.state.target.current }
+          target={ this.state.target.current }
         />
-        { typeof this.state.scrollTop === 'number' &&
-          <SpineTo
-            name="scrollTop"
-            onEnd={ this.handleScrollEnd }
-            target={ this.state.target && this.state.target.current }
-            value={ this.state.scrollTop }
-          />
+        {
+          typeof this.state.scrollTop === 'number' &&
+            <SpineTo
+              name="scrollTop"
+              onEnd={ this.handleScrollEnd }
+              target={ this.state.target.current }
+              value={ this.state.scrollTop }
+            />
         }
       </Context.Provider>
     );
