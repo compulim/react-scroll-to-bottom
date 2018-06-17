@@ -23,6 +23,7 @@
     "test": "lerna run test"
   },
   "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
+  "homepage": "https://compulim.github.io/react-scroll-to-bottom/",
   "license": "MIT",
   "repository": {
     "type": "git",
