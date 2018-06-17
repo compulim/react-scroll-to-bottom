@@ -13,40 +13,61 @@ export default class Composer extends React.Component {
     this.handleScrollEnd = this.handleScrollEnd.bind(this);
 
     this.state = {
-      atBottom: true,
-      atEnd: true,
-      atTop: true,
-      mode: props.mode,
-      handleUpdate: () => this.state.atEnd && this.state.scrollToEnd(),
-      scrollTo: scrollTop => this.setState(() => ({ scrollTop })),
-      scrollToBottom: () => this.state.scrollTo(this.state.target && (this.state.target.scrollHeight - this.state.target.offsetHeight)),
-      scrollToEnd: () => this.state.mode === 'top' ? this.state.scrollToTop() : this.state.scrollToBottom(),
-      scrollToTop: () => this.state.scrollTo(0),
+      context: {
+        _handleUpdate: () => {
+          const { context } = this.state;
+
+          context.atEnd && context.scrollToEnd();
+        },
+        _setTarget: target => this.setState(() => ({ target })),
+        atBottom: true,
+        atEnd: true,
+        atTop: true,
+        mode: props.mode,
+        scrollTo: scrollTop => this.setState(() => ({ scrollTop })),
+        scrollToBottom: () => {
+          const { context, target } = this.state;
+
+          context.scrollTo(target && (target.scrollHeight - target.offsetHeight));
+        },
+        scrollToEnd: () => {
+          const { context } = this.state;
+
+          context.mode === 'top' ? context.scrollToTop() : context.scrollToBottom();
+        },
+        scrollToTop: () => this.state.context.scrollTo(0),
+        threshold: 10
+      },
       scrollTop: null,
-      setTarget: target => this.setState(() => ({ target })),
-      target: null,
-      threshold: 10
+      target: null
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(() => ({
-      mode: nextProps.mode === 'top' ? 'top' : 'bottom',
-      threshold: nextProps.threshold
+    this.setState(({ context }) => ({
+      context: {
+        ...context,
+        mode: nextProps.mode === 'top' ? 'top' : 'bottom',
+        threshold: nextProps.threshold
+      }
     }));
   }
 
   handleScroll() {
-    this.setState(({ mode, target, threshold }) => {
+    this.setState(({ context, target }) => {
       if (target) {
+        const { mode, threshold } = context;
         const { offsetHeight, scrollHeight, scrollTop } = target;
         const atBottom = scrollHeight - scrollTop - offsetHeight <= threshold;
         const atTop = scrollTop <= threshold;
 
         return {
-          atBottom,
-          atEnd: mode === 'top' ? atTop : atBottom,
-          atTop
+          context: {
+            ...context,
+            atBottom,
+            atEnd: mode === 'top' ? atTop : atBottom,
+            atTop
+          }
         };
       }
     });
@@ -60,7 +81,7 @@ export default class Composer extends React.Component {
     const { scrollTop, target } = this.state;
 
     return (
-      <Context.Provider value={ this.state }>
+      <Context.Provider value={ this.state.context }>
         { this.props.children }
         {
           target &&

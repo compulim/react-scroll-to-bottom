@@ -12,7 +12,7 @@ const ROOT_CSS = css({
 
 export default class Panel extends React.PureComponent {
   componentDidUpdate() {
-    this.context && this.context.handleUpdate();
+    this.context && this.context._handleUpdate();
   }
 
   render() {
@@ -26,7 +26,7 @@ export default class Panel extends React.PureComponent {
           return (
             <div
               className={ classNames(ROOT_CSS + '', props.className) }
-              ref={ context.setTarget }
+              ref={ context._setTarget }
             >
               { props.children }
             </div>
