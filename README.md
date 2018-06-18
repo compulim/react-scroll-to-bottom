@@ -51,6 +51,10 @@ export default props =>
 | `scrollToTop` | `() => void` | Scroll panel to top |
 | `threshold` | `number` | Threshold in pixels to consider the panel is near top/bottom, read-only and only set thru `props` |
 
+# Road map
+
+* Easier customization for "scroll to bottom" button
+
 # Contributions
 
 Like us? [Star](https://github.com/compulim/react-scroll-to-bottom/stargazers) us.
