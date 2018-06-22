@@ -34,12 +34,16 @@ const ROOT_CSS = css({
   }
 });
 
-const SCROLL_VIEW_CSS = css({
+const CONTAINER_CSS = css({
   borderColor: 'Black',
   borderStyle: 'solid',
   borderWidth: 1,
   height: 400,
   marginTop: 10
+});
+
+const SCROLL_VIEW_CSS = css({
+  backgroundColor: '#EEE'
 });
 
 const SCROLL_VIEW_PADDING_CSS = css({
@@ -117,13 +121,13 @@ class App extends React.Component {
           </li>
         </ul>
         <div className="panes">
-          <ScrollToEnd className={ SCROLL_VIEW_CSS + '' }>
-            <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
+          <ScrollToEnd className={ CONTAINER_CSS } scrollViewClassName={ SCROLL_VIEW_CSS }>
+            <div className={ SCROLL_VIEW_PADDING_CSS }>
               { this.state.paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
             </div>
           </ScrollToEnd>
-          <ScrollToEnd className={ SCROLL_VIEW_CSS + '' } mode="top">
-            <div className={ SCROLL_VIEW_PADDING_CSS + '' }>
+          <ScrollToEnd className={ CONTAINER_CSS } mode="top">
+            <div className={ SCROLL_VIEW_PADDING_CSS }>
               { [...this.state.paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
             </div>
           </ScrollToEnd>

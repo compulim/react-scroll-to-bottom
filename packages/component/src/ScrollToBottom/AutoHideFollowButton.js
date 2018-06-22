@@ -1,4 +1,5 @@
 import { css } from 'glamor';
+import classNames from 'classnames';
 import React from 'react';
 
 import Context from './Context';
@@ -24,11 +25,11 @@ const ROOT_CSS = css({
   }
 });
 
-export default props =>
+export default ({ className }) =>
   <Context.Consumer>
     { context => !context.atEnd &&
         <button
-          className={ ROOT_CSS + '' }
+          className={ classNames(ROOT_CSS + '', (className || '') + '') }
           onClick={ context.scrollToEnd }
         />
     }

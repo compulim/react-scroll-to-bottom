@@ -12,8 +12,8 @@ const ROOT_CSS = css({
 
 export default props =>
   <Composer mode={ props.mode === 'top' ? 'top' : 'bottom'}>
-    <div className={ classNames(ROOT_CSS + '', props.className) }>
-      <Panel>
+    <div className={ classNames(ROOT_CSS + '', (props.className || '') + '') }>
+      <Panel className={ props.scrollViewClassName }>
         { props.children }
       </Panel>
       <AutoHideFollowButton className={ props.followButtonClassName } />

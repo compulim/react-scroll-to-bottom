@@ -25,7 +25,7 @@ export default class Panel extends React.PureComponent {
 
           return (
             <div
-              className={ classNames(ROOT_CSS + '', props.className) }
+              className={ classNames(ROOT_CSS + '', (props.className || '') + '') }
               ref={ context._setTarget }
             >
               { props.children }

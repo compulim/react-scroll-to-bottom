@@ -35,7 +35,10 @@ export default props =>
 
 | Name | Default | Description |
 | - | - | - |
-| `mode` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top. |
+| `className` | | Set the class name for the root element |
+| `followButtonClassName` | | Set the class name for the follow button |
+| `mode` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top |
+| `scrollViewClassName` | | Set the class name for the container element that house all `props.children` |
 
 ## Context
 
