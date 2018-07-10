@@ -46,7 +46,9 @@
       dataLayer.push(arguments);
     }
 
-    gtag('js', new Date());
-    gtag('config', 'UA-119462943-1');
+    if (window.location.hostname !== 'localhost') {
+      gtag('js', new Date());
+      gtag('config', 'UA-119462943-1');
+    }
   </script>
 </html>
