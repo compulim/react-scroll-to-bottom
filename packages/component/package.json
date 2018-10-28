@@ -1,18 +1,43 @@
 {
-  "name": "component",
-  "version": "1.0.0",
-  "description": "",
+  "name": "react-scroll-to-bottom",
+  "version": "0.0.0-0",
+  "description": "React container that will auto scroll to bottom",
+  "keywords": [
+    "react",
+    "follow",
+    "jump",
+    "jump to bottom",
+    "jump to top",
+    "scroll",
+    "scroll to bottom",
+    "scroll to top",
+    "tail"
+  ],
   "main": "lib/index.js",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "build": "babel --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline src/",
     "clean": "rimraf lib",
-    "test": "jest"
+    "test": "echo no test specified"
   },
+  "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/compulim/react-scroll-to-bottom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/compulim/react-scroll-to-bottom/issues"
+  },
+  "homepage": "https://github.com/compulim/react-scroll-to-bottom#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "jest": "^22.4.4",
     "react": "16.4.1",
     "rimraf": "^2.6.2"
@@ -22,5 +47,8 @@
     "glamor": "^2.20.40",
     "memoize-one": "^4.0.2",
     "simple-update-in": "^1.4.0"
+  },
+  "peerDependencies": {
+    "react": "^16.4.1"
   }
 }

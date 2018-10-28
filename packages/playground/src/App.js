@@ -2,7 +2,7 @@ import { css } from 'glamor';
 import Interval from 'react-interval';
 import loremIpsum from 'lorem-ipsum';
 import React from 'react';
-import ScrollToEnd from 'component';
+import ScrollToEnd from 'react-scroll-to-bottom';
 
 const FADE_IN_ANIMATION = css.keyframes({
   '0%': { opacity: .2 },
