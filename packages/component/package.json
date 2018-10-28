@@ -14,10 +14,13 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^22.4.4",
+    "react": "16.4.1",
     "rimraf": "^2.6.2"
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "glamor": "^2.20.40"
+    "glamor": "^2.20.40",
+    "memoize-one": "^4.0.2",
+    "simple-update-in": "^1.4.0"
   }
 }

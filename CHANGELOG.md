@@ -5,6 +5,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `AutoHideFollowButton`: will now hide when it start animating scroll position
+- `BasicScrollToBottom`: will now pass `debounce` and `threshold` to `Composer`, fix [#2](https://github.com/compulim/react-scroll-to-bottom/issues/2)
+- `Composer`: `debounce` prop to control debouncing on `onScroll` event, default to `17`
+- `FunctionContext`: `scrollTo` now support `"bottom"`, in addition to a `number`, fix [#1](https://github.com/compulim/react-scroll-to-bottom/issues/1)
+   - This will help when animating scroll position while new content was added to the panel
+- `FunctionContext`: `scrollToStart` function to scroll to the start, depends on `mode`
+- `StateContext`: `animating` returns `true` if the scroll position is being animated
+- `StateContext`: `atStart` indicates if the scroll position is at the start or not, depend on `mode`
+
+### Changed
+- Performance improvements
+   - `Context` is now separated into `FunctionContext`, `InternalContext` and `StateContext` for better performance and reduce exposure
+      - `FunctionContext` is static and only hold functions for manipulating the panel
+      - `InternalContext` is static and for internal use (to overcome shortcomings of `React.createRef`)
+      - `StateContext` is dynamic and change when scroll position change
+   - `StateContext` will now only update if there are any meaningful changes
+- Added `displayName` to context
+- [`lerna`](https://npmjs.com/package/lerna) bumped from `2.11.0` to `3.4.3`
 
 ## [1.1.0] - 2018-06-22
 ### Added

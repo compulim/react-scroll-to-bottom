@@ -2,7 +2,8 @@ import { css } from 'glamor';
 import classNames from 'classnames';
 import React from 'react';
 
-import Context from './Context';
+import FunctionContext from './FunctionContext';
+import StateContext from './StateContext';
 
 const ROOT_CSS = css({
   backgroundColor: 'rgba(0, 0, 0, .2)',
@@ -25,12 +26,18 @@ const ROOT_CSS = css({
   }
 });
 
-export default ({ className }) =>
-  <Context.Consumer>
-    { context => !context.atEnd &&
-        <button
-          className={ classNames(ROOT_CSS + '', (className || '') + '') }
-          onClick={ context.scrollToEnd }
-        />
+export default ({ children, className }) =>
+  <StateContext.Consumer>
+    { ({ animating, atEnd }) => !animating && !atEnd &&
+      <FunctionContext.Consumer>
+        { ({ scrollToEnd }) =>
+          <button
+            className={ classNames(ROOT_CSS + '', (className || '') + '') }
+            onClick={ scrollToEnd }
+          >
+            { children }
+          </button>
+        }
+      </FunctionContext.Consumer>
     }
-  </Context.Consumer>
+  </StateContext.Consumer>

@@ -1,10 +1,20 @@
 import React from 'react';
 
-export default class ScrollSpy extends React.Component {
+import debounce from './debounce';
+
+export default class EventSpy extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    this.createDebouncer();
+
     this.handleEvent = this.handleEvent.bind(this);
+  }
+
+  createDebouncer() {
+    this.debouncer = debounce(event => {
+      this.props.onEvent && this.props.onEvent(event);
+    }, this.props.debounce);
   }
 
   componentDidMount() {
@@ -12,7 +22,7 @@ export default class ScrollSpy extends React.Component {
 
     if (target) {
       target.addEventListener(this.props.name, this.handleEvent, { passive: true });
-      this.handleEvent(target);
+      this.handleEvent({ target, type: this.props.name });
     }
   }
 
@@ -30,7 +40,7 @@ export default class ScrollSpy extends React.Component {
 
       if (target) {
         target.addEventListener(name, this.handleEvent, { passive: true });
-        this.handleEvent(target);
+        this.handleEvent({ target, type: this.props.name });
       }
     }
   }
@@ -41,11 +51,21 @@ export default class ScrollSpy extends React.Component {
     target && target.removeEventListener(this.props.name, this.handleEvent);
   }
 
-  handleEvent() {
-    this.props.onEvent && this.props.onEvent();
+  componentWillReceiveProps({ debounce: nextDebounce }) {
+    if (this.props.debounce !== nextDebounce) {
+      this.createDebouncer();
+    }
+  }
+
+  handleEvent(event) {
+    this.debouncer(event);
   }
 
   render() {
     return false;
   }
 }
+
+EventSpy.defaultProps = {
+  debounce: 200
+};
