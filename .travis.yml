@@ -21,14 +21,6 @@ deploy:
     branch: master
   skip_cleanup: true
 
-- provider: npm
-  api_key:
-    secure: "TmSsQrb7ujvlLd6K04nW7BSaKbFu2QtuEGQguhpYQ2hKDhZrfWizFP7De3Zdwvg+CVWDjTPMXkdrhOd7gpPwKOCoGTl/k6oVLpGUu640GbZmTqik22MIGdS8gb9etFpzRNQiJuKYVzMZtDeClA4GvhGra3L5JZKJthPOdLVX7GNsRqtjhrLMsV/Zdpl4YfPfwQqYP9Nvm+gdwJni9qFTdCdn558kOitAde1/cuG2awBmvDKd//2vI0RE/DNrMZRBOWRtdWr4dZAuAdpA0v4qWtFqxPn9k6FxkW7UF5pJXQKWugworsPo6aNOz2KTQlfhWcX6Rz45j8IVWXgrnyO3WEM/oWSpo7I3oBGdH6TXO5IcZ1PBIeo9rvdCpByrk8Z38PMWrcbx3RMR1rQlE7fAuzAh7TD89R3vBrMUyElbQnjlgjNrvC3zdNLDVVFFFTRbEwwOBG7VdkUXuXW4NpHmv2fe49Sw0RvAmvaOFAB0ogUXIhkzPilpkr5CLEFzwyYvRup9/q0Y7jwNwHClHUecsFJDIPygaV8z3WDmev+bnKi9+DhygPlwTFQJCHs486+dj9MCYnUkCak+pgKesQSQ/R7kM9g9oOD77wyTMlwtj5KwSnCuwaD9GuvNwplBSKJpM6tYqqfGNd8GJAUHqR0aIx4DUbXUKAM4P5wbfTMyVbo="
-  email: "compulim@hotmail.com"
-  on:
-    tags: true
-  skip_cleanup: true
-
 - provider: pages
   skip-cleanup: true
   github-token:
