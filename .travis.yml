@@ -15,7 +15,7 @@ install:
 - npm run build
 
 deploy:
-- provider: scripts
+- provider: script
   script: bash scripts/lerna_publish
   on:
     branch: master
