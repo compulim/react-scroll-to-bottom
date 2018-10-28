@@ -71,13 +71,17 @@ export default class ScrollTo extends React.Component {
   }
 
   animate(name, from, to, index, start = Date.now()) {
-    if (typeof to === 'number') {
+    if (to === 'bottom' || typeof to === 'number') {
       cancelAnimationFrame(this.animator);
 
       this.animator = requestAnimationFrame(() => {
         const { target } = this.props;
 
         if (target) {
+          if (to === 'bottom') {
+            to = target.scrollHeight - target.offsetHeight
+          }
+
           let nextValue = step(from, to, squareStepper, (Date.now() - start) / 5);
 
           if (Math.abs(to - nextValue) < .5) {
@@ -110,5 +114,8 @@ ScrollTo.propTypes = {
   name: PropTypes.string.isRequired,
   onEnd: PropTypes.func,
   target: PropTypes.any.isRequired,
-  value: PropTypes.number.isRequired
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.oneOf(['bottom'])
+  ]).isRequired
 };

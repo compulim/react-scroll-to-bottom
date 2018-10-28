@@ -2,52 +2,13 @@
   "name": "react-scroll-to-bottom",
   "version": "1.1.1-0",
   "description": "React container that will auto scroll to bottom",
-  "keywords": [
-    "react",
-    "follow",
-    "jump",
-    "jump to bottom",
-    "jump to top",
-    "scroll",
-    "scroll to bottom",
-    "scroll to top",
-    "tail"
-  ],
-  "main": "lib/index.js",
-  "files": [
-    "lib/**/*"
-  ],
+  "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --hoist",
-    "build": "lerna run build",
-    "test": "lerna run test"
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build --stream",
+    "test": "lerna run test --stream"
   },
-  "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/compulim/react-scroll-to-bottom.git"
-  },
-  "bugs": {
-    "url": "https://github.com/compulim/react-scroll-to-bottom/issues"
-  },
-  "homepage": "https://github.com/compulim/react-scroll-to-bottom#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-env": "^2.4.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "jest": "^22.4.4",
-    "lerna": "^2.11.0",
-    "react": "^16.4.1",
-    "rimraf": "^2.6.2"
-  },
-  "dependencies": {
-    "classnames": "^2.2.6",
-    "glamor": "^2.20.40"
-  },
-  "peerDependencies": {
-    "react": "^16.4.1"
+    "lerna": "^3.4.3"
   }
 }
