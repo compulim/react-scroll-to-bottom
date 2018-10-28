@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Playground: bumped to `react@16.6.0`, `react-dom@16.6.0`, and `react-scripts@2.0.5`
 
 ## [1.2.0] - 2018-10-28
 ### Added
