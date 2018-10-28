@@ -18,7 +18,12 @@ deploy:
 - provider: script
   script: bash scripts/lerna_publish
   on:
-    all_branches: true
+    branch: master
+  skip_cleanup: true
+
+- provider: script
+  script: bash scripts/lerna_publish
+  on:
     tags: true
   skip_cleanup: true
 
