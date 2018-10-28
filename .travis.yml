@@ -17,8 +17,6 @@ install:
 deploy:
 - provider: script
   script: bash scripts/lerna_publish
-  on:
-    branch: master
   skip_cleanup: true
 
 - provider: pages
