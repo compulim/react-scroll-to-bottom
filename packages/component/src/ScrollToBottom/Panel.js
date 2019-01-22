@@ -10,31 +10,19 @@ const ROOT_CSS = css({
   width: '100%'
 });
 
-class Panel extends React.Component {
-  componentDidUpdate() {
-    this.props.handleUpdate();
-  }
-
-  render() {
-    const { props } = this;
-
-    return (
-      <div
-        className={ classNames(ROOT_CSS + '', (props.className || '') + '') }
-        ref={ props.setTarget }
-      >
-        { props.children }
-      </div>
-    );
-  }
-}
+const Panel = ({ children, className, setTarget }) =>
+  <div
+    className={ classNames(ROOT_CSS + '', (className || '') + '') }
+    ref={ setTarget }
+  >
+    { children }
+  </div>
 
 export default props =>
   <InternalContext.Consumer>
-    { ({ _handleUpdate, _setTarget }) =>
+    { ({ setTarget }) =>
       <Panel
-        handleUpdate={ _handleUpdate }
-        setTarget={ _setTarget }
+        setTarget={ setTarget }
         { ...props }
       />
     }

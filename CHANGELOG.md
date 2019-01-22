@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Playground: bumped to `react@16.6.0`, `react-dom@16.6.0`, and `react-scripts@2.1.6`
+- Update algorithm, instead of using `componentDidUpdate`, we now use `setInterval` to check if the panel is sticky or not, this help to track content update that happen outside of React lifecycle, for example, `HTMLImageElement.onload` event
+- `scrollTo()` now accepts `"100%"` instead of `"bottom"`
+
+### Removed
+- Removed `threshold` props because the algorithm is now more robust
 
 ## [1.2.0] - 2018-10-28
 ### Added

@@ -1,8 +1,9 @@
 import { css } from 'glamor';
+import classNames from 'classnames';
 import Interval from 'react-interval';
 import loremIpsum from 'lorem-ipsum';
 import React from 'react';
-import ScrollToEnd from 'react-scroll-to-bottom';
+import ScrollToEnd, { StateContext } from 'react-scroll-to-bottom';
 
 const FADE_IN_ANIMATION = css.keyframes({
   '0%': { opacity: .2 },
@@ -49,6 +50,10 @@ const SCROLL_VIEW_CSS = css({
 const SCROLL_VIEW_PADDING_CSS = css({
   paddingLeft: 10,
   paddingRight: 10,
+
+  '&:not(.sticky)': {
+    backgroundColor: 'rgba(255, 0, 0, .1)'
+  },
 
   '& > p': {
     animation: `${ FADE_IN_ANIMATION } 500ms`
@@ -122,14 +127,22 @@ class App extends React.Component {
         </ul>
         <div className="panes">
           <ScrollToEnd className={ CONTAINER_CSS } scrollViewClassName={ SCROLL_VIEW_CSS }>
-            <div className={ SCROLL_VIEW_PADDING_CSS }>
-              { this.state.paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
-            </div>
+            <StateContext.Consumer>
+              { ({ sticky }) =>
+                <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
+                  { this.state.paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+                </div>
+              }
+            </StateContext.Consumer>
           </ScrollToEnd>
           <ScrollToEnd className={ CONTAINER_CSS } mode="top">
-            <div className={ SCROLL_VIEW_PADDING_CSS }>
-              { [...this.state.paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
-            </div>
+            <StateContext.Consumer>
+              { ({ sticky }) =>
+                <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
+                  { [...this.state.paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+                </div>
+              }
+            </StateContext.Consumer>
           </ScrollToEnd>
         </div>
         { this.state.intervalEnabled &&

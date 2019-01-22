@@ -58,6 +58,8 @@ export default class EventSpy extends React.Component {
   }
 
   handleEvent(event) {
+    event.timeStampLow = Date.now();
+
     this.debouncer(event);
   }
 

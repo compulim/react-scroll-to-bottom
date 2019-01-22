@@ -28,7 +28,7 @@ const ROOT_CSS = css({
 
 export default ({ children, className }) =>
   <StateContext.Consumer>
-    { ({ animating, atEnd }) => !animating && !atEnd &&
+    { ({ sticky }) => !sticky &&
       <FunctionContext.Consumer>
         { ({ scrollToEnd }) =>
           <button
