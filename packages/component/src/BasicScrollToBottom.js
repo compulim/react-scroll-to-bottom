@@ -14,7 +14,6 @@ export default props =>
   <Composer
     debounce={ props.debounce }
     mode={ props.mode === 'top' ? 'top' : 'bottom'}
-    threshold={ props.threshold }
   >
     <div className={ classNames(ROOT_CSS + '', (props.className || '') + '') }>
       <Panel className={ props.scrollViewClassName }>
