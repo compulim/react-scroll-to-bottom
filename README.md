@@ -33,13 +33,14 @@ export default props =>
 
 ## Props
 
-| Name | Default | Description |
-| - | - | - |
-| `className` | | Set the class name for the root element |
-| `debounce` | `17` | Set the debounce for tracking the `onScroll` event |
-| `followButtonClassName` | | Set the class name for the follow button |
-| `mode` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top |
-| `scrollViewClassName` | | Set the class name for the container element that house all `props.children` |
+| Name                    | Type     | Default    | Description                                                                  |
+|-------------------------|----------|------------|------------------------------------------------------------------------------|
+| `checkInterval`         | `number` | 150        | Recurring interval of stickiness check, in milliseconds                      |
+| `className`             | `string` |            | Set the class name for the root element                                      |
+| `debounce`              | `number` | `17`       | Set the debounce for tracking the `onScroll` event                           |
+| `followButtonClassName` | `string` |            | Set the class name for the follow button                                     |
+| `mode`                  | `string` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top         |
+| `scrollViewClassName`   | `string` |            | Set the class name for the container element that house all `props.children` |
 
 ## Context
 
@@ -49,28 +50,29 @@ We use 2 different contexts with different performance characteristics to provid
 
 This context contains functions used to manipulate the container. And will not update throughout the lifetime of the composer.
 
-| Name             | Type                                     | Description                               |
-|------------------|------------------------------------------|-------------------------------------------|
-| `scrollTo`       | `(scrollTop: number | 'bottom') => void` | Scroll panel to specified position        |
-| `scrollToBottom` | `() => void`                             | Scroll panel to bottom                    |
-| `scrollToEnd`    | `() => void`                             | Scroll panel to end (depends on `mode`)   |
-| `scrollToStart`  | `() => void`                             | Scroll panel to start (depends on `mode`) |
-| `scrollToTop`    | `() => void`                             | Scroll panel to top                       |
+| Name             | Type                                   | Description                               |
+|------------------|----------------------------------------|-------------------------------------------|
+| `scrollTo`       | `(scrollTop: number | '100%') => void` | Scroll panel to specified position        |
+| `scrollToBottom` | `() => void`                           | Scroll panel to bottom                    |
+| `scrollToEnd`    | `() => void`                           | Scroll panel to end (depends on `mode`)   |
+| `scrollToStart`  | `() => void`                           | Scroll panel to start (depends on `mode`) |
+| `scrollToTop`    | `() => void`                           | Scroll panel to top                       |
 
 ### State context
 
 This context contains state of the container.
 
-| Name            | Type      | Default    | Description                                                         |
-|-----------------|-----------|------------|---------------------------------------------------------------------|
-| `animating`     | `boolean` | `false`    | `true` if the panel is animating scroll effect                      |
-| `atBottom`      | `boolean` |            | `true` if the panel is currently near bottom                        |
-| `atEnd`         | `boolean` |            | `true` if the panel is currently near the end (depends on `mode`)   |
-| `atStart`       | `boolean` |            | `true` if the panel is currently near the start (depends on `mode`) |
-| `atTop`         | `boolean` |            | `true` if the panel is currently near top                           |
-| `checkInterval` | `number`  | 150        | Recurring interval of stickiness check, in milliseconds             |
-| `debounce`      | `number`  | 17         | Debounce interval for `scroll` event, in milliseconds               |
-| `mode`          | `string`  | `"bottom"` | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
+| Name        | Type      | Description                                                         |
+|-------------|-----------|---------------------------------------------------------------------|
+| `animating` | `boolean` | `true` if the panel is animating scroll effect                      |
+| `atBottom`  | `boolean` | `true` if the panel is currently near bottom                        |
+| `atEnd`     | `boolean` | `true` if the panel is currently near the end (depends on `mode`)   |
+| `atStart`   | `boolean` | `true` if the panel is currently near the start (depends on `mode`) |
+| `atTop`     | `boolean` | `true` if the panel is currently near top                           |
+| `mode`      | `string`  | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
+| `sticky`    | `boolean` | `true` if the panel is sticking to the end                          |
+
+> `atEnd` and `sticky` are slightly different. During scroll animation, the panel is not at the end yet, but it is still sticky.
 
 # Road map
 
