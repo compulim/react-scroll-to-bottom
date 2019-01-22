@@ -31,18 +31,18 @@ export default class ScrollTo extends React.Component {
   }
 
   componentDidMount() {
-    const { name, target } = this.props;
+    const { name, target, value } = this.props;
 
     if (target) {
       this.addEventListeners(target);
-      this.animate(name, target[name], this.props.value, 1);
+      this.animate(name, target[name], value, 1);
     }
   }
 
   componentDidUpdate(prevProps) {
+    const { props: { name, target, value } } = this;
     const { target: prevTarget } = prevProps;
-    const { target } = this.props;
-    const scrollChanged = prevProps.value !== this.props.value;
+    const scrollChanged = prevProps.value !== value;
     const targetChanged = prevTarget !== target;
 
     if (targetChanged) {
@@ -51,9 +51,7 @@ export default class ScrollTo extends React.Component {
     }
 
     if ((scrollChanged || targetChanged) && target) {
-      const { name } = this.props;
-
-      this.animate(name, target[name], this.props.value, 1);
+      this.animate(name, target[name], value, 1);
     }
   }
 
@@ -71,26 +69,23 @@ export default class ScrollTo extends React.Component {
   }
 
   animate(name, from, to, index, start = Date.now()) {
-    if (to === 'bottom' || typeof to === 'number') {
+    if (to === '100%' || typeof to === 'number') {
       cancelAnimationFrame(this.animator);
 
       this.animator = requestAnimationFrame(() => {
         const { target } = this.props;
 
         if (target) {
-          if (to === 'bottom') {
-            to = target.scrollHeight - target.offsetHeight
-          }
+          const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
+          let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
 
-          let nextValue = step(from, to, squareStepper, (Date.now() - start) / 5);
-
-          if (Math.abs(to - nextValue) < .5) {
-            nextValue = to;
+          if (Math.abs(toNumber - nextValue) < .5) {
+            nextValue = toNumber;
           }
 
           target[name] = nextValue;
 
-          if (to === nextValue) {
+          if (toNumber === nextValue) {
             this.props.onEnd && this.props.onEnd(true);
           } else {
             this.animate(name, from, to, index + 1, start);
@@ -116,6 +111,6 @@ ScrollTo.propTypes = {
   target: PropTypes.any.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.oneOf(['bottom'])
+    PropTypes.oneOf(['100%'])
   ]).isRequired
 };

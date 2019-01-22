@@ -20,7 +20,8 @@
   "scripts": {
     "build": "babel --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
     "clean": "rimraf lib",
-    "test": "echo no test specified"
+    "test": "echo no test specified",
+    "watch": "npm run build -- --watch"
   },
   "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
   "license": "MIT",

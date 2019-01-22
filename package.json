@@ -6,7 +6,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build --stream",
-    "test": "lerna run test --stream"
+    "test": "lerna run test --stream",
+    "watch": "lerna run watch --parallel --stream"
   },
   "devDependencies": {
     "lerna": "^3.4.3"

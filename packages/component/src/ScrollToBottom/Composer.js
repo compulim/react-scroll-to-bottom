@@ -9,94 +9,167 @@ import InternalContext from './InternalContext';
 import SpineTo from '../SpineTo';
 import StateContext from './StateContext';
 
+const MIN_CHECK_INTERVAL = 17;
+
+function setImmediateInterval(fn, ms) {
+  fn();
+
+  return setInterval(fn, ms);
+}
+
+function computeViewState({ stateContext: { mode }, target: { offsetHeight, scrollHeight, scrollTop } }) {
+  const atBottom = scrollHeight - scrollTop - offsetHeight <= 0;
+  const atTop = scrollTop <= 0;
+  const atEnd = mode === 'top' ? atTop : atBottom;
+
+  return {
+    atBottom,
+    atEnd,
+    atStart: !atEnd,
+    atTop
+  };
+}
+
 export default class Composer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.createStateContext = memoize((stateContext, scrollTop) => ({
-      ...stateContext,
-      animating: scrollTop || scrollTop === 0
-    }));
-
     this.handleScroll = this.handleScroll.bind(this);
     this.handleScrollEnd = this.handleScrollEnd.bind(this);
 
+    this._ignoreScrollEventBefore = 0;
+
     this.state = {
       functionContext: {
-        scrollTo: scrollTop => this.setState(() => ({ scrollTop })),
-        scrollToBottom: () => this.state.functionContext.scrollTo('bottom'),
+        scrollTo: scrollTop => this.setState(({ stateContext }) => ({
+          scrollTop,
+          stateContext: updateIn(stateContext, ['animating'], () => true)
+        })),
+        scrollToBottom: () => this.state.functionContext.scrollTo('100%'),
         scrollToEnd: () => {
-          const { state } = this;
+          const { state: { functionContext, stateContext } } = this;
 
-          state.stateContext.mode === 'top' ? state.functionContext.scrollToTop() : state.functionContext.scrollToBottom();
+          stateContext.mode === 'top' ? functionContext.scrollToTop() : functionContext.scrollToBottom();
         },
         scrollToStart: () => {
-          const { state } = this;
+          const { state: { functionContext, stateContext } } = this;
 
-          state.stateContext.mode === 'top' ? state.functionContext.scrollToBottom() : state.functionContext.scrollToTop();
+          stateContext.mode === 'top' ? functionContext.scrollToBottom() : functionContext.scrollToTop();
         },
         scrollToTop: () => this.state.functionContext.scrollTo(0)
       },
       internalContext: {
-        _handleUpdate: () => {
-          const { state } = this;
-
-          state.stateContext.atEnd && state.functionContext.scrollToEnd();
-        },
-        _setTarget: target => this.setState(() => ({ target }))
+        setTarget: target => this.setState(() => ({ target }))
       },
-      scrollTop: null,
+      scrollTop: props.mode === 'top' ? 0 : '100%',
       stateContext: {
         animating: false,
         atBottom: true,
         atEnd: true,
         atTop: true,
         mode: props.mode,
-        threshold: 10
+        sticky: true
       },
       target: null
     };
+  }
+
+  componentDidMount() {
+    this.enableWorker();
+  }
+
+  disableWorker() {
+    clearInterval(this._stickyCheckTimeout);
+  }
+
+  enableWorker() {
+    clearInterval(this._stickyCheckTimeout);
+
+    this._stickyCheckTimeout = setImmediateInterval(
+      () => {
+        const { state } = this;
+        const { stateContext: { sticky }, target } = state;
+
+        if (sticky && target) {
+          const { atEnd } = computeViewState(state);
+
+          !atEnd && state.functionContext.scrollToEnd();
+        }
+      },
+      Math.max(MIN_CHECK_INTERVAL, this.props.checkInterval) || MIN_CHECK_INTERVAL
+    );
+  }
+
+  componentWillUnmount() {
+    this.disableWorker();
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState(({ stateContext }) => ({
       stateContext: {
         ...stateContext,
-        mode: nextProps.mode === 'top' ? 'top' : 'bottom',
-        threshold: nextProps.threshold
+        mode: nextProps.mode === 'top' ? 'top' : 'bottom'
       }
     }));
   }
 
-  handleScroll() {
-    this.setState(({ stateContext, target }) => {
+  handleScroll({ timeStampLow }) {
+    // Currently, there are no reliable way to check if the "scroll" event is trigger due to
+    // user gesture, programmatic scrolling, or Chrome-synthesized "scroll" event to compensate size change.
+    // Thus, we use our best-effort to guess if it is triggered by user gesture, and disable sticky if it is heading towards the start direction.
+
+    if (timeStampLow <= this._ignoreScrollEventBefore) {
+      // Since we debounce "scroll" event, this handler might be called after spineTo.onEnd (a.k.a. artificial scrolling).
+      // We should ignore debounced event fired after scrollEnd, because without skipping them, the userInitiatedScroll calculated below will not be accurate.
+      // Thus, on a fast machine, adding elements super fast will lose the "stickiness".
+
+      return;
+    }
+
+    this.disableWorker();
+
+    this.setState(state => {
+      const { target } = state;
+
       if (target) {
-        const { mode, threshold } = stateContext;
-        const { offsetHeight, scrollHeight, scrollTop } = target;
-        const atBottom = scrollHeight - scrollTop - offsetHeight <= threshold;
-        const atTop = scrollTop <= threshold;
+        const { scrollTop, stateContext } = state;
+        const { atBottom, atEnd, atStart, atTop } = computeViewState(state);
+        let nextStateContext = stateContext;
 
-        let nextStateContext;
-
-        nextStateContext = updateIn(stateContext, ['atBottom'], () => atBottom);
-        nextStateContext = updateIn(nextStateContext, ['atEnd'], () => mode === 'top' ? atTop : atBottom);
-        nextStateContext = updateIn(nextStateContext, ['atStart'], () => mode === 'top' ? atBottom : atTop);
+        nextStateContext = updateIn(nextStateContext, ['atBottom'], () => atBottom);
+        nextStateContext = updateIn(nextStateContext, ['atEnd'], () => atEnd);
+        nextStateContext = updateIn(nextStateContext, ['atStart'], () => atStart);
         nextStateContext = updateIn(nextStateContext, ['atTop'], () => atTop);
+
+        // Sticky means:
+        // - If it is scrolled programatically, we are still in sticky mode
+        // - If it is scrolled by the user, then sticky means if we are at the end
+        nextStateContext = updateIn(nextStateContext, ['sticky'], () => stateContext.animating ? true : atEnd);
+
+        // If no scrollTop is set (not in programmatic scrolling mode), we should set "animating" to false
+        // "animating" is used to calculate the "sticky" property
+        if (scrollTop === null) {
+          nextStateContext = updateIn(nextStateContext, ['animating'], () => false);
+        }
 
         if (stateContext !== nextStateContext) {
           return { stateContext: nextStateContext };
         }
       }
+    }, () => {
+      this.state.stateContext.sticky && this.enableWorker();
     });
   }
 
   handleScrollEnd() {
+    // We should ignore debouncing handleScroll that emit before this time
+    this._ignoreScrollEventBefore = Date.now();
+
     this.setState(() => ({ scrollTop: null }));
   }
 
   render() {
     const {
-      createStateContext,
       handleScroll,
       handleScrollEnd,
       props: { children, debounce },
@@ -106,7 +179,7 @@ export default class Composer extends React.Component {
     return (
       <InternalContext.Provider value={ internalContext }>
         <FunctionContext.Provider value={ functionContext }>
-          <StateContext.Provider value={ createStateContext(stateContext, scrollTop) }>
+          <StateContext.Provider value={ stateContext }>
             { children }
             {
               target &&
@@ -118,7 +191,7 @@ export default class Composer extends React.Component {
                 />
             }
             {
-              target && (scrollTop || scrollTop === 0) &&
+              target && scrollTop !== null &&
                 <SpineTo
                   name="scrollTop"
                   onEnd={ handleScrollEnd }
@@ -134,11 +207,11 @@ export default class Composer extends React.Component {
 }
 
 Composer.defaultProps = {
-  debounce: 17,
-  threshold: 10
+  checkInterval: 100,
+  debounce: 17
 };
 
 Composer.propTypes = {
-  debounce: PropTypes.number,
-  threshold: PropTypes.number
+  checkInterval: PropTypes.number,
+  debounce: PropTypes.number
 };
