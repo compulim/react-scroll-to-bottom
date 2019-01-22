@@ -35,7 +35,7 @@ export default props =>
 
 | Name                    | Type     | Default    | Description                                                                  |
 |-------------------------|----------|------------|------------------------------------------------------------------------------|
-| `checkInterval`         | `number` | 150        | Recurring interval of stickiness check, in milliseconds                      |
+| `checkInterval`         | `number` | 150        | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)   |
 | `className`             | `string` |            | Set the class name for the root element                                      |
 | `debounce`              | `number` | `17`       | Set the debounce for tracking the `onScroll` event                           |
 | `followButtonClassName` | `string` |            | Set the class name for the follow button                                     |
