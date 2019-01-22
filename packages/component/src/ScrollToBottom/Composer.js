@@ -207,7 +207,7 @@ export default class Composer extends React.Component {
 }
 
 Composer.defaultProps = {
-  checkInterval: 100,
+  checkInterval: 150,
   debounce: 17
 };
 

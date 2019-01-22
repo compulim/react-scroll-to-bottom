@@ -61,14 +61,16 @@ This context contains functions used to manipulate the container. And will not u
 
 This context contains state of the container.
 
-| Name        | Type      | Description                                                         |
-|-------------|-----------|---------------------------------------------------------------------|
-| `animating` | `boolean` | `true` if the panel is animating scroll effect                      |
-| `atBottom`  | `boolean` | `true` if the panel is currently near bottom                        |
-| `atEnd`     | `boolean` | `true` if the panel is currently near the end (depends on `mode`)   |
-| `atStart`   | `boolean` | `true` if the panel is currently near the start (depends on `mode`) |
-| `atTop`     | `boolean` | `true` if the panel is currently near top                           |
-| `mode`      | `string`  | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
+| Name            | Type      | Default    | Description                                                         |
+|-----------------|-----------|------------|---------------------------------------------------------------------|
+| `animating`     | `boolean` | `false`    | `true` if the panel is animating scroll effect                      |
+| `atBottom`      | `boolean` |            | `true` if the panel is currently near bottom                        |
+| `atEnd`         | `boolean` |            | `true` if the panel is currently near the end (depends on `mode`)   |
+| `atStart`       | `boolean` |            | `true` if the panel is currently near the start (depends on `mode`) |
+| `atTop`         | `boolean` |            | `true` if the panel is currently near top                           |
+| `checkInterval` | `number`  | 150        | Recurring interval of stickiness check, in milliseconds             |
+| `debounce`      | `number`  | 17         | Debounce interval for `scroll` event, in milliseconds               |
+| `mode`          | `string`  | `"bottom"` | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
 
 # Road map
 

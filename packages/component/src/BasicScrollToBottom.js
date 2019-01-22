@@ -10,15 +10,24 @@ const ROOT_CSS = css({
   position: 'relative'
 });
 
-export default props =>
+export default ({
+  checkInterval,
+  children,
+  className,
+  debounce,
+  followButtonClassName,
+  mode,
+  scrollViewClassName
+}) =>
   <Composer
-    debounce={ props.debounce }
-    mode={ props.mode === 'top' ? 'top' : 'bottom'}
+    checkInterval={ checkInterval }
+    debounce={ debounce }
+    mode={ mode === 'top' ? 'top' : 'bottom'}
   >
-    <div className={ classNames(ROOT_CSS + '', (props.className || '') + '') }>
-      <Panel className={ props.scrollViewClassName }>
-        { props.children }
+    <div className={ classNames(ROOT_CSS + '', (className || '') + '') }>
+      <Panel className={ scrollViewClassName }>
+        { children }
       </Panel>
-      <AutoHideFollowButton className={ props.followButtonClassName } />
+      <AutoHideFollowButton className={ followButtonClassName } />
     </div>
   </Composer>
