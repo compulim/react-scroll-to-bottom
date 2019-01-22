@@ -49,27 +49,26 @@ We use 2 different contexts with different performance characteristics to provid
 
 This context contains functions used to manipulate the container. And will not update throughout the lifetime of the composer.
 
-| Name | Type | Description |
-| - | - | - |
-| `scrollTo` | `(scrollTop: number | 'bottom') => void` | Scroll panel to specified position |
-| `scrollToBottom` | `() => void` | Scroll panel to bottom |
-| `scrollToEnd` | `() => void` | Scroll panel to end (depends on `mode`) |
-| `scrollToStart` | `() => void` | Scroll panel to start (depends on `mode`) |
-| `scrollToTop` | `() => void` | Scroll panel to top |
+| Name             | Type                                     | Description                               |
+|------------------|------------------------------------------|-------------------------------------------|
+| `scrollTo`       | `(scrollTop: number | 'bottom') => void` | Scroll panel to specified position        |
+| `scrollToBottom` | `() => void`                             | Scroll panel to bottom                    |
+| `scrollToEnd`    | `() => void`                             | Scroll panel to end (depends on `mode`)   |
+| `scrollToStart`  | `() => void`                             | Scroll panel to start (depends on `mode`) |
+| `scrollToTop`    | `() => void`                             | Scroll panel to top                       |
 
 ### State context
 
 This context contains state of the container.
 
-| Name | Type | Description |
-| - | - | - |
-| `animating` | `boolean` | `true` if the panel is animating scroll effect |
-| `atBottom` | `boolean` | `true` if the panel is currently near bottom (see `threshold`) |
-| `atEnd` | `boolean` | `true` if the panel is currently near the end (depends on `mode`, see `mode` and `threshold` |
-| `atStart` | `boolean` | `true` if the panel is currently near the start (depends on `mode`, see `threshold`) |
-| `atTop` | `boolean` | `true` if the panel is currently near top (see `threshold`) |
-| `mode` | `string` | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top |
-| `threshold` | `number` | Threshold in pixels to consider the panel is near top/bottom, read-only and only set thru `props` |
+| Name        | Type      | Description                                                         |
+|-------------|-----------|---------------------------------------------------------------------|
+| `animating` | `boolean` | `true` if the panel is animating scroll effect                      |
+| `atBottom`  | `boolean` | `true` if the panel is currently near bottom                        |
+| `atEnd`     | `boolean` | `true` if the panel is currently near the end (depends on `mode`)   |
+| `atStart`   | `boolean` | `true` if the panel is currently near the start (depends on `mode`) |
+| `atTop`     | `boolean` | `true` if the panel is currently near top                           |
+| `mode`      | `string`  | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
 
 # Road map
 
