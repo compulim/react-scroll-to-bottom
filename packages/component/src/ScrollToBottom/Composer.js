@@ -93,7 +93,11 @@ export default class Composer extends React.Component {
         const { state } = this;
         const { stateContext: { sticky }, target } = state;
 
-        if (sticky && target && !computeViewState(state).atEnd) {
+        if (
+          sticky
+          && target
+          && !computeViewState(state).atEnd
+        ) {
           if (!stickyButNotAtEndSince) {
             stickyButNotAtEndSince = Date.now();
           } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DECISION) {
