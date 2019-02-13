@@ -79,7 +79,7 @@ export default class ScrollTo extends React.Component {
           const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
           let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
 
-          if (Math.abs(toNumber - nextValue) < .5) {
+          if (Math.abs(toNumber - nextValue) < 1.5) {
             nextValue = toNumber;
           }
 
