@@ -10,7 +10,7 @@ import SpineTo from '../SpineTo';
 import StateContext from './StateContext';
 
 const MIN_CHECK_INTERVAL = 17;       // 1 frame
-const SCROLL_DECISION_DECISION = 34; // 2 frames
+const SCROLL_DECISION_DURATION = 34; // 2 frames
 
 function setImmediateInterval(fn, ms) {
   fn();
@@ -100,7 +100,7 @@ export default class Composer extends React.Component {
         ) {
           if (!stickyButNotAtEndSince) {
             stickyButNotAtEndSince = Date.now();
-          } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DECISION) {
+          } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DURATION) {
             // Quirks: In Firefox, after user scroll down, Firefox do two things:
             //         1. Set to a new "scrollTop"
             //         2. Fire "scroll" event
