@@ -5,12 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- `Composer`: fix #13, user scrolling in Firefox may have the scroll position locked occasionally, in PR [#12](https://github.com/compulim/react-scroll-to-bottom/issues/12)
 
 ## [1.3.0] - 2019-01-21
 ### Changed
 - Playground: bumped to `react@16.6.0`, `react-dom@16.6.0`, and `react-scripts@2.1.6`
-- Update algorithm, instead of using `componentDidUpdate`, we now use `setInterval` to check if the panel is sticky or not, this help to track content update that happen outside of React lifecycle, for example, `HTMLImageElement.onload` event
-- `scrollTo()` now accepts `"100%"` instead of `"bottom"`
+- `*`: Update algorithm, instead of using `componentDidUpdate`, we now use `setInterval` to check if the panel is sticky or not, this help to track content update that happen outside of React lifecycle, for example, `HTMLImageElement.onload` event
+- `Composer`: `scrollTo()` now accepts `"100%"` instead of `"bottom"`
 
 ### Removed
 - Removed `threshold` props because the algorithm is now more robust

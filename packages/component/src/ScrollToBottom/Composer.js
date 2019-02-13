@@ -9,7 +9,8 @@ import InternalContext from './InternalContext';
 import SpineTo from '../SpineTo';
 import StateContext from './StateContext';
 
-const MIN_CHECK_INTERVAL = 17;
+const MIN_CHECK_INTERVAL = 17;       // 1 frame
+const SCROLL_DECISION_DURATION = 34; // 2 frames
 
 function setImmediateInterval(fn, ms) {
   fn();
@@ -85,15 +86,33 @@ export default class Composer extends React.Component {
   enableWorker() {
     clearInterval(this._stickyCheckTimeout);
 
+    let stickyButNotAtEndSince = false;
+
     this._stickyCheckTimeout = setImmediateInterval(
       () => {
         const { state } = this;
         const { stateContext: { sticky }, target } = state;
 
-        if (sticky && target) {
-          const { atEnd } = computeViewState(state);
+        if (
+          sticky
+          && target
+          && !computeViewState(state).atEnd
+        ) {
+          if (!stickyButNotAtEndSince) {
+            stickyButNotAtEndSince = Date.now();
+          } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DURATION) {
+            // Quirks: In Firefox, after user scroll down, Firefox do two things:
+            //         1. Set to a new "scrollTop"
+            //         2. Fire "scroll" event
+            //         For what we observed, #1 is fired about 20ms before #2. There is a chance that this stickyCheckTimeout is being scheduled between 1 and 2.
+            //         That means, if we just look at #1 to decide if we should scroll, we will always scroll, in oppose to the user's intention.
+            // Repro: Open Firefox, set checkInterval to a lower number, and try to scroll by dragging the scroll handler. It will jump back.
 
-          !atEnd && state.functionContext.scrollToEnd();
+            state.functionContext.scrollToEnd();
+            stickyButNotAtEndSince = false;
+          }
+        } else {
+          stickyButNotAtEndSince = false;
         }
       },
       Math.max(MIN_CHECK_INTERVAL, this.props.checkInterval) || MIN_CHECK_INTERVAL
@@ -207,7 +226,7 @@ export default class Composer extends React.Component {
 }
 
 Composer.defaultProps = {
-  checkInterval: 150,
+  checkInterval: 100,
   debounce: 17
 };
 
