@@ -1,4 +1,3 @@
-import memoize from 'memoize-one';
 import PropTypes from 'prop-types';
 import React from 'react';
 import updateIn from 'simple-update-in';
@@ -10,6 +9,7 @@ import SpineTo from '../SpineTo';
 import StateContext from './StateContext';
 
 const MIN_CHECK_INTERVAL = 17;       // 1 frame
+const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
 
 function setImmediateInterval(fn, ms) {
@@ -19,8 +19,8 @@ function setImmediateInterval(fn, ms) {
 }
 
 function computeViewState({ stateContext: { mode }, target: { offsetHeight, scrollHeight, scrollTop } }) {
-  const atBottom = scrollHeight - scrollTop - offsetHeight <= 0;
-  const atTop = scrollTop <= 0;
+  const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
+  const atTop = scrollTop < NEAR_END_THRESHOLD;
   const atEnd = mode === 'top' ? atTop : atBottom;
 
   return {
