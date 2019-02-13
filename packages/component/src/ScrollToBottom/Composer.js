@@ -129,8 +129,6 @@ export default class Composer extends React.Component {
   }
 
   handleScroll({ timeStampLow }) {
-    console.log(`${ Date.now() }: onScroll`);
-
     // Currently, there are no reliable way to check if the "scroll" event is trigger due to
     // user gesture, programmatic scrolling, or Chrome-synthesized "scroll" event to compensate size change.
     // Thus, we use our best-effort to guess if it is triggered by user gesture, and disable sticky if it is heading towards the start direction.
