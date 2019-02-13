@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Changed
-- `Composer`: fix #11, user scrolling in Firefox may have the scroll position locked occasionally, in PR [#12](https://github.com/compulim/react-scroll-to-bottom/issues/12)
+- `Composer`: fix #13, user scrolling in Firefox may have the scroll position locked occasionally, in PR [#12](https://github.com/compulim/react-scroll-to-bottom/issues/12)
 
 ## [1.3.0] - 2019-01-21
 ### Changed
