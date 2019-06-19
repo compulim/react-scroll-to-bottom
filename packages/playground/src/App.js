@@ -2,7 +2,7 @@ import { css } from 'glamor';
 import classNames from 'classnames';
 import Interval from 'react-interval';
 import loremIpsum from 'lorem-ipsum';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ScrollToEnd, { StateContext } from 'react-scroll-to-bottom';
 
 const FADE_IN_ANIMATION = css.keyframes({
@@ -101,11 +101,19 @@ const App = () => {
       case 52: return handleContainerSizeSmall();
       case 53: return handleContainerSizeNormal();
       case 54: return handleContainerSizeLarge();
+      case 82: return window.location.reload(); // Press R key
       default: break;
     }
-  }, []);
+  }, [
+    handleAdd1,
+    handleAdd10,
+    handleClear,
+    handleContainerSizeLarge,
+    handleContainerSizeNormal,
+    handleContainerSizeSmall
+  ]);
 
-  useMemo(() => {
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -153,15 +161,17 @@ const App = () => {
             }
           </StateContext.Consumer>
         </ScrollToEnd>
-        <ScrollToEnd className={ containerClassName } mode="top">
-          <StateContext.Consumer>
-            { ({ sticky }) =>
-              <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
-                { [...paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
-              </div>
-            }
-          </StateContext.Consumer>
-        </ScrollToEnd>
+        {/*
+          <ScrollToEnd className={ containerClassName } mode="top">
+            <StateContext.Consumer>
+              { ({ sticky }) =>
+                <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
+                  { [...paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+                </div>
+              }
+            </StateContext.Consumer>
+          </ScrollToEnd>
+        */}
       </div>
       { intervalEnabled &&
         <Interval
