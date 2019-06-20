@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Changed
-- `*`: Bump `babel-jest@24.8.0`, `lerna@3.15.0`, and `jest@24.8.0`, in PR [#22](https://github.com/compulim/react-scroll-to-bottom/pull/22)
+- `*`: bumped to `babel-jest@24.8.0`, `lerna@3.15.0`, and `jest@24.8.0`, in PR [#22](https://github.com/compulim/react-scroll-to-bottom/pull/22)
+### Fixed
+- `Composer`: fix [#22](https://github.com/compulim/react-scroll-to-bottom/issue/22), synthetic `scroll` events crafted by Chrome should not cause stickiness to lose, in PR [#23](https://github.com/compulim/react-scroll-to-bottom/issue/23)
 
 ## [1.3.1] - 2019-02-13
 ### Changed

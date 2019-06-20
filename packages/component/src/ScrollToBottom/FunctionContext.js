@@ -4,6 +4,7 @@ const context = React.createContext({
   scrollTo: () => 0,
   scrollToBottom: () => 0,
   scrollToEnd: () => 0,
+  scrollToStart: () => 0,
   scrollToTop: () => 0
 });
 
