@@ -60,6 +60,8 @@ export default class Composer extends React.Component {
         scrollToTop: () => this.state.functionContext.scrollTo(0)
       },
       internalContext: {
+        offsetHeight: 0,
+        scrollHeight: 0,
         setTarget: target => this.setState(() => ({ target }))
       },
       scrollTop: props.mode === 'top' ? 0 : '100%',
@@ -151,8 +153,9 @@ export default class Composer extends React.Component {
       const { target } = state;
 
       if (target) {
-        const { scrollTop, stateContext } = state;
+        const { internalContext, scrollTop, stateContext } = state;
         const { atBottom, atEnd, atStart, atTop } = computeViewState(state);
+        let nextInternalContext = internalContext;
         let nextStateContext = stateContext;
 
         nextStateContext = updateIn(nextStateContext, ['atBottom'], () => atBottom);
@@ -160,10 +163,30 @@ export default class Composer extends React.Component {
         nextStateContext = updateIn(nextStateContext, ['atStart'], () => atStart);
         nextStateContext = updateIn(nextStateContext, ['atTop'], () => atTop);
 
+        // Chrome will emit "synthetic" scroll event if the container is resized or an element is added
+        // We need to ignore these "synthetic" events
+        // Repro: In playground, press 4-1-5-1-1 (small, add one, normal, add one, add one)
+        //        Nomatter how fast or slow the sequence is being presssed, it should still stick to the bottom
+        const { offsetHeight, scrollHeight } = target;
+        const resized = offsetHeight !== internalContext.offsetHeight;
+        const elementChanged = scrollHeight !== internalContext.scrollHeight;
+
+        if (resized) {
+          nextInternalContext = updateIn(nextInternalContext, ['offsetHeight'], () => offsetHeight);
+        }
+
+        if (elementChanged) {
+          nextInternalContext = updateIn(nextInternalContext, ['scrollHeight'], () => scrollHeight);
+        }
+
         // Sticky means:
         // - If it is scrolled programatically, we are still in sticky mode
         // - If it is scrolled by the user, then sticky means if we are at the end
-        nextStateContext = updateIn(nextStateContext, ['sticky'], () => stateContext.animating ? true : atEnd);
+
+        // Only update stickiness if the scroll event is not due to synthetic scroll done by Chrome
+        if (!resized && !elementChanged) {
+          nextStateContext = updateIn(nextStateContext, ['sticky'], () => stateContext.animating ? true : atEnd);
+        }
 
         // If no scrollTop is set (not in programmatic scrolling mode), we should set "animating" to false
         // "animating" is used to calculate the "sticky" property
@@ -171,9 +194,10 @@ export default class Composer extends React.Component {
           nextStateContext = updateIn(nextStateContext, ['animating'], () => false);
         }
 
-        if (stateContext !== nextStateContext) {
-          return { stateContext: nextStateContext };
-        }
+        return {
+          ...internalContext === nextInternalContext ? {} : { internalContext: nextInternalContext },
+          ...stateContext === nextStateContext ? {} : { stateContext: nextStateContext }
+        };
       }
     }, () => {
       this.state.stateContext.sticky && this.enableWorker();
