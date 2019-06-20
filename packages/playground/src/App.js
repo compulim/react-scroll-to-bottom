@@ -117,7 +117,7 @@ const App = () => {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleKeyDown]);
 
   return (
     <div className={ ROOT_CSS + '' }>
@@ -161,17 +161,15 @@ const App = () => {
             }
           </StateContext.Consumer>
         </ScrollToEnd>
-        {/*
-          <ScrollToEnd className={ containerClassName } mode="top">
-            <StateContext.Consumer>
-              { ({ sticky }) =>
-                <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
-                  { [...paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
-                </div>
-              }
-            </StateContext.Consumer>
-          </ScrollToEnd>
-        */}
+        <ScrollToEnd className={ containerClassName } mode="top">
+          <StateContext.Consumer>
+            { ({ sticky }) =>
+              <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
+                { [...paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+              </div>
+            }
+          </StateContext.Consumer>
+        </ScrollToEnd>
       </div>
       { intervalEnabled &&
         <Interval
