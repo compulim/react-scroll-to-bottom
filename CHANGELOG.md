@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- `*`: bump dependencies, in PR [#27](https://github.com/compulim/react-scroll-to-bottom/pull/27)
+   - [@babel/cli@^7.5.5](https://www.npmjs.com/package/@babel/cli)
+   - [@babel/core@^7.5.5](https://www.npmjs.com/package/@babel/core)
+   - [@babel/plugin-proposal-object-rest-spread@^7.5.5](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+   - [@babel/preset-env@^7.5.5](https://www.npmjs.com/package/@babel/preset-env)
+   - [rimraf@^2.6.3](https://www.npmjs.com/package/rimraf)
 
 ## [1.3.2] - 2019-06-20
 ### Changed
