@@ -22,7 +22,7 @@ export default ({
   <Composer
     checkInterval={ checkInterval }
     debounce={ debounce }
-    mode={ mode === 'top' ? 'top' : 'bottom'}
+    mode={ mode }
   >
     <div className={ classNames(ROOT_CSS + '', (className || '') + '') }>
       <Panel className={ scrollViewClassName }>

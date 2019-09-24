@@ -8,6 +8,8 @@ import SpineTo from '../SpineTo';
 import StateContext from './StateContext';
 
 const MIN_CHECK_INTERVAL = 17;       // 1 frame
+const MODE_BOTTOM = 'bottom';
+const MODE_TOP = 'top';
 const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
 
@@ -20,8 +22,8 @@ function setImmediateInterval(fn, ms) {
 function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTop } }) {
   const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
   const atTop = scrollTop < NEAR_END_THRESHOLD;
-  const atEnd = mode === 'top' ? atTop : atBottom;
-  const atStart = mode !== 'top' ? atTop : atBottom;
+  const atEnd = mode === MODE_TOP ? atTop : atBottom;
+  const atStart = mode !== MODE_TOP ? atTop : atBottom;
 
   return {
     atBottom,
@@ -37,10 +39,10 @@ const Composer = ({
   debounce,
   mode
 }) => {
-  mode = mode === 'top' ? 'top' : 'bottom';
+  mode = mode === MODE_TOP ? MODE_TOP : MODE_BOTTOM;
 
   const ignoreScrollEventBeforeRef = useRef(0);
-  const [scrollTop, setScrollTop] = useState(mode === 'top' ? 0 : '100%');
+  const [scrollTop, setScrollTop] = useState(mode === MODE_TOP ? 0 : '100%');
 
   // Internal context
   const [offsetHeight, setOffsetHeight] = useState(0);
@@ -63,8 +65,8 @@ const Composer = ({
   const scrollToBottom = useCallback(() => scrollTo('100%'), [scrollTo]);
   const scrollToTop = useCallback(() => scrollTo(0), [scrollTo]);
 
-  const scrollToEnd = useCallback(() => mode === 'top' ? scrollToTop() : scrollToBottom(), [scrollToBottom, scrollToTop]);
-  const scrollToStart = useCallback(() => mode === 'top' ? scrollToBottom() : scrollToTop(), [scrollToBottom, scrollToTop]);
+  const scrollToEnd = useCallback(() => mode === MODE_TOP ? scrollToTop() : scrollToBottom(), [scrollToBottom, scrollToTop]);
+  const scrollToStart = useCallback(() => mode === MODE_TOP ? scrollToBottom() : scrollToTop(), [scrollToBottom, scrollToTop]);
 
   const [target, setTarget] = useState(null);
 
