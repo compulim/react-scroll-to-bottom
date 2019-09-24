@@ -44,20 +44,90 @@ export default props =>
 
 We support React Hooks to perform various operations and signal state changes. The component which use the hook must stay within the same `<ScrollToBottom>` or `<Composer>`.
 
-| Category | Name                | Type                                         | Description                                                         |
-|----------|---------------------|----------------------------------------------|---------------------------------------------------------------------|
-| Action   | `useScrollTo`       | `() => (scrollTop: number | '100%') => void` | Scroll panel to specified position                                  |
-| Action   | `useScrollToBottom` | `() => () => void`                           | Scroll panel to bottom                                              |
-| Action   | `useScrollToEnd`    | `() => () => void`                           | Scroll panel to end (depends on `mode`)                             |
-| Action   | `useScrollToStart`  | `() => () => void`                           | Scroll panel to start (depends on `mode`)                           |
-| Action   | `useScrollToTop`    | `() => () => void`                           | Scroll panel to top                                                 |
-| State    | `useAnimating`      | `() => [boolean]`                            | `true` if the panel is animating scroll effect                      |
-| State    | `useAtBottom`       | `() => [boolean]`                            | `true` if the panel is currently near bottom                        |
-| State    | `useAtEnd`          | `() => [boolean]`                            | `true` if the panel is currently near the end (depends on `mode`)   |
-| State    | `useAtStart`        | `() => [boolean]`                            | `true` if the panel is currently near the start (depends on `mode`) |
-| State    | `useAtTop`          | `() => [boolean]`                            | `true` if the panel is currently near top                           |
-| State    | `useMode`           | `() => [string]`                             | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
-| State    | `useSticky`         | `() => [boolean]`                            | `true` if the panel is sticking to the end                          |
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Action</td>
+      <td><code>useScrollTo</code></td>
+      <td><code>() => (scrollTop: number | '100%') => void</code></td>
+      <td>Scroll panel to specified position</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td><code>useScrollToBottom</code></td>
+      <td><code>() => () => void</code></td>
+      <td>Scroll panel to bottom</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td><code>useScrollToEnd</code></td>
+      <td><code>() => () => void</code></td>
+      <td>Scroll panel to end (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td><code>useScrollToStart</code></td>
+      <td><code>() => () => void</code></td>
+      <td>Scroll panel to start (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td><code>useScrollToTop</code></td>
+      <td><code>() => () => void</code></td>
+      <td>Scroll panel to top</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useAnimating</code></td>
+      <td><code>() => [boolean]</code></td>
+      <td><code>true</code> if the panel is animating scroll effect</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useAtBottom</code></td>
+      <td><code>() => [boolean]</code></td>
+      <td><code>true</code> if the panel is currently near bottom</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useAtEnd</code></td>
+      <td><code>() => [boolean]</code></td>
+      <td><code>true</code> if the panel is currently near the end (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useAtStart</code></td>
+      <td><code>() => [boolean]</code></td>
+      <td><code>true</code> if the panel is currently near the start (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useAtTop</code></td>
+      <td><code>() => [boolean]</code></td>
+      <td><code>true</code> if the panel is currently near top</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useMode</code></td>
+      <td><code>() => [string]</code></td>
+      <td><code>"bottom"</code> for scroll-to-bottom, <code>"top"</code> for scroll-to-top</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useSticky</code></td>
+      <td><code>() => [boolean]</code></td>
+      <td><code>true</code> if the panel is sticking to the end</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Sample code
 
@@ -99,27 +169,93 @@ We use 2 different contexts with different performance characteristics to provid
 
 This context contains functions used to manipulate the container. And will not update throughout the lifetime of the composer.
 
-| Name             | Type                                   | Description                               |
-|------------------|----------------------------------------|-------------------------------------------|
-| `scrollTo`       | `(scrollTop: number | '100%') => void` | Scroll panel to specified position        |
-| `scrollToBottom` | `() => void`                           | Scroll panel to bottom                    |
-| `scrollToEnd`    | `() => void`                           | Scroll panel to end (depends on `mode`)   |
-| `scrollToStart`  | `() => void`                           | Scroll panel to start (depends on `mode`) |
-| `scrollToTop`    | `() => void`                           | Scroll panel to top                       |
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>useScrollTo</code></td>
+      <td><code>(scrollTop: number | '100%') => void</code></td>
+      <td>Scroll panel to specified position</td>
+    </tr>
+    <tr>
+      <td><code>useScrollToBottom</code></td>
+      <td><code>() => void</code></td>
+      <td>Scroll panel to bottom</td>
+    </tr>
+    <tr>
+      <td><code>useScrollToEnd</code></td>
+      <td><code>() => void</code></td>
+      <td>Scroll panel to end (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td><code>useScrollToStart</code></td>
+      <td><code>() => void</code></td>
+      <td>Scroll panel to start (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td><code>useScrollToTop</code></td>
+      <td><code>() => void</code></td>
+      <td>Scroll panel to top</td>
+    </tr>
+  </tbody>
+</table>
 
 ### State context
 
 This context contains state of the container.
 
-| Name        | Type      | Description                                                         |
-|-------------|-----------|---------------------------------------------------------------------|
-| `animating` | `boolean` | `true` if the panel is animating scroll effect                      |
-| `atBottom`  | `boolean` | `true` if the panel is currently near bottom                        |
-| `atEnd`     | `boolean` | `true` if the panel is currently near the end (depends on `mode`)   |
-| `atStart`   | `boolean` | `true` if the panel is currently near the start (depends on `mode`) |
-| `atTop`     | `boolean` | `true` if the panel is currently near top                           |
-| `mode`      | `string`  | `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top          |
-| `sticky`    | `boolean` | `true` if the panel is sticking to the end                          |
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>useAnimating</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is animating scroll effect</td>
+    </tr>
+    <tr>
+      <td><code>useAtBottom</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is currently near bottom</td>
+    </tr>
+    <tr>
+      <td><code>useAtEnd</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is currently near the end (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td><code>useAtStart</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is currently near the start (depends on <code>mode</code>)</td>
+    </tr>
+    <tr>
+      <td><code>useAtTop</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is currently near top</td>
+    </tr>
+    <tr>
+      <td><code>useMode</code></td>
+      <td><code>string</code></td>
+      <td><code>"bottom"</code> for scroll-to-bottom, <code>"top"</code> for scroll-to-top</td>
+    </tr>
+    <tr>
+      <td><code>useSticky</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is sticking to the end</td>
+    </tr>
+  </tbody>
+</table>
 
 > `atEnd` and `sticky` are slightly different. During scroll animation, the panel is not at the end yet, but it is still sticky.
 
