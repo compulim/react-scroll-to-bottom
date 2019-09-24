@@ -61,22 +61,23 @@ We support React Hooks to perform various operations and signal state changes. T
 
 ### Sample code
 
-The following sample code will put a button inside the content view. When clicked, it will scroll the view to the bottom.
+The following sample code will put a button inside the content view only if the view is not at the bottom. When the button is clicked, it will scroll the view to the bottom.
 
 > Note: `useScrollToBottom` can only be called inside a component which is hosted under `<ScrollToBottom>`.
 
 ```jsx
-import ScrollToBottom, { useScrollToBottom } from 'react-scroll-to-bottom';
+import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
 
 const Content = () => {
   const scrollToBottom = useScrollToBottom();
+  const [sticky] = useSticky();
 
   return (
     <React.Fragment>
       <p>This is the first paragraph.</p>
       <p>This is the second paragraph.</p>
       <p>This is the third paragraph.</p>
-      <button onClick={ scrollToBottom }>Click me to scroll to bottom</button>
+      { !sticky && <button onClick={ scrollToBottom }>Click me to scroll to bottom</button> }
     </React.Fragment>
   );
 }
