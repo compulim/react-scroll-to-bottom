@@ -11,4 +11,4 @@ const context = React.createContext({
 
 context.displayName = 'ScrollToBottomStateContext';
 
-export default context
+export default context;

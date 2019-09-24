@@ -1,3 +1,5 @@
+/* eslint no-magic-numbers: ["error", { "ignore": [0, 1, 1.5, 5] }] */
+
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,9 +10,9 @@ function squareStepper(current, to) {
 
   if (sign > 0) {
     return Math.min(to, next);
-  } else {
-    return Math.max(to, next);
   }
+
+  return Math.max(to, next);
 }
 
 function step(from, to, stepper, index) {
@@ -26,30 +28,33 @@ function step(from, to, stepper, index) {
 const SpineTo = ({ name, onEnd, target, value }) => {
   const animator = useRef();
 
-  const animate = useCallback((name, from, to, index, start = Date.now()) => {
-    if (to === '100%' || typeof to === 'number') {
-      cancelAnimationFrame(animator.current);
+  const animate = useCallback(
+    (name, from, to, index, start = Date.now()) => {
+      if (to === '100%' || typeof to === 'number') {
+        cancelAnimationFrame(animator.current);
 
-      animator.current = requestAnimationFrame(() => {
-        if (target) {
-          const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
-          let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
+        animator.current = requestAnimationFrame(() => {
+          if (target) {
+            const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
+            let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
 
-          if (Math.abs(toNumber - nextValue) < 1.5) {
-            nextValue = toNumber;
+            if (Math.abs(toNumber - nextValue) < 1.5) {
+              nextValue = toNumber;
+            }
+
+            target[name] = nextValue;
+
+            if (toNumber === nextValue) {
+              onEnd && onEnd(true);
+            } else {
+              animate(name, from, to, index + 1, start);
+            }
           }
-
-          target[name] = nextValue;
-
-          if (toNumber === nextValue) {
-            onEnd && onEnd(true);
-          } else {
-            animate(name, from, to, index + 1, start);
-          }
-        }
-      });
-    }
-  }, [animator, target]);
+        });
+      }
+    },
+    [animator, onEnd, target]
+  );
 
   const handleCancelAnimation = useCallback(() => {
     cancelAnimationFrame(animator);
@@ -64,7 +69,7 @@ const SpineTo = ({ name, onEnd, target, value }) => {
 
       return () => target.removeEventListener('pointerdown', handleCancelAnimation);
     }
-  }, [handleCancelAnimation, name, target, value]);
+  }, [animate, handleCancelAnimation, name, target, value]);
 
   return false;
 };
@@ -73,10 +78,7 @@ SpineTo.propTypes = {
   name: PropTypes.string.isRequired,
   onEnd: PropTypes.func,
   target: PropTypes.any.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.oneOf(['100%'])
-  ]).isRequired
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['100%'])]).isRequired
 };
 
-export default SpineTo
+export default SpineTo;

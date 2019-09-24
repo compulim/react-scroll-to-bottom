@@ -31,14 +31,12 @@ const AutoHideFollowButton = ({ children, className }) => {
   const scrollToEnd = useScrollToEnd();
 
   return (
-    !sticky &&
-      <button
-        className={ classNames(ROOT_CSS + '', (className || '') + '') }
-        onClick={ scrollToEnd }
-      >
-        { children }
+    !sticky && (
+      <button className={classNames(ROOT_CSS + '', (className || '') + '')} onClick={scrollToEnd} type="button">
+        {children}
       </button>
+    )
   );
-}
+};
 
-export default AutoHideFollowButton
+export default AutoHideFollowButton;

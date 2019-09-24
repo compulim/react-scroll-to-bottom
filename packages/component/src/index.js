@@ -18,7 +18,7 @@ import useScrollToStart from './hooks/useScrollToStart';
 import useScrollToTop from './hooks/useScrollToTop';
 import useSticky from './hooks/useSticky';
 
-export default BasicScrollToBottom
+export default BasicScrollToBottom;
 
 export {
   AutoHideFollowButton,
@@ -38,4 +38,4 @@ export {
   useScrollToStart,
   useScrollToTop,
   useSticky
-}
+};

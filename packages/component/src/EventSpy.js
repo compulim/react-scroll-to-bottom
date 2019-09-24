@@ -9,17 +9,23 @@ const EventSpy = ({ debounce, name, onEvent, target }) => {
 
   onEventRef.current = onEvent;
 
-  const debouncer = useCallback(debounceFn(event => {
-    const { current } = onEventRef;
+  const debouncer = useCallback(
+    debounceFn(event => {
+      const { current } = onEventRef;
 
-    current && current(event);
-  }, debounce), [debounce, onEventRef]);
+      current && current(event);
+    }, debounce),
+    [debounce, onEventRef]
+  );
 
-  const handleEvent = useCallback(event => {
-    event.timeStampLow = Date.now();
+  const handleEvent = useCallback(
+    event => {
+      event.timeStampLow = Date.now();
 
-    debouncer(event);
-  }, [debouncer]);
+      debouncer(event);
+    },
+    [debouncer]
+  );
 
   useLayoutEffect(() => {
     target.addEventListener(name, handleEvent, { passive: true });
@@ -35,4 +41,4 @@ EventSpy.defaultProps = {
   debounce: 200
 };
 
-export default EventSpy
+export default EventSpy;

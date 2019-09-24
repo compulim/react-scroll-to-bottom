@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Added React Hooks, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+- Added [ESLint](https://www.npmjs.com/package/eslint) and [Prettier](https://www.npmjs.com/package/prettier), in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
 
 ### Fixed
 - Fix `atStart` was not reporting correctly, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
