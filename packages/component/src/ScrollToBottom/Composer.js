@@ -21,11 +21,12 @@ function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTo
   const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
   const atTop = scrollTop < NEAR_END_THRESHOLD;
   const atEnd = mode === 'top' ? atTop : atBottom;
+  const atStart = mode !== 'top' ? atTop : atBottom;
 
   return {
     atBottom,
     atEnd,
-    atStart: !atEnd,
+    atStart,
     atTop
   };
 }
@@ -88,7 +89,7 @@ const Composer = ({
               //         That means, if we just look at #1 to decide if we should scroll, we will always scroll, in oppose to the user's intention.
               // Repro: Open Firefox, set checkInterval to a lower number, and try to scroll by dragging the scroll handler. It will jump back.
 
-              scrollToEnd();
+              !animating && scrollToEnd();
               stickyButNotAtEndSince = false;
             }
           } else {
@@ -100,7 +101,7 @@ const Composer = ({
 
       return () => clearInterval(timeout);
     }
-  }, [checkInterval, mode, scrollToEnd, sticky, target]);
+  }, [animating, checkInterval, mode, scrollToEnd, sticky, target]);
 
   const handleScroll = useCallback(({ timeStampLow }) => {
     // Currently, there are no reliable way to check if the "scroll" event is trigger due to
@@ -165,6 +166,7 @@ const Composer = ({
 
   const handleScrollEnd = useCallback(() => {
     ignoreScrollEventBeforeRef.current = Date.now();
+    setAnimating(false);
     setScrollTop(null);
   }, [ignoreScrollEventBeforeRef, setScrollTop]);
 
@@ -228,7 +230,8 @@ const Composer = ({
 };
 
 Composer.defaultProps = {
-  checkInterval: 100,
+  checkInterval: 17,
+  // checkInterval: 100,
   debounce: 17
 };
 

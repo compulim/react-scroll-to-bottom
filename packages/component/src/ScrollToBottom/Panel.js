@@ -1,6 +1,6 @@
 import { css } from 'glamor';
 import classNames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import InternalContext from './InternalContext';
 
@@ -10,20 +10,17 @@ const ROOT_CSS = css({
   width: '100%'
 });
 
-const Panel = ({ children, className, setTarget }) =>
-  <div
-    className={ classNames(ROOT_CSS + '', (className || '') + '') }
-    ref={ setTarget }
-  >
-    { children }
-  </div>
+const Panel = ({ children, className }) => {
+  const { setTarget } = useContext(InternalContext);
 
-export default props =>
-  <InternalContext.Consumer>
-    { ({ setTarget }) =>
-      <Panel
-        setTarget={ setTarget }
-        { ...props }
-      />
-    }
-  </InternalContext.Consumer>
+  return (
+    <div
+      className={ classNames(ROOT_CSS + '', (className || '') + '') }
+      ref={ setTarget }
+    >
+      { children }
+    </div>
+  );
+}
+
+export default Panel

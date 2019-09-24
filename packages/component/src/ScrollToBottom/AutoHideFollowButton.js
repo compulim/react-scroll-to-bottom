@@ -2,8 +2,8 @@ import { css } from 'glamor';
 import classNames from 'classnames';
 import React from 'react';
 
-import FunctionContext from './FunctionContext';
-import StateContext from './StateContext';
+import useSticky from '../hooks/useSticky';
+import useScrollToEnd from '../hooks/useScrollToEnd';
 
 const ROOT_CSS = css({
   backgroundColor: 'rgba(0, 0, 0, .2)',
@@ -26,18 +26,19 @@ const ROOT_CSS = css({
   }
 });
 
-export default ({ children, className }) =>
-  <StateContext.Consumer>
-    { ({ sticky }) => !sticky &&
-      <FunctionContext.Consumer>
-        { ({ scrollToEnd }) =>
-          <button
-            className={ classNames(ROOT_CSS + '', (className || '') + '') }
-            onClick={ scrollToEnd }
-          >
-            { children }
-          </button>
-        }
-      </FunctionContext.Consumer>
-    }
-  </StateContext.Consumer>
+const AutoHideFollowButton = ({ children, className }) => {
+  const [sticky] = useSticky();
+  const scrollToEnd = useScrollToEnd();
+
+  return (
+    !sticky &&
+      <button
+        className={ classNames(ROOT_CSS + '', (className || '') + '') }
+        onClick={ scrollToEnd }
+      >
+        { children }
+      </button>
+  );
+}
+
+export default AutoHideFollowButton

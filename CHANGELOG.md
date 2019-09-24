@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Breaking changes
 - We moved to React Hooks and it requires React 16.8.6 or up
+   - Hooks will allow us to write simpler and more maintainable code
+   - Developers can use our React Hooks to perform various operations
 
 ### Changed
+- Moved all code to React functional components, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
 - `*`: bump dependencies, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
    - [@babel/core@^7.6.2](https://www.npmjs.com/package/@babel/core)
    - [@babel/plugin-proposal-object-rest-spread@^7.6.2](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
@@ -25,6 +28,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
    - [@babel/plugin-proposal-object-rest-spread@^7.5.5](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
    - [@babel/preset-env@^7.5.5](https://www.npmjs.com/package/@babel/preset-env)
    - [rimraf@^2.6.3](https://www.npmjs.com/package/rimraf)
+
+### Added
+- Added React Hooks, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+
+### Fixed
+- Fix `atStart` was not reporting correctly, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
 
 ## [1.3.2] - 2019-06-20
 ### Changed
