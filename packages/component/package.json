@@ -37,21 +37,18 @@
   },
   "homepage": "https://github.com/compulim/react-scroll-to-bottom#readme",
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^24.8.0",
-    "jest": "^24.8.0",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
     "rimraf": "^2.6.3"
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "glamor": "^2.20.40",
-    "memoize-one": "^4.0.2",
-    "simple-update-in": "^1.4.0"
+    "glamor": "^2.20.40"
   },
   "peerDependencies": {
     "react": "^16.8.6"

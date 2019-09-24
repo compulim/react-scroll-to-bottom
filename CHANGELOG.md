@@ -5,7 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Breaking changes
+- We moved to React Hooks and it requires React 16.8.6 or up
+
 ### Changed
+- `*`: bump dependencies, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+   - [@babel/core@^7.6.2](https://www.npmjs.com/package/@babel/core)
+   - [@babel/plugin-proposal-object-rest-spread@^7.6.2](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+   - [@babel/preset-env@^7.6.2](https://www.npmjs.com/package/@babel/preset-env)
+   - [babel-jest@^24.9.0](https://www.npmjs.com/package/babel-jest)
+   - [jest@^24.9.0](https://www.npmjs.com/package/jest)
+   - [@babel/cli@^7.6.2](https://www.npmjs.com/package/@babel/cli)
+   - [react@16.8.6](https://www.npmjs.com/package/react)
+   - [react-dom@16.8.6](https://www.npmjs.com/package/react-dom)
 - `*`: bump dependencies, in PR [#27](https://github.com/compulim/react-scroll-to-bottom/pull/27)
    - [@babel/cli@^7.5.5](https://www.npmjs.com/package/@babel/cli)
    - [@babel/core@^7.5.5](https://www.npmjs.com/package/@babel/core)
