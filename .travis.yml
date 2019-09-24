@@ -4,7 +4,7 @@ node_js:
 - "10"
 
 before_install:
-- npm install
+- npm ci
 - sudo apt-get install jq
 - npx version-from-git --travis --no-git-tag-version
 - git checkout -b temp-ci
