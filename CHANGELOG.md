@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
    - Developers can use our React Hooks to perform various operations
 
 ### Changed
-- Moved all code to React functional components, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
-- `*`: bump dependencies, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+- Moved all code to React functional components, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+- `*`: bump dependencies, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
    - [@babel/cli@^7.6.2](https://www.npmjs.com/package/@babel/cli)
    - [@babel/core@^7.6.2](https://www.npmjs.com/package/@babel/core)
    - [@babel/plugin-proposal-object-rest-spread@^7.6.2](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
@@ -30,10 +30,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
    - [rimraf@^2.6.3](https://www.npmjs.com/package/rimraf)
 
 ### Added
-- Added React Hooks, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+- Added React Hooks, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
 
 ### Fixed
-- Fix `atStart` was not reporting correctly, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+- Fix `atStart` was not reporting correctly, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
 
 ## [1.3.2] - 2019-06-20
 ### Changed
