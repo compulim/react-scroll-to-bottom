@@ -6,10 +6,12 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build --stream",
-    "test": "lerna run test --stream",
-    "watch": "lerna run watch --parallel --stream"
+    "start": "lerna run start --parallel --scope=react-scroll-to-bottom --stream",
+    "test": "lerna run test --stream"
   },
   "devDependencies": {
-    "lerna": "^3.15.0"
+    "lerna": "^3.15.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }

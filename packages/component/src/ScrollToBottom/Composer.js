@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import updateIn from 'simple-update-in';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import EventSpy from '../EventSpy';
 import FunctionContext from './FunctionContext';
@@ -18,7 +17,7 @@ function setImmediateInterval(fn, ms) {
   return setInterval(fn, ms);
 }
 
-function computeViewState({ stateContext: { mode }, target: { offsetHeight, scrollHeight, scrollTop } }) {
+function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTop } }) {
   const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
   const atTop = scrollTop < NEAR_END_THRESHOLD;
   const atEnd = mode === 'top' ? atTop : atBottom;
@@ -31,115 +30,84 @@ function computeViewState({ stateContext: { mode }, target: { offsetHeight, scro
   };
 }
 
-export default class Composer extends React.Component {
-  constructor(props) {
-    super(props);
+const Composer = ({
+  checkInterval,
+  children,
+  debounce,
+  mode
+}) => {
+  mode = mode === 'top' ? 'top' : 'bottom';
 
-    this.handleScroll = this.handleScroll.bind(this);
-    this.handleScrollEnd = this.handleScrollEnd.bind(this);
+  const ignoreScrollEventBeforeRef = useRef(0);
+  const [scrollTop, setScrollTop] = useState(mode === 'top' ? 0 : '100%');
 
-    this._ignoreScrollEventBefore = 0;
+  // Internal context
+  const [offsetHeight, setOffsetHeight] = useState(0);
+  const [scrollHeight, setScrollHeight] = useState(0);
 
-    this.state = {
-      functionContext: {
-        scrollTo: scrollTop => this.setState(({ stateContext }) => ({
-          scrollTop,
-          stateContext: updateIn(stateContext, ['animating'], () => true)
-        })),
-        scrollToBottom: () => this.state.functionContext.scrollTo('100%'),
-        scrollToEnd: () => {
-          const { state: { functionContext, stateContext } } = this;
+  // State context
+  const [animating, setAnimating] = useState(false);
+  const [atBottom, setAtBottom] = useState(true);
+  const [atEnd, setAtEnd] = useState(true);
+  const [atTop, setAtTop] = useState(true);
+  const [atStart, setAtStart] = useState(false);
+  const [sticky, setSticky] = useState(true);
 
-          stateContext.mode === 'top' ? functionContext.scrollToTop() : functionContext.scrollToBottom();
-        },
-        scrollToStart: () => {
-          const { state: { functionContext, stateContext } } = this;
+  // Function context
+  const scrollTo = useCallback(scrollTop => {
+    setAnimating(true);
+    setScrollTop(scrollTop);
+  }, [setAnimating, setScrollTop]);
 
-          stateContext.mode === 'top' ? functionContext.scrollToBottom() : functionContext.scrollToTop();
-        },
-        scrollToTop: () => this.state.functionContext.scrollTo(0)
-      },
-      internalContext: {
-        offsetHeight: 0,
-        scrollHeight: 0,
-        setTarget: target => this.setState(() => ({ target }))
-      },
-      scrollTop: props.mode === 'top' ? 0 : '100%',
-      stateContext: {
-        animating: false,
-        atBottom: true,
-        atEnd: true,
-        atTop: true,
-        mode: props.mode,
-        sticky: true
-      },
-      target: null
-    };
-  }
+  const scrollToBottom = useCallback(() => scrollTo('100%'), [scrollTo]);
+  const scrollToTop = useCallback(() => scrollTo(0), [scrollTo]);
 
-  componentDidMount() {
-    this.enableWorker();
-  }
+  const scrollToEnd = useCallback(() => mode === 'top' ? scrollToTop() : scrollToBottom(), [scrollToBottom, scrollToTop]);
+  const scrollToStart = useCallback(() => mode === 'top' ? scrollToBottom() : scrollToTop(), [scrollToBottom, scrollToTop]);
 
-  disableWorker() {
-    clearInterval(this._stickyCheckTimeout);
-  }
+  const [target, setTarget] = useState(null);
 
-  enableWorker() {
-    clearInterval(this._stickyCheckTimeout);
+  useEffect(() => {
+    if (sticky) {
+      let stickyButNotAtEndSince = false;
 
-    let stickyButNotAtEndSince = false;
+      const timeout = setImmediateInterval(
+        () => {
+          if (
+            sticky
+            && target
+            && !computeViewState({ mode, target }).atEnd
+          ) {
+            if (!stickyButNotAtEndSince) {
+              stickyButNotAtEndSince = Date.now();
+            } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DURATION) {
+              // Quirks: In Firefox, after user scroll down, Firefox do two things:
+              //         1. Set to a new "scrollTop"
+              //         2. Fire "scroll" event
+              //         For what we observed, #1 is fired about 20ms before #2. There is a chance that this stickyCheckTimeout is being scheduled between 1 and 2.
+              //         That means, if we just look at #1 to decide if we should scroll, we will always scroll, in oppose to the user's intention.
+              // Repro: Open Firefox, set checkInterval to a lower number, and try to scroll by dragging the scroll handler. It will jump back.
 
-    this._stickyCheckTimeout = setImmediateInterval(
-      () => {
-        const { state } = this;
-        const { stateContext: { sticky }, target } = state;
-
-        if (
-          sticky
-          && target
-          && !computeViewState(state).atEnd
-        ) {
-          if (!stickyButNotAtEndSince) {
-            stickyButNotAtEndSince = Date.now();
-          } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DURATION) {
-            // Quirks: In Firefox, after user scroll down, Firefox do two things:
-            //         1. Set to a new "scrollTop"
-            //         2. Fire "scroll" event
-            //         For what we observed, #1 is fired about 20ms before #2. There is a chance that this stickyCheckTimeout is being scheduled between 1 and 2.
-            //         That means, if we just look at #1 to decide if we should scroll, we will always scroll, in oppose to the user's intention.
-            // Repro: Open Firefox, set checkInterval to a lower number, and try to scroll by dragging the scroll handler. It will jump back.
-
-            state.functionContext.scrollToEnd();
+              scrollToEnd();
+              stickyButNotAtEndSince = false;
+            }
+          } else {
             stickyButNotAtEndSince = false;
           }
-        } else {
-          stickyButNotAtEndSince = false;
-        }
-      },
-      Math.max(MIN_CHECK_INTERVAL, this.props.checkInterval) || MIN_CHECK_INTERVAL
-    );
-  }
+        },
+        Math.max(MIN_CHECK_INTERVAL, checkInterval) || MIN_CHECK_INTERVAL
+      );
 
-  componentWillUnmount() {
-    this.disableWorker();
-  }
+      return () => clearInterval(timeout);
+    }
+  }, [checkInterval, mode, scrollToEnd, sticky, target]);
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(({ stateContext }) => ({
-      stateContext: {
-        ...stateContext,
-        mode: nextProps.mode === 'top' ? 'top' : 'bottom'
-      }
-    }));
-  }
-
-  handleScroll({ timeStampLow }) {
+  const handleScroll = useCallback(({ timeStampLow }) => {
     // Currently, there are no reliable way to check if the "scroll" event is trigger due to
     // user gesture, programmatic scrolling, or Chrome-synthesized "scroll" event to compensate size change.
     // Thus, we use our best-effort to guess if it is triggered by user gesture, and disable sticky if it is heading towards the start direction.
 
-    if (timeStampLow <= this._ignoreScrollEventBefore) {
+    if (timeStampLow <= ignoreScrollEventBeforeRef.current) {
       // Since we debounce "scroll" event, this handler might be called after spineTo.onEnd (a.k.a. artificial scrolling).
       // We should ignore debounced event fired after scrollEnd, because without skipping them, the userInitiatedScroll calculated below will not be accurate.
       // Thus, on a fast machine, adding elements super fast will lose the "stickiness".
@@ -147,107 +115,117 @@ export default class Composer extends React.Component {
       return;
     }
 
-    this.disableWorker();
+    if (target) {
+      const { atBottom, atEnd, atStart, atTop } = computeViewState({ mode, target });
 
-    this.setState(state => {
-      const { target } = state;
+      setAtBottom(atBottom);
+      setAtEnd(atEnd);
+      setAtStart(atStart);
+      setAtTop(atTop);
 
-      if (target) {
-        const { internalContext, scrollTop, stateContext } = state;
-        const { atBottom, atEnd, atStart, atTop } = computeViewState(state);
-        let nextInternalContext = internalContext;
-        let nextStateContext = stateContext;
+      // Chrome will emit "synthetic" scroll event if the container is resized or an element is added
+      // We need to ignore these "synthetic" events
+      // Repro: In playground, press 4-1-5-1-1 (small, add one, normal, add one, add one)
+      //        Nomatter how fast or slow the sequence is being presssed, it should still stick to the bottom
+      const { offsetHeight: nextOffsetHeight, scrollHeight: nextScrollHeight } = target;
+      const offsetHeightChanged = nextOffsetHeight !== offsetHeight;
+      const scrollHeightChanged = nextScrollHeight !== scrollHeight;
 
-        nextStateContext = updateIn(nextStateContext, ['atBottom'], () => atBottom);
-        nextStateContext = updateIn(nextStateContext, ['atEnd'], () => atEnd);
-        nextStateContext = updateIn(nextStateContext, ['atStart'], () => atStart);
-        nextStateContext = updateIn(nextStateContext, ['atTop'], () => atTop);
+      offsetHeightChanged && setOffsetHeight(nextOffsetHeight);
+      scrollHeightChanged && setScrollHeight(nextScrollHeight);
 
-        // Chrome will emit "synthetic" scroll event if the container is resized or an element is added
-        // We need to ignore these "synthetic" events
-        // Repro: In playground, press 4-1-5-1-1 (small, add one, normal, add one, add one)
-        //        Nomatter how fast or slow the sequence is being presssed, it should still stick to the bottom
-        const { offsetHeight, scrollHeight } = target;
-        const resized = offsetHeight !== internalContext.offsetHeight;
-        const elementChanged = scrollHeight !== internalContext.scrollHeight;
+      // Sticky means:
+      // - If it is scrolled programatically, we are still in sticky mode
+      // - If it is scrolled by the user, then sticky means if we are at the end
 
-        if (resized) {
-          nextInternalContext = updateIn(nextInternalContext, ['offsetHeight'], () => offsetHeight);
-        }
+      // Only update stickiness if the scroll event is not due to synthetic scroll done by Chrome
+      !offsetHeightChanged && !scrollHeightChanged && setSticky(animating || atEnd);
 
-        if (elementChanged) {
-          nextInternalContext = updateIn(nextInternalContext, ['scrollHeight'], () => scrollHeight);
-        }
+      // If no scrollTop is set (not in programmatic scrolling mode), we should set "animating" to false
+      // "animating" is used to calculate the "sticky" property
+      scrollTop === null && setAnimating(false);
+    }
+  }, [
+    animating,
+    ignoreScrollEventBeforeRef,
+    offsetHeight,
+    scrollHeight,
+    scrollToEnd,
+    scrollTop,
+    setAnimating,
+    setAtBottom,
+    setAtEnd,
+    setAtStart,
+    setAtTop,
+    setOffsetHeight,
+    setScrollHeight,
+    setSticky,
+    target
+  ]);
 
-        // Sticky means:
-        // - If it is scrolled programatically, we are still in sticky mode
-        // - If it is scrolled by the user, then sticky means if we are at the end
+  const handleScrollEnd = useCallback(() => {
+    ignoreScrollEventBeforeRef.current = Date.now();
+    setScrollTop(null);
+  }, [ignoreScrollEventBeforeRef, setScrollTop]);
 
-        // Only update stickiness if the scroll event is not due to synthetic scroll done by Chrome
-        if (!resized && !elementChanged) {
-          nextStateContext = updateIn(nextStateContext, ['sticky'], () => stateContext.animating ? true : atEnd);
-        }
+  const internalContext = useMemo(() => ({
+    offsetHeight,
+    scrollHeight,
+    setTarget
+  }), [offsetHeight, scrollHeight, setTarget]);
 
-        // If no scrollTop is set (not in programmatic scrolling mode), we should set "animating" to false
-        // "animating" is used to calculate the "sticky" property
-        if (scrollTop === null) {
-          nextStateContext = updateIn(nextStateContext, ['animating'], () => false);
-        }
+  const stateContext = useMemo(() => ({
+    animating,
+    atBottom,
+    atEnd,
+    atStart,
+    atTop,
+    mode,
+    sticky
+  }), [animating, atBottom, atEnd, atStart, atTop, mode, sticky]);
 
-        return {
-          ...internalContext === nextInternalContext ? {} : { internalContext: nextInternalContext },
-          ...stateContext === nextStateContext ? {} : { stateContext: nextStateContext }
-        };
-      }
-    }, () => {
-      this.state.stateContext.sticky && this.enableWorker();
-    });
-  }
+  const functionContext = useMemo(() => ({
+    scrollTo,
+    scrollToBottom,
+    scrollToEnd,
+    scrollToStart,
+    scrollToTop
+  }), [
+    scrollTo,
+    scrollToBottom,
+    scrollToEnd,
+    scrollToStart,
+    scrollToTop
+  ]);
 
-  handleScrollEnd() {
-    // We should ignore debouncing handleScroll that emit before this time
-    this._ignoreScrollEventBefore = Date.now();
-
-    this.setState(() => ({ scrollTop: null }));
-  }
-
-  render() {
-    const {
-      handleScroll,
-      handleScrollEnd,
-      props: { children, debounce },
-      state: { functionContext, internalContext, scrollTop, stateContext, target }
-    } = this;
-
-    return (
-      <InternalContext.Provider value={ internalContext }>
-        <FunctionContext.Provider value={ functionContext }>
-          <StateContext.Provider value={ stateContext }>
-            { children }
-            {
-              target &&
-                <EventSpy
-                  debounce={ debounce }
-                  name="scroll"
-                  onEvent={ handleScroll }
-                  target={ target }
-                />
-            }
-            {
-              target && scrollTop !== null &&
-                <SpineTo
-                  name="scrollTop"
-                  onEnd={ handleScrollEnd }
-                  target={ target }
-                  value={ scrollTop }
-                />
-            }
-          </StateContext.Provider>
-        </FunctionContext.Provider>
-      </InternalContext.Provider>
-    );
-  }
-}
+  return (
+    <InternalContext.Provider value={ internalContext }>
+      <FunctionContext.Provider value={ functionContext }>
+        <StateContext.Provider value={ stateContext }>
+          { children }
+          {
+            target &&
+              <EventSpy
+                debounce={ debounce }
+                name="scroll"
+                onEvent={ handleScroll }
+                target={ target }
+              />
+          }
+          {
+            target && scrollTop !== null &&
+              <SpineTo
+                name="scrollTop"
+                onEnd={ handleScrollEnd }
+                target={ target }
+                value={ scrollTop }
+              />
+          }
+        </StateContext.Provider>
+      </FunctionContext.Provider>
+    </InternalContext.Provider>
+  );
+};
 
 Composer.defaultProps = {
   checkInterval: 100,
@@ -258,3 +236,5 @@ Composer.propTypes = {
   checkInterval: PropTypes.number,
   debounce: PropTypes.number
 };
+
+export default Composer

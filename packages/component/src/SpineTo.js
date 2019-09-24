@@ -1,5 +1,5 @@
+import { useCallback, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 function step(from, to, stepper, index) {
   let next = from;
@@ -23,58 +23,14 @@ function squareStepper(current, to) {
   }
 }
 
-export default class ScrollTo extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+const SpineTo = ({ name, onEnd, target, value }) => {
+  const animator = useRef();
 
-    this.handleCancelAnimation = this.handleCancelAnimation.bind(this);
-  }
-
-  componentDidMount() {
-    const { name, target, value } = this.props;
-
-    if (target) {
-      this.addEventListeners(target);
-      this.animate(name, target[name], value, 1);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { props: { name, target, value } } = this;
-    const { target: prevTarget } = prevProps;
-    const scrollChanged = prevProps.value !== value;
-    const targetChanged = prevTarget !== target;
-
-    if (targetChanged) {
-      this.removeEventListeners(prevTarget);
-      this.addEventListeners(target);
-    }
-
-    if ((scrollChanged || targetChanged) && target) {
-      this.animate(name, target[name], value, 1);
-    }
-  }
-
-  componentWillUnmount() {
-    this.removeEventListeners(this.props.target);
-    cancelAnimationFrame(this.animator);
-  }
-
-  addEventListeners(target) {
-    target && target.addEventListener('pointerdown', this.handleCancelAnimation, { passive: true });
-  }
-
-  removeEventListeners(target) {
-    target && target.removeEventListener('pointerdown', this.handleCancelAnimation);
-  }
-
-  animate(name, from, to, index, start = Date.now()) {
+  const animate = useCallback((name, from, to, index, start = Date.now()) => {
     if (to === '100%' || typeof to === 'number') {
-      cancelAnimationFrame(this.animator);
+      cancelAnimationFrame(animator.current);
 
-      this.animator = requestAnimationFrame(() => {
-        const { target } = this.props;
-
+      animator.current = requestAnimationFrame(() => {
         if (target) {
           const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
           let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
@@ -86,26 +42,34 @@ export default class ScrollTo extends React.Component {
           target[name] = nextValue;
 
           if (toNumber === nextValue) {
-            this.props.onEnd && this.props.onEnd(true);
+            onEnd && onEnd(true);
           } else {
-            this.animate(name, from, to, index + 1, start);
+            animate(name, from, to, index + 1, start);
           }
         }
       });
     }
-  }
+  }, [animator, target]);
 
-  handleCancelAnimation() {
-    cancelAnimationFrame(this.animator);
-    this.props.onEnd && this.props.onEnd(false);
-  }
+  const handleCancelAnimation = useCallback(() => {
+    cancelAnimationFrame(animator);
+    onEnd && onEnd(false);
+  }, [onEnd]);
 
-  render() {
-    return false;
-  }
-}
+  useLayoutEffect(() => {
+    animate(name, target[name], value, 1);
 
-ScrollTo.propTypes = {
+    if (target) {
+      target.addEventListener('pointerdown', handleCancelAnimation, { passive: true });
+
+      return () => target.removeEventListener('pointerdown', handleCancelAnimation);
+    }
+  }, [handleCancelAnimation, name, target, value]);
+
+  return false;
+};
+
+SpineTo.propTypes = {
   name: PropTypes.string.isRequired,
   onEnd: PropTypes.func,
   target: PropTypes.any.isRequired,
@@ -114,3 +78,5 @@ ScrollTo.propTypes = {
     PropTypes.oneOf(['100%'])
   ]).isRequired
 };
+
+export default SpineTo

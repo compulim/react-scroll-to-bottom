@@ -1,73 +1,38 @@
-import React from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
-import debounce from './debounce';
+import debounceFn from './debounce';
 
-export default class EventSpy extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+const EventSpy = ({ debounce, name, onEvent, target }) => {
+  // We need to save the "onEvent" to ref.
+  // This is because "onEvent" may change from time to time, but debounce may still fire to the older callback.
+  const onEventRef = useRef();
 
-    this.createDebouncer();
+  onEventRef.current = onEvent;
 
-    this.handleEvent = this.handleEvent.bind(this);
-  }
+  const debouncer = useCallback(debounceFn(event => {
+    const { current } = onEventRef;
 
-  createDebouncer() {
-    this.debouncer = debounce(event => {
-      this.props.onEvent && this.props.onEvent(event);
-    }, this.props.debounce);
-  }
+    current && current(event);
+  }, debounce), [debounce, onEventRef]);
 
-  componentDidMount() {
-    const { target } = this.props;
-
-    if (target) {
-      target.addEventListener(this.props.name, this.handleEvent, { passive: true });
-      this.handleEvent({ target, type: this.props.name });
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { name: prevName, target: prevTarget } = prevProps;
-    const { name, target } = this.props;
-
-    if (
-      target !== prevTarget
-      || name !== prevName
-    ) {
-      if (prevTarget) {
-        prevTarget.removeEventListener(prevName, this.handleEvent);
-      }
-
-      if (target) {
-        target.addEventListener(name, this.handleEvent, { passive: true });
-        this.handleEvent({ target, type: this.props.name });
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    const { target } = this.props;
-
-    target && target.removeEventListener(this.props.name, this.handleEvent);
-  }
-
-  componentWillReceiveProps({ debounce: nextDebounce }) {
-    if (this.props.debounce !== nextDebounce) {
-      this.createDebouncer();
-    }
-  }
-
-  handleEvent(event) {
+  const handleEvent = useCallback(event => {
     event.timeStampLow = Date.now();
 
-    this.debouncer(event);
-  }
+    debouncer(event);
+  }, [debouncer]);
 
-  render() {
-    return false;
-  }
-}
+  useLayoutEffect(() => {
+    target.addEventListener(name, handleEvent, { passive: true });
+    handleEvent({ target, type: name });
+
+    return () => target.removeEventListener(name, handleEvent);
+  }, [name, handleEvent, target]);
+
+  return false;
+};
 
 EventSpy.defaultProps = {
   debounce: 200
 };
+
+export default EventSpy
