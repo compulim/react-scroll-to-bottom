@@ -2,8 +2,8 @@ import { css } from 'glamor';
 import classNames from 'classnames';
 import React from 'react';
 
-import useSticky from '../hooks/useSticky';
 import useScrollToEnd from '../hooks/useScrollToEnd';
+import useSticky from '../hooks/useSticky';
 
 const ROOT_CSS = css({
   backgroundColor: 'rgba(0, 0, 0, .2)',
