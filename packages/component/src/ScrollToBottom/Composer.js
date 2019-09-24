@@ -230,8 +230,7 @@ const Composer = ({
 };
 
 Composer.defaultProps = {
-  checkInterval: 17,
-  // checkInterval: 100,
+  checkInterval: 100,
   debounce: 17
 };
 

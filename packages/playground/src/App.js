@@ -76,8 +76,7 @@ const App = () => {
   const [containerSize, setContainerSize] = useState('');
   const [intervalEnabled, setIntervalEnabled] = useState(false);
   const [paragraphs, setParagraphs] = useState(createParagraphs(10));
-  const [commandBarVisible, setCommandBarVisible] = useState(true);
-  // const [commandBarVisible, setCommandBarVisible] = useState(false);
+  const [commandBarVisible, setCommandBarVisible] = useState(false);
 
   const handleAdd = useCallback(count => setParagraphs([...paragraphs, ...createParagraphs(count)]), [paragraphs, setParagraphs]);
   const handleAdd1 = useCallback(() => handleAdd(1), [handleAdd]);
