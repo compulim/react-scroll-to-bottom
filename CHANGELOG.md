@@ -5,13 +5,36 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Breaking changes
+- We moved to React Hooks and it requires React 16.8.6 or up
+   - Hooks will allow us to write simpler and more maintainable code
+   - Developers can use our React Hooks to perform various operations
+
 ### Changed
+- Moved all code to React functional components, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+- `*`: bump dependencies, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+   - [@babel/cli@^7.6.2](https://www.npmjs.com/package/@babel/cli)
+   - [@babel/core@^7.6.2](https://www.npmjs.com/package/@babel/core)
+   - [@babel/plugin-proposal-object-rest-spread@^7.6.2](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+   - [@babel/preset-env@^7.6.2](https://www.npmjs.com/package/@babel/preset-env)
+   - [babel-jest@^24.9.0](https://www.npmjs.com/package/babel-jest)
+   - [jest@^24.9.0](https://www.npmjs.com/package/jest)
+   - [react-dom@16.8.6](https://www.npmjs.com/package/react-dom)
+   - [react@16.8.6](https://www.npmjs.com/package/react)
 - `*`: bump dependencies, in PR [#27](https://github.com/compulim/react-scroll-to-bottom/pull/27)
    - [@babel/cli@^7.5.5](https://www.npmjs.com/package/@babel/cli)
    - [@babel/core@^7.5.5](https://www.npmjs.com/package/@babel/core)
    - [@babel/plugin-proposal-object-rest-spread@^7.5.5](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
    - [@babel/preset-env@^7.5.5](https://www.npmjs.com/package/@babel/preset-env)
    - [rimraf@^2.6.3](https://www.npmjs.com/package/rimraf)
+
+### Added
+- Added React Hooks, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+- Added [ESLint](https://www.npmjs.com/package/eslint) and [Prettier](https://www.npmjs.com/package/prettier), in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+
+### Fixed
+- Fix `atStart` was not reporting correctly, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
 
 ## [1.3.2] - 2019-06-20
 ### Changed

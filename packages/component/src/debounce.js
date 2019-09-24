@@ -1,4 +1,4 @@
-export default function (fn, ms) {
+export default function(fn, ms) {
   if (!ms) {
     return fn;
   }
@@ -6,17 +6,17 @@ export default function (fn, ms) {
   let last = 0;
   let timeout = null;
 
-  return function () {
+  return (...args) => {
     const now = Date.now();
 
     if (now - last > ms) {
-      fn.apply(null, arguments);
+      fn(...args);
       last = now;
     } else {
       clearTimeout(timeout);
 
       timeout = setTimeout(() => {
-        fn.apply(null, arguments);
+        fn(...args);
         last = Date.now();
       }, Math.max(0, ms - now + last));
     }

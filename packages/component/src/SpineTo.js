@@ -1,5 +1,19 @@
+/* eslint no-magic-numbers: ["error", { "ignore": [0, 1, 1.5, 5] }] */
+
+import { useCallback, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
+
+function squareStepper(current, to) {
+  const sign = Math.sign(to - current);
+  const step = Math.sqrt(Math.abs(to - current));
+  const next = current + step * sign;
+
+  if (sign > 0) {
+    return Math.min(to, next);
+  }
+
+  return Math.max(to, next);
+}
 
 function step(from, to, stepper, index) {
   let next = from;
@@ -11,106 +25,60 @@ function step(from, to, stepper, index) {
   return next;
 }
 
-function squareStepper(current, to) {
-  const sign = Math.sign(to - current);
-  const step = Math.sqrt(Math.abs(to - current));
-  const next = current + step * sign;
+const SpineTo = ({ name, onEnd, target, value }) => {
+  const animator = useRef();
 
-  if (sign > 0) {
-    return Math.min(to, next);
-  } else {
-    return Math.max(to, next);
-  }
-}
+  const animate = useCallback(
+    (name, from, to, index, start = Date.now()) => {
+      if (to === '100%' || typeof to === 'number') {
+        cancelAnimationFrame(animator.current);
 
-export default class ScrollTo extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+        animator.current = requestAnimationFrame(() => {
+          if (target) {
+            const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
+            let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
 
-    this.handleCancelAnimation = this.handleCancelAnimation.bind(this);
-  }
+            if (Math.abs(toNumber - nextValue) < 1.5) {
+              nextValue = toNumber;
+            }
 
-  componentDidMount() {
-    const { name, target, value } = this.props;
+            target[name] = nextValue;
+
+            if (toNumber === nextValue) {
+              onEnd && onEnd(true);
+            } else {
+              animate(name, from, to, index + 1, start);
+            }
+          }
+        });
+      }
+    },
+    [animator, onEnd, target]
+  );
+
+  const handleCancelAnimation = useCallback(() => {
+    cancelAnimationFrame(animator);
+    onEnd && onEnd(false);
+  }, [onEnd]);
+
+  useLayoutEffect(() => {
+    animate(name, target[name], value, 1);
 
     if (target) {
-      this.addEventListeners(target);
-      this.animate(name, target[name], value, 1);
+      target.addEventListener('pointerdown', handleCancelAnimation, { passive: true });
+
+      return () => target.removeEventListener('pointerdown', handleCancelAnimation);
     }
-  }
+  }, [animate, handleCancelAnimation, name, target, value]);
 
-  componentDidUpdate(prevProps) {
-    const { props: { name, target, value } } = this;
-    const { target: prevTarget } = prevProps;
-    const scrollChanged = prevProps.value !== value;
-    const targetChanged = prevTarget !== target;
+  return false;
+};
 
-    if (targetChanged) {
-      this.removeEventListeners(prevTarget);
-      this.addEventListeners(target);
-    }
-
-    if ((scrollChanged || targetChanged) && target) {
-      this.animate(name, target[name], value, 1);
-    }
-  }
-
-  componentWillUnmount() {
-    this.removeEventListeners(this.props.target);
-    cancelAnimationFrame(this.animator);
-  }
-
-  addEventListeners(target) {
-    target && target.addEventListener('pointerdown', this.handleCancelAnimation, { passive: true });
-  }
-
-  removeEventListeners(target) {
-    target && target.removeEventListener('pointerdown', this.handleCancelAnimation);
-  }
-
-  animate(name, from, to, index, start = Date.now()) {
-    if (to === '100%' || typeof to === 'number') {
-      cancelAnimationFrame(this.animator);
-
-      this.animator = requestAnimationFrame(() => {
-        const { target } = this.props;
-
-        if (target) {
-          const toNumber = to === '100%' ? target.scrollHeight - target.offsetHeight : to;
-          let nextValue = step(from, toNumber, squareStepper, (Date.now() - start) / 5);
-
-          if (Math.abs(toNumber - nextValue) < 1.5) {
-            nextValue = toNumber;
-          }
-
-          target[name] = nextValue;
-
-          if (toNumber === nextValue) {
-            this.props.onEnd && this.props.onEnd(true);
-          } else {
-            this.animate(name, from, to, index + 1, start);
-          }
-        }
-      });
-    }
-  }
-
-  handleCancelAnimation() {
-    cancelAnimationFrame(this.animator);
-    this.props.onEnd && this.props.onEnd(false);
-  }
-
-  render() {
-    return false;
-  }
-}
-
-ScrollTo.propTypes = {
+SpineTo.propTypes = {
   name: PropTypes.string.isRequired,
   onEnd: PropTypes.func,
   target: PropTypes.any.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.oneOf(['100%'])
-  ]).isRequired
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['100%'])]).isRequired
 };
+
+export default SpineTo;

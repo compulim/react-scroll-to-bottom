@@ -5,6 +5,8 @@ import loremIpsum from 'lorem-ipsum';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ScrollToEnd, { StateContext } from 'react-scroll-to-bottom';
 
+import CommandBar from './CommandBar';
+
 const FADE_IN_ANIMATION = css.keyframes({
   '0%': { opacity: .2 },
   '100%': { opacity: 1 }
@@ -74,14 +76,16 @@ const App = () => {
   const [containerSize, setContainerSize] = useState('');
   const [intervalEnabled, setIntervalEnabled] = useState(false);
   const [paragraphs, setParagraphs] = useState(createParagraphs(10));
+  const [commandBarVisible, setCommandBarVisible] = useState(false);
 
   const handleAdd = useCallback(count => setParagraphs([...paragraphs, ...createParagraphs(count)]), [paragraphs, setParagraphs]);
   const handleAdd1 = useCallback(() => handleAdd(1), [handleAdd]);
   const handleAdd10 = useCallback(() => handleAdd(10), [handleAdd]);
   const handleClear = useCallback(() => setParagraphs([]), [setParagraphs]);
-  const handleContainerSizeSmall = useCallback(() => setContainerSize('small'), [setContainerSize]);
-  const handleContainerSizeNormal = useCallback(() => setContainerSize(''), [setContainerSize]);
+  const handleCommandBarVisibleChange = useCallback(({ target: { checked } }) => setCommandBarVisible(checked), [setCommandBarVisible]);
   const handleContainerSizeLarge = useCallback(() => setContainerSize('large'), [setContainerSize]);
+  const handleContainerSizeNormal = useCallback(() => setContainerSize(''), [setContainerSize]);
+  const handleContainerSizeSmall = useCallback(() => setContainerSize('small'), [setContainerSize]);
   const handleIntervalEnabledChange = useCallback(({ target: { checked: intervalEnabled } }) => setIntervalEnabled(intervalEnabled), []);
   const containerClassName = useMemo(() => classNames(
     CONTAINER_CSS + '',
@@ -120,64 +124,85 @@ const App = () => {
   }, [handleKeyDown]);
 
   return (
-    <div className={ ROOT_CSS + '' }>
+    <div className={ROOT_CSS + ""}>
       <ul className="button-bar">
         <li>
-          <button onClick={ handleAdd1 }>Add new paragraph</button>
+          <button onClick={handleAdd1}>Add new paragraph</button>
         </li>
         <li>
-          <button onClick={ handleAdd10 }>Add 10 new paragraphs</button>
+          <button onClick={handleAdd10}>Add 10 new paragraphs</button>
         </li>
         <li>
-          <button onClick={ handleClear }>Clear</button>
+          <button onClick={handleClear}>Clear</button>
         </li>
         <li>
-          <button onClick={ handleContainerSizeSmall }>Small</button>
+          <button onClick={handleContainerSizeSmall}>Small</button>
         </li>
         <li>
-          <button onClick={ handleContainerSizeNormal }>Normal</button>
+          <button onClick={handleContainerSizeNormal}>Normal</button>
         </li>
         <li>
-          <button onClick={ handleContainerSizeLarge }>Large</button>
+          <button onClick={handleContainerSizeLarge}>Large</button>
         </li>
         <li>
           <label>
             <input
-              checked={ intervalEnabled }
-              onChange={ handleIntervalEnabledChange }
+              checked={intervalEnabled}
+              onChange={handleIntervalEnabledChange}
               type="checkbox"
             />
             Add one every second
           </label>
         </li>
+        <li>
+          <label>
+            <input
+              checked={commandBarVisible}
+              onChange={handleCommandBarVisibleChange}
+              type="checkbox"
+            />
+            Show command bar
+          </label>
+        </li>
       </ul>
       <div className="panes">
-        <ScrollToEnd className={ containerClassName } scrollViewClassName={ SCROLL_VIEW_CSS }>
+        <ScrollToEnd
+          className={containerClassName}
+          scrollViewClassName={SCROLL_VIEW_CSS + ""}
+        >
+          {commandBarVisible && <CommandBar />}
           <StateContext.Consumer>
-            { ({ sticky }) =>
-              <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
-                { paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+            {({ sticky }) => (
+              <div
+                className={classNames(SCROLL_VIEW_PADDING_CSS + "", { sticky })}
+              >
+                {paragraphs.map(paragraph => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
-            }
+            )}
           </StateContext.Consumer>
+          {commandBarVisible && <CommandBar />}
         </ScrollToEnd>
-        <ScrollToEnd className={ containerClassName } mode="top">
+        <ScrollToEnd className={containerClassName} mode="top">
+          {commandBarVisible && <CommandBar />}
           <StateContext.Consumer>
-            { ({ sticky }) =>
-              <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
-                { [...paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+            {({ sticky }) => (
+              <div
+                className={classNames(SCROLL_VIEW_PADDING_CSS + "", { sticky })}
+              >
+                {[...paragraphs].reverse().map(paragraph => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
-            }
+            )}
           </StateContext.Consumer>
+          {commandBarVisible && <CommandBar />}
         </ScrollToEnd>
       </div>
-      { intervalEnabled &&
-        <Interval
-          callback={ handleAdd1 }
-          enabled={ true }
-          timeout={ 1000 }
-        />
-      }
+      {intervalEnabled && (
+        <Interval callback={handleAdd1} enabled={true} timeout={1000} />
+      )}
     </div>
   );
 };
