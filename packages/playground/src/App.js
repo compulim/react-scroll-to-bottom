@@ -124,31 +124,31 @@ const App = () => {
   }, [handleKeyDown]);
 
   return (
-    <div className={ ROOT_CSS + '' }>
+    <div className={ROOT_CSS + ""}>
       <ul className="button-bar">
         <li>
-          <button onClick={ handleAdd1 }>Add new paragraph</button>
+          <button onClick={handleAdd1}>Add new paragraph</button>
         </li>
         <li>
-          <button onClick={ handleAdd10 }>Add 10 new paragraphs</button>
+          <button onClick={handleAdd10}>Add 10 new paragraphs</button>
         </li>
         <li>
-          <button onClick={ handleClear }>Clear</button>
+          <button onClick={handleClear}>Clear</button>
         </li>
         <li>
-          <button onClick={ handleContainerSizeSmall }>Small</button>
+          <button onClick={handleContainerSizeSmall}>Small</button>
         </li>
         <li>
-          <button onClick={ handleContainerSizeNormal }>Normal</button>
+          <button onClick={handleContainerSizeNormal}>Normal</button>
         </li>
         <li>
-          <button onClick={ handleContainerSizeLarge }>Large</button>
+          <button onClick={handleContainerSizeLarge}>Large</button>
         </li>
         <li>
           <label>
             <input
-              checked={ intervalEnabled }
-              onChange={ handleIntervalEnabledChange }
+              checked={intervalEnabled}
+              onChange={handleIntervalEnabledChange}
               type="checkbox"
             />
             Add one every second
@@ -157,8 +157,8 @@ const App = () => {
         <li>
           <label>
             <input
-              checked={ commandBarVisible }
-              onChange={ handleCommandBarVisibleChange }
+              checked={commandBarVisible}
+              onChange={handleCommandBarVisibleChange}
               type="checkbox"
             />
             Show command bar
@@ -166,36 +166,43 @@ const App = () => {
         </li>
       </ul>
       <div className="panes">
-        <ScrollToEnd className={ containerClassName } scrollViewClassName={ SCROLL_VIEW_CSS }>
-          { commandBarVisible && <CommandBar /> }
+        <ScrollToEnd
+          className={containerClassName}
+          scrollViewClassName={SCROLL_VIEW_CSS + ""}
+        >
+          {commandBarVisible && <CommandBar />}
           <StateContext.Consumer>
-            { ({ sticky }) =>
-              <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
-                { paragraphs.map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+            {({ sticky }) => (
+              <div
+                className={classNames(SCROLL_VIEW_PADDING_CSS + "", { sticky })}
+              >
+                {paragraphs.map(paragraph => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
-            }
+            )}
           </StateContext.Consumer>
-          { commandBarVisible && <CommandBar /> }
+          {commandBarVisible && <CommandBar />}
         </ScrollToEnd>
-        <ScrollToEnd className={ containerClassName } mode="top">
-          { commandBarVisible && <CommandBar /> }
+        <ScrollToEnd className={containerClassName} mode="top">
+          {commandBarVisible && <CommandBar />}
           <StateContext.Consumer>
-            { ({ sticky }) =>
-              <div className={ classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky }) }>
-                { [...paragraphs].reverse().map(paragraph => <p key={ paragraph }>{ paragraph }</p>) }
+            {({ sticky }) => (
+              <div
+                className={classNames(SCROLL_VIEW_PADDING_CSS + "", { sticky })}
+              >
+                {[...paragraphs].reverse().map(paragraph => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
-            }
+            )}
           </StateContext.Consumer>
-          { commandBarVisible && <CommandBar /> }
+          {commandBarVisible && <CommandBar />}
         </ScrollToEnd>
       </div>
-      { intervalEnabled &&
-        <Interval
-          callback={ handleAdd1 }
-          enabled={ true }
-          timeout={ 1000 }
-        />
-      }
+      {intervalEnabled && (
+        <Interval callback={handleAdd1} enabled={true} timeout={1000} />
+      )}
     </div>
   );
 };
