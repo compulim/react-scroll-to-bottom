@@ -8,6 +8,10 @@ React container that will auto scroll to bottom or top if new content is added a
 
 Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https://compulim.github.io/react-scroll-to-bottom/).
 
+# Breaking changes
+
+Starting from `react-scroll-to-bottom@2`, we requires React 16.8.6 or above. This enable developers to use React Hooks to add features to the scroll view.
+
 # Sample code
 
 ```jsx
@@ -42,7 +46,7 @@ export default props =>
 
 ## Hooks
 
-We support React Hooks to perform various operations and signal state changes. The component which use the hook must stay within the same `<ScrollToBottom>` or `<Composer>`.
+You can use React Hooks to perform various operations and signal state changes. The component which use the hook must stay under `<ScrollToBottom>` or `<Composer>`.
 
 <table>
   <thead>
@@ -55,31 +59,31 @@ We support React Hooks to perform various operations and signal state changes. T
   </thead>
   <tbody>
     <tr>
-      <td>Action</td>
+      <td>Function</td>
       <td><code>useScrollTo</code></td>
       <td><code>() => (scrollTop: number | '100%') => void</code></td>
       <td>Scroll panel to specified position</td>
     </tr>
     <tr>
-      <td>Action</td>
+      <td>Function</td>
       <td><code>useScrollToBottom</code></td>
       <td><code>() => () => void</code></td>
       <td>Scroll panel to bottom</td>
     </tr>
     <tr>
-      <td>Action</td>
+      <td>Function</td>
       <td><code>useScrollToEnd</code></td>
       <td><code>() => () => void</code></td>
       <td>Scroll panel to end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td>Action</td>
+      <td>Function</td>
       <td><code>useScrollToStart</code></td>
       <td><code>() => () => void</code></td>
       <td>Scroll panel to start (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td>Action</td>
+      <td>Function</td>
       <td><code>useScrollToTop</code></td>
       <td><code>() => () => void</code></td>
       <td>Scroll panel to top</td>
