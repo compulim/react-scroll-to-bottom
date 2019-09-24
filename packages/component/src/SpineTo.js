@@ -1,16 +1,6 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-function step(from, to, stepper, index) {
-  let next = from;
-
-  for (let i = 0; i < index; i++) {
-    next = stepper(next, to);
-  }
-
-  return next;
-}
-
 function squareStepper(current, to) {
   const sign = Math.sign(to - current);
   const step = Math.sqrt(Math.abs(to - current));
@@ -21,6 +11,16 @@ function squareStepper(current, to) {
   } else {
     return Math.max(to, next);
   }
+}
+
+function step(from, to, stepper, index) {
+  let next = from;
+
+  for (let i = 0; i < index; i++) {
+    next = stepper(next, to);
+  }
+
+  return next;
 }
 
 const SpineTo = ({ name, onEnd, target, value }) => {
