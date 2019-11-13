@@ -125,7 +125,7 @@ export default class Composer extends React.Component {
     this.disableWorker();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState(({ stateContext }) => ({
       stateContext: {
         ...stateContext,

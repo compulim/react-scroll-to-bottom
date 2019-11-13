@@ -51,7 +51,7 @@ export default class EventSpy extends React.Component {
     target && target.removeEventListener(this.props.name, this.handleEvent);
   }
 
-  componentWillReceiveProps({ debounce: nextDebounce }) {
+  UNSAFE_componentWillReceiveProps({ debounce: nextDebounce }) {
     if (this.props.debounce !== nextDebounce) {
       this.createDebouncer();
     }
