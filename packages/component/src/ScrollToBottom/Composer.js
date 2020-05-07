@@ -207,6 +207,35 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     [scrollTo, scrollToBottom, scrollToEnd, scrollToStart, scrollToTop]
   );
 
+  useEffect(() => {
+    // We need to update the "scrollHeight" value to latest when the user do a focus inside the box.
+    //
+    // This is because:
+    // - In our code that mitigate Chrome synthetic scrolling, that code will look at whether "scrollHeight" value is latest or not.
+    // - That code only run on "scroll" event.
+    // - That means, on every "scroll" event, if the "scrollHeight" value is not latest, we will skip modifying the stickiness.
+    // - That means, if the user "focus" to an element that cause the scroll view to scroll to the bottom, the user agent will fire "scroll" event.
+    //   Since the "scrollHeight" is not latest value, this "scroll" event will be ignored and stickiness will not be modified.
+    // - That means, if the user "focus" to a newly added element that is at the end of the scroll view, the "scroll to bottom" button will continue to show.
+    //
+    // Repro in Chrome:
+    // 1. Fill up a scroll view
+    // 2. Scroll up, the "scroll to bottom" button should show up
+    // 3. Click "Add a button"
+    // 4. Click on the scroll view (to pseudo-focus on it)
+    // 5. Press TAB, the scroll view will be at the bottom
+    //
+    // Expect:
+    // - The "scroll to bottom" button should be gone.
+    if (target) {
+      const handleFocus = () => setScrollHeight(target.scrollHeight);
+
+      target.addEventListener('focus', handleFocus, { capture: true, passive: true });
+
+      return () => target.removeEventListener('focus', handleFocus);
+    }
+  }, [target]);
+
   return (
     <InternalContext.Provider value={internalContext}>
       <FunctionContext.Provider value={functionContext}>

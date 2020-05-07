@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fix `atStart` was not reporting correctly, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
+- Chrome: Fix scroll to bottom button should hide when using <kbd>TAB</kbd> to scroll the bottommost button into view, in PR [#46](https://github.com/compulim/react-scroll-to-bottom/pull/46)
 
 ## [1.3.2] - 2019-06-20
 ### Changed
