@@ -1,4 +1,4 @@
-export default function(fn, ms) {
+export default function (fn, ms) {
   if (!ms) {
     return fn;
   }

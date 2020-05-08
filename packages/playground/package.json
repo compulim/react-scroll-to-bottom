@@ -4,11 +4,11 @@
   "homepage": "/react-scroll-to-bottom",
   "private": true,
   "dependencies": {
-    "classnames": "^2.2.6",
-    "glamor": "^2.20.40",
-    "lorem-ipsum": "^1.0.4",
-    "react-interval": "^2.0.2",
-    "react-scroll-to-bottom": "^0.0.0-0"
+    "classnames": "2.2.6",
+    "glamor": "2.20.40",
+    "lorem-ipsum": "2.0.3",
+    "react-interval": "2.1.1",
+    "react-scroll-to-bottom": "0.0.0-0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,6 +23,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "react-scripts": "3.1.2"
+    "react-scripts": "^3.4.1"
   }
 }

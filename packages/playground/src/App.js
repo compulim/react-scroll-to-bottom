@@ -1,7 +1,7 @@
 import { css } from 'glamor';
 import classNames from 'classnames';
 import Interval from 'react-interval';
-import loremIpsum from 'lorem-ipsum';
+import { loremIpsum } from 'lorem-ipsum';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ScrollToEnd, { StateContext } from 'react-scroll-to-bottom';
 

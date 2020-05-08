@@ -10,6 +10,7 @@ const EventSpy = ({ debounce, name, onEvent, target }) => {
   onEventRef.current = onEvent;
 
   const debouncer = useCallback(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     debounceFn(event => {
       const { current } = onEventRef;
 
