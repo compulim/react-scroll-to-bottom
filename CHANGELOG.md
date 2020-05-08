@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 2020-05-07
+
 ### Breaking changes
 - We moved to React Hooks and it requires React 16.8.6 or up
    - Hooks will allow us to write simpler and more maintainable code
