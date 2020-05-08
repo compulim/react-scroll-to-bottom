@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Moved all code to React functional components, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
-- `*`: bump dependencies, in PR [#XX](https://github.com/compulim/react-scroll-to-bottom/pull/XX)
+- `*`: bump dependencies, in PR [#47](https://github.com/compulim/react-scroll-to-bottom/pull/47)
    - [`@babel/cli@7.8.4`](https://www.npmjs.com/package/@babel/cli)
    - [`@babel/core@7.9.6`](https://www.npmjs.com/package/@babel/core)
    - [`@babel/plugin-proposal-object-rest-spread@7.9.6`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
