@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "glamor": "^2.20.40"
+    "glamor": "^2.20.40",
+    "prop-types": "15.7.2"
   },
   "peerDependencies": {
     "react": "^16.8.6"

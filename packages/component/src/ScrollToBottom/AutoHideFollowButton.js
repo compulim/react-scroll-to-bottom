@@ -1,5 +1,6 @@
 import { css } from 'glamor';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import useScrollToEnd from '../hooks/useScrollToEnd';
@@ -37,6 +38,16 @@ const AutoHideFollowButton = ({ children, className }) => {
       </button>
     )
   );
+};
+
+AutoHideFollowButton.defaultProps = {
+  children: undefined,
+  className: ''
+};
+
+AutoHideFollowButton.propTypes = {
+  children: PropTypes.any,
+  className: PropTypes.string
 };
 
 export default AutoHideFollowButton;
