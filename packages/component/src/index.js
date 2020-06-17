@@ -8,6 +8,7 @@ import Panel from './ScrollToBottom/Panel';
 import StateContext from './ScrollToBottom/StateContext';
 
 import useAnimating from './hooks/useAnimating';
+import useAnimatingToEnd from './hooks/useAnimatingToEnd';
 import useAtBottom from './hooks/useAtBottom';
 import useAtEnd from './hooks/useAtEnd';
 import useAtStart from './hooks/useAtStart';
@@ -16,6 +17,7 @@ import useMode from './hooks/useMode';
 import useScrollTo from './hooks/useScrollTo';
 import useScrollToBottom from './hooks/useScrollToBottom';
 import useScrollToEnd from './hooks/useScrollToEnd';
+import useScrollTopEffect from './hooks/useScrollTopEffect';
 import useScrollToStart from './hooks/useScrollToStart';
 import useScrollToTop from './hooks/useScrollToTop';
 import useSticky from './hooks/useSticky';
@@ -29,6 +31,7 @@ export {
   Panel,
   StateContext,
   useAnimating,
+  useAnimatingToEnd,
   useAtBottom,
   useAtEnd,
   useAtStart,
@@ -37,6 +40,7 @@ export {
   useScrollTo,
   useScrollToBottom,
   useScrollToEnd,
+  useScrollTopEffect,
   useScrollToStart,
   useScrollToTop,
   useSticky

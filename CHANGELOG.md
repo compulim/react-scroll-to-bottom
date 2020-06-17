@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Added
+### Breaking changes
 
-- Added version number to `<meta name="react-scroll-to-bottom:version">` for diagnostic purpose, in PR [#51](https://github.com/compulim/react-scroll-to-bottom/pull/51)
+- `scrollToBottom`/`scrollToEnd`/`scrollToStart`/`scrollToTop` now accept an option `{ behavior: 'auto' | 'smooth' }`
+   - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
+   - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
+   - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
 
 ### Changed
 
@@ -22,6 +25,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
    - [`eslint-plugin-prettier@3.1.4`](https://www.npmjs.com/package/eslint-plugin-prettier)
    - [`eslint-plugin-react@7.20.0`](https://www.npmjs.com/package/eslint-plugin-react)
    - [`eslint-plugin-react-hooks@4.0.4`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
+
+### Added
+
+- Added version number to `<meta name="react-scroll-to-bottom:version">` for diagnostic purpose, in PR [#51](https://github.com/compulim/react-scroll-to-bottom/pull/51)
+- Added `animatingToEnd` getter to indicate if it is animating towards to the end
+   - The previous `animator` getter only indicate if it is animating to any scroll positions
+- Added `scrollTo` function to scroll to a specific `scrollTop` value, this is similar to `DOMElement.scrollIntoView()`
+   - The signature is `scrollTo(scrollTop: number, options: { behavior: 'auto' | 'smooth' })`
+   - Pass `{ behavior: 'smooth' }` for synthetic smooth scrolling
+- Added `useScrollTopEffect` hook to observe scroll event
+   - This effect function will be called rapidly on scroll, please avoid expensive code such as calling setter of `useState` and any code that would cause re-render
+
+### Fixed
+
+- Cancel scroll animation on mouse wheel or touch gesture
+- Calling `scrollTo` should cancel any existing scroll animation
 
 ## [2.0.0] - 2020-05-07
 
