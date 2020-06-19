@@ -57,20 +57,20 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
   const [sticky, setSticky] = useState(true);
 
   // High-rate state context
-  const scrollTopEffectsRef = useRef([]);
-  const addScrollTopEffect = useCallback(
+  const scrollTopObserversRef = useRef([]);
+  const observeScrollTop = useCallback(
     fn => {
-      scrollTopEffectsRef.current.push(fn);
-      target && fn(target.scrollTop);
+      scrollTopObserversRef.current.push(fn);
+      target && fn({ scrollTop: target.scrollTop });
 
       return () => {
-        const { current: scrollTopEffects } = scrollTopEffectsRef;
-        const index = scrollTopEffects.indexOf(fn);
+        const { current: scrollTopObservers } = scrollTopObserversRef;
+        const index = scrollTopObservers.indexOf(fn);
 
-        ~index && scrollTopEffects.splice(index, 1);
+        ~index && scrollTopObservers.splice(index, 1);
       };
     },
-    [scrollTopEffectsRef, target]
+    [scrollTopObserversRef, target]
   );
 
   const handleScrollEnd = useCallback(() => {
@@ -87,7 +87,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
         handleScrollEnd();
 
         // Jump to the scroll position
-        target.scrollTop = scrollTop;
+        target.scrollTop = scrollTop === '100%' ? target.scrollHeight - target.offsetHeight : scrollTop;
       } else {
         behavior !== 'smooth' &&
           console.warn(
@@ -112,6 +112,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     },
     [scrollTo]
   );
+
   const scrollToTop = useCallback(
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
@@ -230,9 +231,9 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
         // "animating" is used to calculate the "sticky" property
         scrollTop === null && setAnimating(false);
 
-        const { scrollTop: nextScrollTop } = target;
+        const { scrollTop: actualScrollTop } = target;
 
-        scrollTopEffectsRef.current.forEach(effect => effect(nextScrollTop));
+        scrollTopObserversRef.current.forEach(observer => observer({ scrollTop: actualScrollTop }));
       }
     },
     [
@@ -242,7 +243,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       offsetHeight,
       scrollHeight,
       scrollTop,
-      scrollTopEffectsRef,
+      scrollTopObserversRef,
       setAnimating,
       setAtBottom,
       setAtEnd,
@@ -257,12 +258,12 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
 
   const internalContext = useMemo(
     () => ({
-      addScrollTopEffect,
+      observeScrollTop,
       offsetHeight,
       scrollHeight,
       setTarget
     }),
-    [addScrollTopEffect, offsetHeight, scrollHeight, setTarget]
+    [observeScrollTop, offsetHeight, scrollHeight, setTarget]
   );
 
   const animatingToEnd = animating && isEnd(mode, scrollTop);
