@@ -14,7 +14,7 @@ import useAtEnd from './hooks/useAtEnd';
 import useAtStart from './hooks/useAtStart';
 import useAtTop from './hooks/useAtTop';
 import useMode from './hooks/useMode';
-import useObserveScrollTop from './hooks/useObserveScrollTop';
+import useObserveScrollPosition from './hooks/useObserveScrollPosition';
 import useScrollTo from './hooks/useScrollTo';
 import useScrollToBottom from './hooks/useScrollToBottom';
 import useScrollToEnd from './hooks/useScrollToEnd';
@@ -37,7 +37,7 @@ export {
   useAtStart,
   useAtTop,
   useMode,
-  useObserveScrollTop,
+  useObserveScrollPosition,
   useScrollTo,
   useScrollToBottom,
   useScrollToEnd,

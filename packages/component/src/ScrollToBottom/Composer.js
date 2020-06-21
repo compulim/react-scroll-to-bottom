@@ -58,20 +58,20 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
   const [sticky, setSticky] = useState(true);
 
   // High-rate state context
-  const scrollTopObserversRef = useRef([]);
-  const observeScrollTop = useCallback(
+  const scrollPositionObserversRef = useRef([]);
+  const observeScrollPosition = useCallback(
     fn => {
-      scrollTopObserversRef.current.push(fn);
+      scrollPositionObserversRef.current.push(fn);
       target && fn({ scrollTop: target.scrollTop });
 
       return () => {
-        const { current: scrollTopObservers } = scrollTopObserversRef;
-        const index = scrollTopObservers.indexOf(fn);
+        const { current: scrollPositionObservers } = scrollPositionObserversRef;
+        const index = scrollPositionObservers.indexOf(fn);
 
-        ~index && scrollTopObservers.splice(index, 1);
+        ~index && scrollPositionObservers.splice(index, 1);
       };
     },
-    [scrollTopObserversRef, target]
+    [scrollPositionObserversRef, target]
   );
 
   const handleScrollEnd = useCallback(() => {
@@ -114,6 +114,18 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     [scrollTo]
   );
 
+  const scrollToTop = useCallback(
+    ({ behavior } = {}) => {
+      behavior !== 'smooth' &&
+        console.warn(
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
+        );
+
+      scrollTo(0, { behavior: behavior || 'smooth' });
+    },
+    [scrollTo]
+  );
+
   const scrollToEnd = useCallback(
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
@@ -140,18 +152,6 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       mode === MODE_TOP ? scrollToBottom(options) : scrollToTop(options);
     },
     [mode, scrollToBottom, scrollToTop]
-  );
-
-  const scrollToTop = useCallback(
-    ({ behavior } = {}) => {
-      behavior !== 'smooth' &&
-        console.warn(
-          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
-        );
-
-      scrollTo(0, { behavior: behavior || 'smooth' });
-    },
-    [scrollTo]
   );
 
   useEffect(() => {
@@ -234,7 +234,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
 
         const { scrollTop: actualScrollTop } = target;
 
-        scrollTopObserversRef.current.forEach(observer => observer({ scrollTop: actualScrollTop }));
+        scrollPositionObserversRef.current.forEach(observer => observer({ scrollTop: actualScrollTop }));
       }
     },
     [
@@ -243,8 +243,8 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       mode,
       offsetHeight,
       scrollHeight,
+      scrollPositionObserversRef,
       scrollTop,
-      scrollTopObserversRef,
       setAnimating,
       setAtBottom,
       setAtEnd,
@@ -259,12 +259,12 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
 
   const internalContext = useMemo(
     () => ({
-      observeScrollTop,
+      observeScrollPosition,
       offsetHeight,
       scrollHeight,
       setTarget
     }),
-    [observeScrollTop, offsetHeight, scrollHeight, setTarget]
+    [observeScrollPosition, offsetHeight, scrollHeight, setTarget]
   );
 
   const animatingToEnd = animating && isEnd(scrollTop, mode);
