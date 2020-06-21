@@ -22,6 +22,7 @@ function setImmediateInterval(fn, ms) {
 function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTop } }) {
   const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
   const atTop = scrollTop < NEAR_END_THRESHOLD;
+
   const atEnd = mode === MODE_TOP ? atTop : atBottom;
   const atStart = mode !== MODE_TOP ? atTop : atBottom;
 
