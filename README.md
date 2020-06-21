@@ -183,6 +183,11 @@ This context contains functions used to manipulate the container. And will not u
   </thead>
   <tbody>
     <tr>
+      <td><code>useObserveScrollPosition</code></td>
+      <td><code>(observer: (({ scrollTop: number }) => void) | false) => void</code></td>
+      <td>Observe scroll position change by passing a callback function</td>
+    </tr>
+    <tr>
       <td><code>useScrollTo</code></td>
       <td><code>(scrollTop: number | '100%') => void</code></td>
       <td>Scroll panel to specified position</td>
@@ -210,6 +215,8 @@ This context contains functions used to manipulate the container. And will not u
   </tbody>
 </table>
 
+> Callback function passed to `useObserveScrollPosition` will be called rapidly during scrolling. To unsubscribe, pass a falsy value.
+
 ### State context
 
 This context contains state of the container.
@@ -227,6 +234,11 @@ This context contains state of the container.
       <td><code>useAnimating</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is animating scroll effect</td>
+    </tr>
+    <tr>
+      <td><code>useAnimatingToEnd</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is animating scroll effect and towards the end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
       <td><code>useAtBottom</code></td>

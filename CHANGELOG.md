@@ -29,12 +29,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Added version number to `<meta name="react-scroll-to-bottom:version">` for diagnostic purpose, in PR [#51](https://github.com/compulim/react-scroll-to-bottom/pull/51)
-- Added `animatingToEnd` getter to indicate if it is animating towards to the end
-   - The previous `animator` getter only indicate if it is animating to any scroll positions
+- Added `useAnimatingToEnd` getter to indicate if it is animating towards to the end
+   - The existing `useAnimating` getter only indicate if it is animating to any scroll positions
 - Added `scrollTo` function to scroll to a specific `scrollTop` value, this is similar to `DOMElement.scrollIntoView()`
    - The signature is `scrollTo(scrollTop: number, options: { behavior: 'auto' | 'smooth' })`
    - Pass `{ behavior: 'smooth' }` for synthetic smooth scrolling
-- Added `useScrollTopEffect` hook to observe scroll event
+- Added `useObserveScrollTop` hook to observe scroll event
    - This effect function will be called rapidly on scroll, please avoid expensive code such as calling setter of `useState` and any code that would cause re-render
 
 ### Fixed

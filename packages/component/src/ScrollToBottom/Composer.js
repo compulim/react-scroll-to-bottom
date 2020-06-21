@@ -33,7 +33,7 @@ function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTo
   };
 }
 
-function isEnd(mode, scrollTop) {
+function isEnd(scrollTop, mode) {
   return (mode === MODE_TOP && scrollTop === 0) || (mode === MODE_BOTTOM && scrollTop === '100%');
 }
 
@@ -224,7 +224,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
           setSticky(
             // We are sticky if we are animating to the end, or we are already at the end.
             // We can be "animating but not sticky" by calling "scrollTo(100)" where the container scrollHeight is 200px.
-            (animating && isEnd(mode, scrollTop)) || atEnd
+            (animating && isEnd(scrollTop, mode)) || atEnd
           );
 
         // If no scrollTop is set (not in programmatic scrolling mode), we should set "animating" to false
@@ -266,7 +266,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     [observeScrollTop, offsetHeight, scrollHeight, setTarget]
   );
 
-  const animatingToEnd = animating && isEnd(mode, scrollTop);
+  const animatingToEnd = animating && isEnd(scrollTop, mode);
 
   const stateContext = useMemo(
     () => ({
