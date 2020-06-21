@@ -113,18 +113,6 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     [scrollTo]
   );
 
-  const scrollToTop = useCallback(
-    ({ behavior } = {}) => {
-      behavior !== 'smooth' &&
-        console.warn(
-          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
-        );
-
-      scrollTo(0, { behavior: behavior || 'smooth' });
-    },
-    [scrollTo]
-  );
-
   const scrollToEnd = useCallback(
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
@@ -151,6 +139,18 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       mode === MODE_TOP ? scrollToBottom(options) : scrollToTop(options);
     },
     [mode, scrollToBottom, scrollToTop]
+  );
+
+  const scrollToTop = useCallback(
+    ({ behavior } = {}) => {
+      behavior !== 'smooth' &&
+        console.warn(
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
+        );
+
+      scrollTo(0, { behavior: behavior || 'smooth' });
+    },
+    [scrollTo]
   );
 
   useEffect(() => {
