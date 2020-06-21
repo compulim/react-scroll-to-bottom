@@ -92,7 +92,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       } else {
         behavior !== 'smooth' &&
           console.warn(
-            'react-scroll-to-bottom: Please set "behavior" when calling "scrollTo". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
+            'react-scroll-to-bottom: Please set "behavior" when calling "scrollTo". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
           );
 
         setAnimating(true);
@@ -106,7 +106,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
         console.warn(
-          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToBottom". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToBottom". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
         );
 
       scrollTo('100%', { behavior: behavior || 'smooth' });
@@ -118,7 +118,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
         console.warn(
-          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToEnd". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToEnd". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
         );
 
       const options = { behavior: behavior || 'smooth' };
@@ -132,7 +132,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
         console.warn(
-          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToStart". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToStart". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
         );
 
       const options = { behavior: behavior || 'smooth' };
@@ -146,7 +146,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     ({ behavior } = {}) => {
       behavior !== 'smooth' &&
         console.warn(
-          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to match HTML standard.'
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
         );
 
       scrollTo(0, { behavior: behavior || 'smooth' });
