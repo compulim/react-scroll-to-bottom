@@ -1,6 +1,6 @@
 {
   "name": "react-scroll-to-bottom",
-  "version": "2.0.1-0",
+  "version": "3.0.1-0",
   "description": "React container that will auto scroll to bottom",
   "private": true,
   "scripts": {
