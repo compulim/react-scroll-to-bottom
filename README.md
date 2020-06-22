@@ -10,7 +10,7 @@ Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https:/
 
 # Breaking changes
 
-## Upcoming
+## [3.0.0] - 2020-06-21
 
 - `scrollToBottom`/`scrollToEnd`/`scrollToStart`/`scrollToTop` now accept an option `{ behavior: 'auto' | 'smooth' }`
    - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
