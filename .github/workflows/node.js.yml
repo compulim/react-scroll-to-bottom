@@ -60,13 +60,15 @@ jobs:
           cd packages/component
           npm pack
 
-      - uses: actions/upload-artifact@v2
+      - name: Upload npm-tarball
+        uses: actions/upload-artifact@v2
         if: ${{ matrix.node-version == '14.x' }}
         with:
           name: npm-tarball
           path: 'packages/component/*.tgz'
 
-      - uses: actions/upload-artifact@v2
+      - name: Upload gh-pages
+        uses: actions/upload-artifact@v2
         if: ${{ matrix.node-version == '14.x' }}
         with:
           name: gh-pages
@@ -87,7 +89,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: gh-pages
-          working-directory: gh-pages/
+          path: gh-pages/
 
       - name: Read package.json
         id: read-package-json
@@ -97,7 +99,7 @@ jobs:
           echo "::set-output name=tarball::$(ls *.tgz)"
           echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      - run: ls -la
+      - run: ls -laR
 
       # - name: Run npm publish ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
       #   run: |
