@@ -1,6 +1,6 @@
 import { css } from 'glamor';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import AutoHideFollowButton from './ScrollToBottom/AutoHideFollowButton';

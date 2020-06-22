@@ -6,12 +6,6 @@ extends:
 - eslint:recommended
 globals:
   React: readonly
-parser: babel-eslint
-parserOptions:
-  ecmaFeatures:
-    jsx: true
-  ecmaVersion: 10
-  sourceType: module
 root: true
 rules:
   # Only list rules that are not in *:recommended set
