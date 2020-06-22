@@ -10,7 +10,16 @@ Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https:/
 
 # Breaking changes
 
-Starting from `react-scroll-to-bottom@2`, we requires React 16.8.6 or above. This enable developers to use React Hooks to add features to the scroll view.
+## Upcoming
+
+- `scrollToBottom`/`scrollToEnd`/`scrollToStart`/`scrollToTop` now accept an option `{ behavior: 'auto' | 'smooth' }`
+   - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
+   - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
+   - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
+
+## [2.0.0] - 2020-05-07
+
+- Starting from `react-scroll-to-bottom@2`, we requires React 16.8.6 or above. This enable developers to use React Hooks to add features to the scroll view.
 
 # Sample code
 
