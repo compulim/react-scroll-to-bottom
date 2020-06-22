@@ -29,18 +29,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Added version number to `<meta name="react-scroll-to-bottom:version">` for diagnostic purpose, in PR [#51](https://github.com/compulim/react-scroll-to-bottom/pull/51)
-- Added `useAnimatingToEnd` getter to indicate if it is animating towards to the end
+- Added `useAnimatingToEnd` getter to indicate if it is animating towards to the end, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
    - The existing `useAnimating` getter only indicate if it is animating to any scroll positions
-- Added `scrollTo` function to scroll to a specific `scrollTop` value, this is similar to `DOMElement.scrollIntoView()`
+- Added `scrollTo` function to scroll to a specific `scrollTop` value, this is similar to `DOMElement.scrollIntoView()`, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
    - The signature is `scrollTo(scrollTop: number, options: { behavior: 'auto' | 'smooth' })`
    - Pass `{ behavior: 'smooth' }` for synthetic smooth scrolling
-- Added `useObserveScrollTop` hook to observe scroll event
+- Added `useObserveScrollTop` hook to observe scroll event, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
    - This effect function will be called rapidly on scroll, please avoid expensive code such as calling setter of `useState` and any code that would cause re-render
 
 ### Fixed
 
-- Cancel scroll animation on mouse wheel or touch gesture
-- Calling `scrollTo` should cancel any existing scroll animation
+- Cancel scroll animation on mouse wheel or touch gesture, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
+- Calling `scrollTo` should cancel any existing scroll animation, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
 
 ## [2.0.0] - 2020-05-07
 
