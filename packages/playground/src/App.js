@@ -34,6 +34,11 @@ const ROOT_CSS = css({
     '& > *:not(:last-child)': {
       marginRight: 10
     }
+  },
+
+  '& > .version': {
+    bottom: 10,
+    position: 'absolute'
   }
 });
 
@@ -77,6 +82,9 @@ const App = () => {
   const [intervalEnabled, setIntervalEnabled] = useState(false);
   const [paragraphs, setParagraphs] = useState(createParagraphs(10));
   const [commandBarVisible, setCommandBarVisible] = useState(false);
+  const [loadedVersion] = useState(() =>
+    document.querySelector('head meta[name="react-scroll-to-bottom:version"]').getAttribute('content')
+  );
 
   const handleAdd = useCallback(count => setParagraphs([...paragraphs, ...createParagraphs(count)]), [
     paragraphs,
@@ -224,6 +232,9 @@ const App = () => {
           </StateContext.Consumer>
           {commandBarVisible && <CommandBar />}
         </ScrollToEnd>
+      </div>
+      <div className="version">
+        <code>react-scroll-to-bottom@{loadedVersion}</code> has loaded.
       </div>
       {intervalEnabled && <Interval callback={handleAdd1} enabled={true} timeout={1000} />}
     </div>

@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added version number to `<meta name="react-scroll-to-bottom:version">` for diagnostic purpose, in PR [#51](https://github.com/compulim/react-scroll-to-bottom/pull/51)
+
 ### Changed
 
-- Bump dependencies, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+- Bump dependencies, in PR [#50](https://github.com/compulim/react-scroll-to-bottom/pull/50)
    - [`@babel/cli@7.10.3`](https://www.npmjs.com/package/@babel/cli)
    - [`@babel/core@7.10.3`](https://www.npmjs.com/package/@babel/core)
    - [`@babel/plugin-proposal-object-rest-spread@7.10.3`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
