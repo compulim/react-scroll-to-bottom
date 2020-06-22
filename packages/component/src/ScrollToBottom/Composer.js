@@ -22,6 +22,7 @@ function setImmediateInterval(fn, ms) {
 function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTop } }) {
   const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
   const atTop = scrollTop < NEAR_END_THRESHOLD;
+
   const atEnd = mode === MODE_TOP ? atTop : atBottom;
   const atStart = mode !== MODE_TOP ? atTop : atBottom;
 
@@ -33,11 +34,16 @@ function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTo
   };
 }
 
+function isEnd(scrollTop, mode) {
+  return (mode === MODE_TOP && scrollTop === 0) || (mode === MODE_BOTTOM && scrollTop === '100%');
+}
+
 const Composer = ({ checkInterval, children, debounce, mode }) => {
   mode = mode === MODE_TOP ? MODE_TOP : MODE_BOTTOM;
 
   const ignoreScrollEventBeforeRef = useRef(0);
   const [scrollTop, setScrollTop] = useState(mode === MODE_TOP ? 0 : '100%');
+  const [target, setTarget] = useState(null);
 
   // Internal context
   const [offsetHeight, setOffsetHeight] = useState(0);
@@ -51,30 +57,102 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
   const [atStart, setAtStart] = useState(false);
   const [sticky, setSticky] = useState(true);
 
-  // Function context
-  const scrollTo = useCallback(
-    scrollTop => {
-      setAnimating(true);
-      setScrollTop(scrollTop);
+  // High-rate state context
+  const scrollPositionObserversRef = useRef([]);
+  const observeScrollPosition = useCallback(
+    fn => {
+      scrollPositionObserversRef.current.push(fn);
+      target && fn({ scrollTop: target.scrollTop });
+
+      return () => {
+        const { current: scrollPositionObservers } = scrollPositionObserversRef;
+        const index = scrollPositionObservers.indexOf(fn);
+
+        ~index && scrollPositionObservers.splice(index, 1);
+      };
     },
-    [setAnimating, setScrollTop]
+    [scrollPositionObserversRef, target]
   );
 
-  const scrollToBottom = useCallback(() => scrollTo('100%'), [scrollTo]);
-  const scrollToTop = useCallback(() => scrollTo(0), [scrollTo]);
+  const handleScrollEnd = useCallback(() => {
+    ignoreScrollEventBeforeRef.current = Date.now();
+    setAnimating(false);
+    setScrollTop(null);
+  }, [ignoreScrollEventBeforeRef, setAnimating, setScrollTop]);
 
-  const scrollToEnd = useCallback(() => (mode === MODE_TOP ? scrollToTop() : scrollToBottom()), [
-    mode,
-    scrollToBottom,
-    scrollToTop
-  ]);
-  const scrollToStart = useCallback(() => (mode === MODE_TOP ? scrollToBottom() : scrollToTop()), [
-    mode,
-    scrollToBottom,
-    scrollToTop
-  ]);
+  // Function context
+  const scrollTo = useCallback(
+    (scrollTop, { behavior } = {}) => {
+      if (behavior === 'auto') {
+        // Stop any existing animation
+        handleScrollEnd();
 
-  const [target, setTarget] = useState(null);
+        // Jump to the scroll position
+        target.scrollTop = scrollTop === '100%' ? target.scrollHeight - target.offsetHeight : scrollTop;
+      } else {
+        behavior !== 'smooth' &&
+          console.warn(
+            'react-scroll-to-bottom: Please set "behavior" when calling "scrollTo". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
+          );
+
+        setAnimating(true);
+        setScrollTop(scrollTop);
+      }
+    },
+    [handleScrollEnd, setAnimating, setScrollTop, target]
+  );
+
+  const scrollToBottom = useCallback(
+    ({ behavior } = {}) => {
+      behavior !== 'smooth' &&
+        console.warn(
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToBottom". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
+        );
+
+      scrollTo('100%', { behavior: behavior || 'smooth' });
+    },
+    [scrollTo]
+  );
+
+  const scrollToTop = useCallback(
+    ({ behavior } = {}) => {
+      behavior !== 'smooth' &&
+        console.warn(
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToTop". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
+        );
+
+      scrollTo(0, { behavior: behavior || 'smooth' });
+    },
+    [scrollTo]
+  );
+
+  const scrollToEnd = useCallback(
+    ({ behavior } = {}) => {
+      behavior !== 'smooth' &&
+        console.warn(
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToEnd". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
+        );
+
+      const options = { behavior: behavior || 'smooth' };
+
+      mode === MODE_TOP ? scrollToTop(options) : scrollToBottom(options);
+    },
+    [mode, scrollToBottom, scrollToTop]
+  );
+
+  const scrollToStart = useCallback(
+    ({ behavior } = {}) => {
+      behavior !== 'smooth' &&
+        console.warn(
+          'react-scroll-to-bottom: Please set "behavior" when calling "scrollToStart". In future versions, the default behavior will be changed from smooth scrolling to discrete scrolling to align with HTML Standard.'
+        );
+
+      const options = { behavior: behavior || 'smooth' };
+
+      mode === MODE_TOP ? scrollToBottom(options) : scrollToTop(options);
+    },
+    [mode, scrollToBottom, scrollToTop]
+  );
 
   useEffect(() => {
     if (sticky) {
@@ -92,7 +170,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
             //         That means, if we just look at #1 to decide if we should scroll, we will always scroll, in oppose to the user's intention.
             // Repro: Open Firefox, set checkInterval to a lower number, and try to scroll by dragging the scroll handler. It will jump back.
 
-            !animating && scrollToEnd();
+            !animating && scrollToEnd({ behavior: 'smooth' });
             stickyButNotAtEndSince = false;
           }
         } else {
@@ -129,7 +207,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
         // Chrome will emit "synthetic" scroll event if the container is resized or an element is added
         // We need to ignore these "synthetic" events
         // Repro: In playground, press 4-1-5-1-1 (small, add one, normal, add one, add one)
-        //        Nomatter how fast or slow the sequence is being presssed, it should still stick to the bottom
+        //        Nomatter how fast or slow the sequence is being pressed, it should still stick to the bottom
         const { offsetHeight: nextOffsetHeight, scrollHeight: nextScrollHeight } = target;
         const offsetHeightChanged = nextOffsetHeight !== offsetHeight;
         const scrollHeightChanged = nextScrollHeight !== scrollHeight;
@@ -142,11 +220,21 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
         // - If it is scrolled by the user, then sticky means if we are at the end
 
         // Only update stickiness if the scroll event is not due to synthetic scroll done by Chrome
-        !offsetHeightChanged && !scrollHeightChanged && setSticky(animating || atEnd);
+        !offsetHeightChanged &&
+          !scrollHeightChanged &&
+          setSticky(
+            // We are sticky if we are animating to the end, or we are already at the end.
+            // We can be "animating but not sticky" by calling "scrollTo(100)" where the container scrollHeight is 200px.
+            (animating && isEnd(scrollTop, mode)) || atEnd
+          );
 
         // If no scrollTop is set (not in programmatic scrolling mode), we should set "animating" to false
         // "animating" is used to calculate the "sticky" property
         scrollTop === null && setAnimating(false);
+
+        const { scrollTop: actualScrollTop } = target;
+
+        scrollPositionObserversRef.current.forEach(observer => observer({ scrollTop: actualScrollTop }));
       }
     },
     [
@@ -155,6 +243,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       mode,
       offsetHeight,
       scrollHeight,
+      scrollPositionObserversRef,
       scrollTop,
       setAnimating,
       setAtBottom,
@@ -168,24 +257,22 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     ]
   );
 
-  const handleScrollEnd = useCallback(() => {
-    ignoreScrollEventBeforeRef.current = Date.now();
-    setAnimating(false);
-    setScrollTop(null);
-  }, [ignoreScrollEventBeforeRef, setScrollTop]);
-
   const internalContext = useMemo(
     () => ({
+      observeScrollPosition,
       offsetHeight,
       scrollHeight,
       setTarget
     }),
-    [offsetHeight, scrollHeight, setTarget]
+    [observeScrollPosition, offsetHeight, scrollHeight, setTarget]
   );
+
+  const animatingToEnd = animating && isEnd(scrollTop, mode);
 
   const stateContext = useMemo(
     () => ({
       animating,
+      animatingToEnd,
       atBottom,
       atEnd,
       atStart,
@@ -193,7 +280,7 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
       mode,
       sticky
     }),
-    [animating, atBottom, atEnd, atStart, atTop, mode, sticky]
+    [animating, animatingToEnd, atBottom, atEnd, atStart, atTop, mode, sticky]
   );
 
   const functionContext = useMemo(

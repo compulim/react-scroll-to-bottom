@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
 import debounceFn from './debounce';
 
@@ -9,13 +9,13 @@ const EventSpy = ({ debounce, name, onEvent, target }) => {
 
   onEventRef.current = onEvent;
 
-  const debouncer = useCallback(
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    debounceFn(event => {
-      const { current } = onEventRef;
+  const debouncer = useMemo(
+    () =>
+      debounceFn(event => {
+        const { current } = onEventRef;
 
-      current && current(event);
-    }, debounce),
+        current && current(event);
+      }, debounce),
     [debounce, onEventRef]
   );
 

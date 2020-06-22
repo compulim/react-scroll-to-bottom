@@ -1,6 +1,6 @@
 # react-scroll-to-bottom
 
-[![npm version](https://badge.fury.io/js/react-scroll-to-bottom.svg)](https://badge.fury.io/js/react-scroll-to-bottom) [![Build Status](https://travis-ci.org/compulim/react-scroll-to-bottom.svg?branch=master)](https://travis-ci.org/compulim/react-scroll-to-bottom)
+[![npm version](https://badge.fury.io/js/react-scroll-to-bottom.svg)](https://badge.fury.io/js/react-scroll-to-bottom) ![Node.js CI](https://github.com/compulim/react-scroll-to-bottom/workflows/Node.js%20CI/badge.svg)
 
 React container that will auto scroll to bottom or top if new content is added and viewport is at the bottom, similar to `tail -f`. Otherwise, a "jump to bottom" button will be shown to allow user to quickly jump to bottom.
 
@@ -10,7 +10,16 @@ Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https:/
 
 # Breaking changes
 
-Starting from `react-scroll-to-bottom@2`, we requires React 16.8.6 or above. This enable developers to use React Hooks to add features to the scroll view.
+## Upcoming
+
+- `scrollToBottom`/`scrollToEnd`/`scrollToStart`/`scrollToTop` now accept an option `{ behavior: 'auto' | 'smooth' }`
+   - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
+   - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
+   - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
+
+## [2.0.0] - 2020-05-07
+
+- Starting from `react-scroll-to-bottom@2`, we requires React 16.8.6 or above. This enable developers to use React Hooks to add features to the scroll view.
 
 # Sample code
 
@@ -183,6 +192,11 @@ This context contains functions used to manipulate the container. And will not u
   </thead>
   <tbody>
     <tr>
+      <td><code>useObserveScrollPosition</code></td>
+      <td><code>(observer: (({ scrollTop: number }) => void) | false) => void</code></td>
+      <td>Observe scroll position change by passing a callback function</td>
+    </tr>
+    <tr>
       <td><code>useScrollTo</code></td>
       <td><code>(scrollTop: number | '100%') => void</code></td>
       <td>Scroll panel to specified position</td>
@@ -210,6 +224,8 @@ This context contains functions used to manipulate the container. And will not u
   </tbody>
 </table>
 
+> Callback function passed to `useObserveScrollPosition` will be called rapidly during scrolling. To unsubscribe, pass a falsy value.
+
 ### State context
 
 This context contains state of the container.
@@ -227,6 +243,11 @@ This context contains state of the container.
       <td><code>useAnimating</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is animating scroll effect</td>
+    </tr>
+    <tr>
+      <td><code>useAnimatingToEnd</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is animating scroll effect and towards the end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
       <td><code>useAtBottom</code></td>

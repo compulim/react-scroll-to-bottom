@@ -57,7 +57,7 @@ const SpineTo = ({ name, onEnd, target, value }) => {
   );
 
   const handleCancelAnimation = useCallback(() => {
-    cancelAnimationFrame(animator);
+    cancelAnimationFrame(animator.current);
     onEnd && onEnd(false);
   }, [onEnd]);
 
@@ -66,10 +66,17 @@ const SpineTo = ({ name, onEnd, target, value }) => {
 
     if (target) {
       target.addEventListener('pointerdown', handleCancelAnimation, { passive: true });
+      target.addEventListener('wheel', handleCancelAnimation, { passive: true });
 
-      return () => target.removeEventListener('pointerdown', handleCancelAnimation);
+      return () => {
+        target.removeEventListener('pointerdown', handleCancelAnimation);
+        target.removeEventListener('wheel', handleCancelAnimation);
+        cancelAnimationFrame(animator.current);
+      };
     }
-  }, [animate, handleCancelAnimation, name, target, value]);
+
+    return () => cancelAnimationFrame(animator.current);
+  }, [animate, animator, handleCancelAnimation, name, target, value]);
 
   return false;
 };

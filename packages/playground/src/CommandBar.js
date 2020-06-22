@@ -1,6 +1,6 @@
 import { css } from 'glamor';
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import {
   useAnimating,
@@ -9,6 +9,7 @@ import {
   useAtStart,
   useAtTop,
   useMode,
+  useObserveScrollPosition,
   useScrollTo,
   useScrollToBottom,
   useScrollToEnd,
@@ -56,6 +57,7 @@ const ROOT_CSS = css({
 });
 
 const CommandBar = () => {
+  const scrollTopRef = useRef();
   const [animating] = useAnimating();
   const [atBottom] = useAtBottom();
   const [atEnd] = useAtEnd();
@@ -70,38 +72,55 @@ const CommandBar = () => {
   const scrollToStart = useScrollToStart();
   const scrollToTop = useScrollToTop();
 
-  const scrollTo100px = useCallback(() => scrollTo(100), [scrollTo]);
+  const handleScrollTo100pxClick = useCallback(() => scrollTo(100, { behavior: 'smooth' }), [scrollTo]);
+  const handleScrollToBottomClick = useCallback(() => scrollToBottom({ behavior: 'smooth' }), [scrollToBottom]);
+  const handleScrollToEndClick = useCallback(() => scrollToEnd({ behavior: 'smooth' }), [scrollToEnd]);
+  const handleScrollToStartClick = useCallback(() => scrollToStart({ behavior: 'smooth' }), [scrollToStart]);
+  const handleScrollToTopClick = useCallback(() => scrollToTop({ behavior: 'smooth' }), [scrollToTop]);
+
+  useObserveScrollPosition(
+    ({ scrollTop }) => {
+      const { current } = scrollTopRef;
+
+      // We are directly writing to "innerText" for performance reason.
+      if (current) {
+        current.innerText = scrollTop + 'px';
+      }
+    },
+    [scrollTopRef]
+  );
 
   return (
-    <div className={ ROOT_CSS + '' }>
+    <div className={ROOT_CSS + ''}>
       <ul className="actions">
         <li>
-          <button onClick={ scrollToBottom }>Scroll to bottom</button>
+          <button onClick={handleScrollToBottomClick}>Scroll to bottom</button>
         </li>
         <li>
-          <button onClick={ scrollToTop }>Scroll to top</button>
+          <button onClick={handleScrollToTopClick}>Scroll to top</button>
         </li>
         <li>
-          <button onClick={ scrollToStart }>Scroll to start</button>
+          <button onClick={handleScrollToStartClick}>Scroll to start</button>
         </li>
         <li>
-          <button onClick={ scrollToEnd }>Scroll to end</button>
+          <button onClick={handleScrollToEndClick}>Scroll to end</button>
         </li>
         <li>
-          <button onClick={ scrollTo100px }>100px</button>
+          <button onClick={handleScrollTo100pxClick}>100px</button>
         </li>
+        <li ref={scrollTopRef}></li>
       </ul>
       <ul className="badges">
-        <li className={ classNames({ lit: animating }) }>ANIMATING</li>
-        <li className={ classNames({ lit: atBottom }) }>AT BOTTOM</li>
-        <li className={ classNames({ lit: atEnd }) }>AT END</li>
-        <li className={ classNames({ lit: atStart }) }>AT START</li>
-        <li className={ classNames({ lit: atTop }) }>AT TOP</li>
-        <li className={ classNames({ lit: mode !== 'top' }) }>STICK TO BOTTOM</li>
-        <li className={ classNames({ lit: sticky }) }>STICKY</li>
+        <li className={classNames({ lit: animating })}>ANIMATING</li>
+        <li className={classNames({ lit: atBottom })}>AT BOTTOM</li>
+        <li className={classNames({ lit: atEnd })}>AT END</li>
+        <li className={classNames({ lit: atStart })}>AT START</li>
+        <li className={classNames({ lit: atTop })}>AT TOP</li>
+        <li className={classNames({ lit: mode !== 'top' })}>STICK TO BOTTOM</li>
+        <li className={classNames({ lit: sticky })}>STICKY</li>
       </ul>
     </div>
   );
 };
 
-export default CommandBar
+export default CommandBar;

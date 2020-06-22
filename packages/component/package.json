@@ -44,6 +44,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.10.1",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "eslint": "^7.3.0",
     "eslint-plugin-prettier": "^3.1.4",
