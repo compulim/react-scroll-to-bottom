@@ -84,7 +84,7 @@ jobs:
           name: npm-tarball
 
       - name: Download gh-pages
-      - uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v2
         with:
           name: gh-pages
           working-directory: gh-pages/
