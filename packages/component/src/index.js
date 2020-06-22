@@ -1,3 +1,5 @@
+import addVersionToMetaTag from './addVersionToMetaTag';
+
 import AutoHideFollowButton from './ScrollToBottom/AutoHideFollowButton';
 import BasicScrollToBottom from './BasicScrollToBottom';
 import Composer from './ScrollToBottom/Composer';
@@ -39,3 +41,5 @@ export {
   useScrollToTop,
   useSticky
 };
+
+addVersionToMetaTag();
