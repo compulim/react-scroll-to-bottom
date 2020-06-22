@@ -26,8 +26,7 @@
     "eslint": "eslint src/**/*.js --ignore-pattern *.spec.js --ignore-pattern *.test.js",
     "prestart": "npm run build:babel",
     "start": "npm run start:babel",
-    "start:babel": "npm run build:babel -- --skip-initial-build --watch",
-    "test": "npm run eslint"
+    "start:babel": "npm run build:babel -- --skip-initial-build --watch"
   },
   "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
   "license": "MIT",
