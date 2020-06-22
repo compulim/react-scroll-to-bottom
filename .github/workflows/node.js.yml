@@ -33,9 +33,7 @@ jobs:
 
       - name: Run npx version-from-git --no-git-tag-version
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
-        run: |
-          cd packages/component
-          npx version-from-git --no-git-tag-version
+        run: npx version-from-git --no-git-tag-version
 
       - run: npm ci
 
