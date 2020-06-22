@@ -77,7 +77,7 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    # if: ${{ startsWith(github.ref, 'refs/heads/') || startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/heads/') || startsWith(github.ref, 'refs/tags/') }}
 
     steps:
       - name: Download npm-tarball
@@ -99,34 +99,40 @@ jobs:
           echo "::set-output name=tarball::$(ls *.tgz)"
           echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      - run: ls -laR
+      - name: Run npm publish ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm publish *.tgz --tag master
 
-      # - name: Run npm publish ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
-      #   run: |
-      #     npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-      #     npm publish *.tgz --tag master
+      - name: Run npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
 
-      # - name: Run npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
-      #   if: ${{ startsWith(github.ref, 'refs/tags/') }}
-      #   run: |
-      #     npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
+      - name: Draft a new release
+        uses: actions/create-release@v1
+        id: create-release
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: '[${{ steps.read-package-json.outputs.version }}] - ${{ steps.read-package-json.outputs.date }}'
+          draft: true
 
-      # - uses: actions/create-release@v1
-      #   id: create-release
-      #   if: ${{ startsWith(github.ref, 'refs/tags/') }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ github.ref }}
-      #     release_name: '[${{ steps.read-package-json.outputs.version }}] - ${{ steps.read-package-json.outputs.date }}'
-      #     draft: true
+      - name: Upload tarball to release
+        uses: actions/upload-release-asset@v1
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./${{ steps.read-package-json.outputs.tarball }}
+          asset_name: ${{ steps.read-package-json.outputs.tarball }}
+          asset_content_type: application/octet-stream
 
-      # - uses: actions/upload-release-asset@v1
-      #   if: ${{ startsWith(github.ref, 'refs/tags/') }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create-release.outputs.upload_url }}
-      #     asset_path: ./${{ steps.read-package-json.outputs.tarball }}
-      #     asset_name: ${{ steps.read-package-json.outputs.tarball }}
-      #     asset_content_type: application/octet-stream
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages/
