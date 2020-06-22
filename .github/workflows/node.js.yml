@@ -31,7 +31,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: npx version-from-git --no-git-tag-version
+      - name: Run npx version-from-git --no-git-tag-version
+        run: |
+          cd packages/component
+          npx version-from-git --no-git-tag-version
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
 
       - run: npm ci
@@ -42,7 +45,8 @@ jobs:
 
       - run: npm test
 
-      - run: |
+      - name: Run npm pack
+        run: |
           cd packages/component
           npm pack
 
