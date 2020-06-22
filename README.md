@@ -8,6 +8,8 @@ React container that will auto scroll to bottom or top if new content is added a
 
 Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https://compulim.github.io/react-scroll-to-bottom/).
 
+![Demo](https://raw.githubusercontent.com/compulim/react-scroll-to-bottom/master/docs/demo.gif)
+
 # Breaking changes
 
 ## [3.0.0] - 2020-06-21
