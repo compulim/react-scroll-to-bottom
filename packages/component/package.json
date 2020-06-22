@@ -21,10 +21,13 @@
     "lib/**/*"
   ],
   "scripts": {
-    "build": "babel --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
+    "build": "npm run build:babel",
+    "build:babel": "babel --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
     "eslint": "eslint src/**/*.js --ignore-pattern *.spec.js --ignore-pattern *.test.js",
-    "start": "npm run build -- --watch",
-    "test": "echo no test specified"
+    "prestart": "npm run build:babel",
+    "start": "npm run start:babel",
+    "start:babel": "npm run build:babel -- --skip-initial-build --watch",
+    "test": "npm run eslint"
   },
   "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
   "license": "MIT",
@@ -37,17 +40,20 @@
   },
   "homepage": "https://github.com/compulim/react-scroll-to-bottom#readme",
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/preset-react": "^7.9.4",
-    "babel-jest": "^26.0.1",
-    "jest": "^26.0.1"
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "eslint": "^7.3.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "prettier": "^2.0.5"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "glamor": "^2.20.40",
+    "classnames": "2.2.6",
+    "glamor": "2.20.40",
     "prop-types": "15.7.2"
   },
   "peerDependencies": {

@@ -1,0 +1,99 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+      - name: Checking out for ${{ github.ref }}
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npx version-from-git --no-git-tag-version
+        if: ${{ startsWith(github.ref, 'refs/heads/') }}
+
+      - run: npm ci
+
+      - run: npm run build --if-present
+
+      - run: npm test
+
+      - run: |
+          cd packages/component
+          npm pack
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.node-version == '14.x' }}
+        with:
+          name: npm-tarball
+          path: 'packages/component/*.tgz'
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/heads/') || startsWith(github.ref, 'refs/tags/') }}
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: npm-tarball
+
+      - name: Read package.json
+        id: read-package-json
+        run: |
+          echo "::set-output name=name::$(tar xOf *.tgz package/package.json | jq -r '.name')"
+          echo "::set-output name=version::$(tar xOf *.tgz package/package.json | jq -r '.version')"
+          echo "::set-output name=tarball::$(ls *.tgz)"
+          echo "::set-output name=date::$(date +%Y-%m-%d)"
+
+      - name: Run npm publish ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm publish *.tgz --tag master
+
+      - name: Run npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
+
+      - uses: actions/create-release@v1
+        id: create-release
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: '[${{ steps.read-package-json.outputs.version }}] - ${{ steps.read-package-json.outputs.date }}'
+          draft: true
+
+      - uses: actions/upload-release-asset@v1
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./${{ steps.read-package-json.outputs.tarball }}
+          asset_name: ${{ steps.read-package-json.outputs.tarball }}
+          asset_content_type: application/octet-stream
