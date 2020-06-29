@@ -24,7 +24,7 @@ const BasicScrollToBottom = ({
   <Composer checkInterval={checkInterval} debounce={debounce} mode={mode}>
     <div className={classNames(ROOT_CSS + '', (className || '') + '')}>
       <Panel className={scrollViewClassName}>{children}</Panel>
-      <AutoHideFollowButton className={followButtonClassName}>{followButtonComponent}</AutoHideFollowButton>
+      <AutoHideFollowButton className={followButtonClassName} children={followButtonComponent} />
     </div>
   </Composer>
 );
@@ -34,6 +34,7 @@ BasicScrollToBottom.defaultProps = {
   children: undefined,
   className: undefined,
   debounce: undefined,
+  followButtonComponent: undefined,
   followButtonClassName: undefined,
   mode: undefined,
   scrollViewClassName: undefined
@@ -44,6 +45,7 @@ BasicScrollToBottom.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string,
   debounce: PropTypes.number,
+  followButtonComponent: PropTypes.element,
   followButtonClassName: PropTypes.string,
   mode: PropTypes.oneOf(['bottom', 'top']),
   scrollViewClassName: PropTypes.string
