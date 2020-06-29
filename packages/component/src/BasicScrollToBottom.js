@@ -16,6 +16,7 @@ const BasicScrollToBottom = ({
   children,
   className,
   debounce,
+  followButtonComponent,
   followButtonClassName,
   mode,
   scrollViewClassName
@@ -23,7 +24,7 @@ const BasicScrollToBottom = ({
   <Composer checkInterval={checkInterval} debounce={debounce} mode={mode}>
     <div className={classNames(ROOT_CSS + '', (className || '') + '')}>
       <Panel className={scrollViewClassName}>{children}</Panel>
-      <AutoHideFollowButton className={followButtonClassName} />
+      <AutoHideFollowButton className={followButtonClassName}>{followButtonComponent}</AutoHideFollowButton>
     </div>
   </Composer>
 );
