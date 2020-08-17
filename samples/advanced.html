@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Using react-scroll-to-bottom via UMD</title>
+    <script
+      crossorigin="anonymous"
+      src="https://unpkg.com/@babel/standalone@7.8.7/babel.min.js"
+    ></script>
+    <script
+      crossorigin="anonymous"
+      src="https://unpkg.com/react@16.8.6/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin="anonymous"
+      src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js"
+    ></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <style type="text/css">
+      body,
+      html,
+      #app,
+      .app,
+      .app__main-panel {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .app {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+      const {
+        ReactDOM: { render },
+        ReactScrollToBottom,
+        ReactScrollToBottom: {
+          Composer,
+          FunctionContext,
+          Panel,
+          StateContext,
+          useScrollToBottom,
+          useSticky,
+        },
+      } = window;
+
+      const Content = ({ scrollToBottom, sticky }) => {
+        return (
+          <React.Fragment>
+            <p>
+              Aliqua ex ipsum nostrud commodo amet amet eu laborum mollit
+              labore. Aliqua magna excepteur proident magna proident duis
+              laborum reprehenderit excepteur. Pariatur esse laborum veniam ex
+              quis excepteur esse elit. Elit aute id tempor velit velit.
+            </p>
+            <p>
+              Id duis sunt consequat veniam culpa eiusmod ea id consequat amet
+              qui minim. Aliqua tempor adipisicing ullamco ut dolor nisi non
+              mollit reprehenderit nostrud exercitation. Cupidatat ipsum
+              reprehenderit deserunt irure Lorem deserunt ea in deserunt mollit
+              exercitation nulla. Laboris mollit aliqua Lorem nisi id tempor in
+              proident sunt aute in. Voluptate cupidatat aliquip officia mollit
+              culpa laboris Lorem ad cupidatat. Labore non mollit magna proident
+              tempor et. Sunt deserunt incididunt labore officia elit dolor
+              aliquip.
+            </p>
+            <p>
+              Qui cillum mollit consequat labore. Sint excepteur est sint quis
+              eiusmod ullamco veniam. Ea do eiusmod voluptate pariatur voluptate
+              nisi incididunt ad nulla excepteur quis cillum velit adipisicing.
+              Magna consectetur aute aliquip incididunt tempor do. Nisi aliquip
+              incididunt id do qui dolor eiusmod do. Laboris aute id elit esse.
+              Veniam cupidatat est esse nostrud consectetur ex aliquip aliqua
+              incididunt anim eiusmod dolor Lorem officia.
+            </p>
+            <p>
+              Sunt mollit nisi eiusmod reprehenderit culpa enim laboris officia
+              cillum sunt. Adipisicing commodo consectetur duis amet voluptate
+              esse do amet aliqua cillum cillum labore. Aliqua laborum eu
+              adipisicing laborum dolore laboris cupidatat ut deserunt quis
+              exercitation eiusmod. Cupidatat aliqua quis id culpa.
+            </p>
+            <p>
+              Pariatur incididunt do incididunt enim est sint. Sit duis Lorem
+              nisi eu consectetur exercitation. Esse tempor non reprehenderit
+              mollit incididunt sint minim irure do cillum consequat do commodo.
+              Lorem tempor ullamco nulla anim occaecat proident ullamco
+              consectetur dolor pariatur.
+            </p>
+            <p>
+              Consectetur reprehenderit ut commodo est esse aute ea anim commodo
+              officia exercitation velit commodo mollit. Duis ea voluptate ad
+              irure exercitation ad ea id veniam adipisicing sunt. Ex fugiat
+              aliquip exercitation aliqua. Ea commodo consectetur ut excepteur
+              deserunt commodo exercitation deserunt. Occaecat in adipisicing
+              elit sit id incididunt nostrud. Consequat ut ex enim ea ad commodo
+              aliquip officia sint nostrud laboris nostrud.
+            </p>
+            <p>
+              Culpa dolor cillum ea ut labore id. Enim sint et qui et mollit
+              laborum velit ut. Mollit aliquip magna mollit proident qui elit.
+              Amet qui ex occaecat eiusmod ut.
+            </p>
+            <p>
+              Ea non qui amet ullamco consequat veniam deserunt velit culpa nisi
+              ad aliqua duis. Ut duis ad proident minim aliquip aliqua aliqua
+              proident sunt. Voluptate officia amet sunt quis veniam duis
+              excepteur amet amet eiusmod non. Amet voluptate minim labore
+              aliquip esse. Voluptate cupidatat pariatur nisi exercitation sunt
+              labore amet.
+            </p>
+            <p>
+              Nulla voluptate veniam proident commodo aliquip voluptate est
+              fugiat quis anim eiusmod Lorem amet. Aliqua cupidatat elit eu
+              velit mollit non consectetur eu aliqua nisi do nisi ea. Ut officia
+              incididunt cupidatat elit et id ut. Ad voluptate quis enim laboris
+              culpa amet.
+            </p>
+            <p>
+              Officia mollit occaecat ullamco exercitation reprehenderit
+              voluptate anim aute ullamco deserunt. Exercitation aliquip
+              consequat enim duis nisi. Veniam nostrud consequat nostrud elit
+              nostrud irure veniam in mollit commodo dolor veniam. Nulla cillum
+              aute ut magna est quis adipisicing.
+            </p>
+            <p>
+              Nostrud laboris proident aliquip do esse nisi eiusmod velit
+              eiusmod commodo aliquip sunt. Esse ea consectetur tempor aliqua
+              est ea id aliquip ullamco ex sunt. Anim eiusmod eiusmod amet
+              fugiat laboris deserunt cupidatat ut cillum Lorem non quis aute
+              proident. Voluptate non ut minim fugiat proident et nostrud minim
+              cillum labore.
+            </p>
+            <p>
+              Lorem sit elit aute eu Lorem elit sint. Occaecat proident mollit
+              mollit qui id incididunt cillum nulla officia incididunt. Quis
+              dolor commodo esse in sit. Qui est adipisicing irure anim
+              voluptate incididunt ex sunt enim proident non proident est sit.
+              Voluptate Lorem esse labore non pariatur commodo exercitation
+              dolore ex amet. Mollit cupidatat labore eiusmod non veniam amet
+              commodo eiusmod occaecat amet.
+            </p>
+            <p>
+              Lorem cillum sint amet et qui ex anim duis Lorem. Nulla laborum
+              laborum voluptate do duis irure. Amet fugiat irure velit labore et
+              enim irure ipsum minim sint ut. Aliqua aute occaecat ullamco Lorem
+              proident labore ullamco tempor Lorem in aliquip nisi sit officia.
+              Ut quis nulla est ea ullamco cupidatat dolor excepteur. Irure sint
+              culpa magna aliquip do do ipsum nulla officia et occaecat non
+              cillum nisi.
+            </p>
+            <p>
+              Cillum ea officia quis ipsum pariatur. Nisi duis aute voluptate
+              ad. Minim incididunt tempor laborum Lorem elit. Ut commodo anim
+              tempor nulla minim sint ut.
+            </p>
+            <p>
+              Mollit esse ea ullamco cupidatat laborum quis. Lorem nostrud aute
+              sint anim reprehenderit ea. Mollit ut est veniam consequat eiusmod
+              veniam deserunt non cillum pariatur. Commodo qui pariatur proident
+              laborum ad officia ullamco reprehenderit cillum quis sint veniam
+              labore.
+            </p>
+            <p>
+              Fugiat commodo enim proident voluptate nostrud adipisicing
+              reprehenderit duis minim aliquip excepteur. Fugiat pariatur
+              pariatur tempor aliqua in magna tempor ad. Do quis quis non veniam
+              dolore excepteur in irure id exercitation tempor sit ad.
+              Exercitation in amet velit duis ipsum tempor ad est labore labore
+              veniam ex. Ullamco enim consequat elit duis labore reprehenderit
+              tempor dolor est elit eu ea veniam magna. Veniam ipsum minim et
+              labore commodo do elit Lorem laborum ullamco velit aliquip.
+            </p>
+            <p>
+              Pariatur fugiat officia ut mollit quis mollit proident esse ipsum.
+              Culpa laborum labore ea commodo cillum excepteur sunt ullamco
+              exercitation. Ullamco consequat officia enim ex duis eiusmod in
+              ipsum est dolor eiusmod aliqua voluptate in. Veniam nisi ullamco
+              qui non duis irure nisi pariatur. Et enim sint eu non nulla do
+              veniam qui cupidatat amet sint esse Lorem commodo. Culpa nostrud
+              qui ut dolor quis nisi labore aliqua mollit.
+            </p>
+            <p>
+              Aute non minim consequat in culpa occaecat veniam tempor esse
+              cillum duis officia cillum irure. Velit minim commodo adipisicing
+              minim. Qui quis irure et consectetur esse consectetur nostrud
+              magna officia ullamco elit. Dolore est esse velit minim fugiat.
+            </p>
+            <p>
+              Consequat ut cillum id in commodo sunt quis nulla pariatur labore
+              ullamco. Eiusmod ut dolor aliqua quis do. Ea laborum nulla minim
+              cillum est sit exercitation officia. Amet dolor cillum irure
+              incididunt.
+            </p>
+            <p>
+              Voluptate in duis esse nisi excepteur duis ipsum. Nisi tempor
+              nostrud proident Lorem mollit. Minim ut laboris elit reprehenderit
+              minim labore nostrud occaecat magna quis tempor sint. Ut nisi sunt
+              nulla deserunt esse excepteur quis non commodo laborum eiusmod
+              commodo esse sint.
+            </p>
+          </React.Fragment>
+        );
+      };
+
+      const LegacyScrollToBottomButton = () => {
+        return (
+          <FunctionContext.Consumer>
+            {({ scrollToBottom }) => (
+              <StateContext.Consumer>
+                {({ sticky }) => (
+                  <button
+                    className="scroll-to-bottom-button"
+                    disabled={sticky}
+                    onClick={scrollToBottom}
+                  >
+                    Click me to scroll to bottom
+                  </button>
+                )}
+              </StateContext.Consumer>
+            )}
+          </FunctionContext.Consumer>
+        );
+      };
+
+      const ScrollToBottomButton = () => {
+        const [sticky] = useSticky();
+        const scrollToBottom = useScrollToBottom();
+
+        return (
+          <button
+            className="scroll-to-bottom-button"
+            disabled={sticky}
+            onClick={scrollToBottom}
+          >
+            Click me to scroll to bottom
+          </button>
+        );
+      };
+
+      const App = () => {
+        // The scroll-to-bottom button can be located on a entirely different DOM tree outside of the scrollable view.
+        // As long the as the button and the <Panel> are placed under the same <Composer> component, they are connected.
+
+        return (
+          <Composer>
+            <div className="app">
+              <div role="main">
+                <Panel className="app__main-panel">
+                  <Content />
+                </Panel>
+              </div>
+              <div role="complement">
+                <ScrollToBottomButton />
+                <br />
+                <LegacyScrollToBottomButton />
+              </div>
+            </div>
+          </Composer>
+        );
+      };
+
+      render(<App />, document.getElementById("app"));
+    </script>
+  </body>
+</html>
