@@ -100,10 +100,22 @@ You can use React Hooks to perform various operations and signal state changes. 
       <td>Scroll panel to top</td>
     </tr>
     <tr>
+      <td>Observer</td>
+      <td><code>useObserveScrollPosition</code></td>
+      <td><code>(observer: (({ scrollTop: number }) => void) | false) => void</code></td>
+      <td>Observe scroll position change by passing a callback function</td>
+    </tr>
+    <tr>
       <td>State</td>
       <td><code>useAnimating</code></td>
       <td><code>() => [boolean]</code></td>
       <td><code>true</code> if the panel is animating scroll effect</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><code>useAnimatingToEnd</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code> if the panel is animating scroll effect and towards the end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
       <td>State</td>
@@ -144,6 +156,8 @@ You can use React Hooks to perform various operations and signal state changes. 
   </tbody>
 </table>
 
+> Callback function passed to `useObserveScrollPosition` will be called rapidly during scrolling. To unsubscribe, pass a falsy value.
+
 ### Sample code
 
 The following sample code will put a button inside the content view only if the view is not at the bottom. When the button is clicked, it will scroll the view to the bottom.
@@ -162,7 +176,7 @@ const Content = () => {
       <p>Labore commodo consectetur commodo et Lorem mollit voluptate velit adipisicing proident sit. Dolor consequat nostrud aliquip ea anim enim. Culpa quis tempor et quis esse proident cupidatat reprehenderit laborum ullamco.</p>
       <p>Incididunt labore nulla cupidatat occaecat elit esse occaecat culpa irure et nisi excepteur. Duis Lorem labore consectetur nostrud et voluptate culpa consequat enim reprehenderit. Id voluptate occaecat anim consequat id ea eiusmod laborum proident irure veniam esse. Aliquip nostrud culpa nostrud laborum cillum adipisicing dolore. Est tempor labore Lorem ad cupidatat reprehenderit exercitation pariatur officia ex adipisicing cupidatat exercitation.</p>
       <p>Est labore cupidatat exercitation est laboris et tempor Lorem irure velit ea commodo sint officia. Ullamco exercitation cillum est fugiat do. Enim qui eu veniam nostrud tempor elit. Duis elit mollit ut reprehenderit sit adipisicing proident culpa veniam sint veniam consectetur fugiat Lorem. Sint dolor proident commodo proident non cupidatat labore.</p>
-      { !sticky && <button onClick={ scrollToBottom }>Click me to scroll to bottom</button> }
+      {!sticky && <button onClick={scrollToBottom}>Click me to scroll to bottom</button>}
     </React.Fragment>
   );
 }
@@ -176,7 +190,7 @@ export default () => (
 
 ## Context
 
-> Starting with React Hooks, we are deprecating the React Context.
+> Starting with React Hooks, we are deprecating the React Context. New functions may not be added to context.
 
 We use 2 different contexts with different performance characteristics to provide better overall performance. [Function context](#function-context) contains immutable functions. [State context](#state-context) may change when the user scroll the panel.
 
@@ -194,39 +208,32 @@ This context contains functions used to manipulate the container. And will not u
   </thead>
   <tbody>
     <tr>
-      <td><code>useObserveScrollPosition</code></td>
-      <td><code>(observer: (({ scrollTop: number }) => void) | false) => void</code></td>
-      <td>Observe scroll position change by passing a callback function</td>
-    </tr>
-    <tr>
-      <td><code>useScrollTo</code></td>
+      <td><code>scrollTo</code></td>
       <td><code>(scrollTop: number | '100%') => void</code></td>
       <td>Scroll panel to specified position</td>
     </tr>
     <tr>
-      <td><code>useScrollToBottom</code></td>
+      <td><code>scrollToBottom</code></td>
       <td><code>() => void</code></td>
       <td>Scroll panel to bottom</td>
     </tr>
     <tr>
-      <td><code>useScrollToEnd</code></td>
+      <td><code>scrollToEnd</code></td>
       <td><code>() => void</code></td>
       <td>Scroll panel to end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td><code>useScrollToStart</code></td>
+      <td><code>scrollToStart</code></td>
       <td><code>() => void</code></td>
       <td>Scroll panel to start (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td><code>useScrollToTop</code></td>
+      <td><code>scrollToTop</code></td>
       <td><code>() => void</code></td>
       <td>Scroll panel to top</td>
     </tr>
   </tbody>
 </table>
-
-> Callback function passed to `useObserveScrollPosition` will be called rapidly during scrolling. To unsubscribe, pass a falsy value.
 
 ### State context
 
@@ -242,42 +249,42 @@ This context contains state of the container.
   </thead>
   <tbody>
     <tr>
-      <td><code>useAnimating</code></td>
+      <td><code>animating</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is animating scroll effect</td>
     </tr>
     <tr>
-      <td><code>useAnimatingToEnd</code></td>
+      <td><code>animatingToEnd</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is animating scroll effect and towards the end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td><code>useAtBottom</code></td>
+      <td><code>atBottom</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is currently near bottom</td>
     </tr>
     <tr>
-      <td><code>useAtEnd</code></td>
+      <td><code>atEnd</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is currently near the end (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td><code>useAtStart</code></td>
+      <td><code>atStart</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is currently near the start (depends on <code>mode</code>)</td>
     </tr>
     <tr>
-      <td><code>useAtTop</code></td>
+      <td><code>atTop</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is currently near top</td>
     </tr>
     <tr>
-      <td><code>useMode</code></td>
+      <td><code>mode</code></td>
       <td><code>string</code></td>
       <td><code>"bottom"</code> for scroll-to-bottom, <code>"top"</code> for scroll-to-top</td>
     </tr>
     <tr>
-      <td><code>useSticky</code></td>
+      <td><code>sticky</code></td>
       <td><code>boolean</code></td>
       <td><code>true</code> if the panel is sticking to the end</td>
     </tr>
@@ -286,10 +293,44 @@ This context contains state of the container.
 
 > `atEnd` and `sticky` are slightly different. During scroll animation, the panel is not at the end yet, but it is still sticky.
 
+### Sample code
+
+The following sample code will put a button inside the content view only if the view is not at the bottom. When the button is clicked, it will scroll the view to the bottom.
+
+```jsx
+import ScrollToBottom from 'react-scroll-to-bottom';
+
+const Content = ({ scrollToBottom, sticky }) => {
+  return (
+    <React.Fragment>
+      <p>Labore commodo consectetur commodo et Lorem mollit voluptate velit adipisicing proident sit. Dolor consequat nostrud aliquip ea anim enim. Culpa quis tempor et quis esse proident cupidatat reprehenderit laborum ullamco.</p>
+      <p>Incididunt labore nulla cupidatat occaecat elit esse occaecat culpa irure et nisi excepteur. Duis Lorem labore consectetur nostrud et voluptate culpa consequat enim reprehenderit. Id voluptate occaecat anim consequat id ea eiusmod laborum proident irure veniam esse. Aliquip nostrud culpa nostrud laborum cillum adipisicing dolore. Est tempor labore Lorem ad cupidatat reprehenderit exercitation pariatur officia ex adipisicing cupidatat exercitation.</p>
+      <p>Est labore cupidatat exercitation est laboris et tempor Lorem irure velit ea commodo sint officia. Ullamco exercitation cillum est fugiat do. Enim qui eu veniam nostrud tempor elit. Duis elit mollit ut reprehenderit sit adipisicing proident culpa veniam sint veniam consectetur fugiat Lorem. Sint dolor proident commodo proident non cupidatat labore.</p>
+      {!sticky && <button onClick={scrollToBottom}>Click me to scroll to bottom</button>}
+    </React.Fragment>
+  );
+}
+
+export default () => (
+  <ScrollToBottom>
+    <FunctionContext.Consumer>
+      {({ scrollToBottom }) =>
+        <StateContext.Consumer>
+          {({ sticky }) =>
+            <Content scrollToBottom={scrollToBottom} sticky={sticky} />
+          }
+        </StateContext.Consumer>
+      }
+    </FunctionContext.Consumer>
+  </ScrollToBottom>
+)
+```
+
 # Road map
 
 - [x] Easier customization for "scroll to bottom" button
 - [ ] Debounce on showing "scroll to bottom" button
+- [ ] Investigate using [`scroll`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scroll) for scrolling and polyfill IE11
 
 # Contributions
 
