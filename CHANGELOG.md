@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Moved from `glamor@2.20.40` to `create-emotion@10.0.27`, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+- Moved from `glamor@2.20.40` to `create-emotion@10.0.27`, in PR [#62](https://github.com/compulim/react-scroll-to-bottom/pull/62)
 
 ## [3.0.0] - 2020-06-21
 
