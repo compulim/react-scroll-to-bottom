@@ -259,7 +259,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce }) => {
   );
 
   const styleToClassName = useMemo(() => {
-    const emotion = createEmotion({ nonce });
+    const emotion = createEmotion({ key: 'rstb', nonce });
 
     return emotion.css.bind(emotion);
   }, [nonce]);
