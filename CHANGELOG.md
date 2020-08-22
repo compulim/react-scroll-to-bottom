@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Support `nonce` prop for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy), in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+
+### Changed
+
+- Moved from `glamor@2.20.40` to `create-emotion@10.0.27`, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX)
+
 ## [3.0.0] - 2020-06-21
 
 ### Breaking changes

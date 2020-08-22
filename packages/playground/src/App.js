@@ -1,13 +1,13 @@
-import { css } from 'glamor';
+import { css, keyframes } from 'emotion';
+import { loremIpsum } from 'lorem-ipsum';
 import classNames from 'classnames';
 import Interval from 'react-interval';
-import { loremIpsum } from 'lorem-ipsum';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import ScrollToEnd, { StateContext } from 'react-scroll-to-bottom';
+import ReactScrollToBottom, { StateContext } from 'react-scroll-to-bottom';
 
 import CommandBar from './CommandBar';
 
-const FADE_IN_ANIMATION = css.keyframes({
+const FADE_IN_ANIMATION = keyframes({
   '0%': { opacity: 0.2 },
   '100%': { opacity: 1 }
 });
@@ -194,7 +194,7 @@ const App = () => {
         </li>
       </ul>
       <div className="panes">
-        <ScrollToEnd className={containerClassName} scrollViewClassName={SCROLL_VIEW_CSS + ''}>
+        <ReactScrollToBottom className={containerClassName} scrollViewClassName={SCROLL_VIEW_CSS + ''}>
           {commandBarVisible && <CommandBar />}
           <StateContext.Consumer>
             {({ sticky }) => (
@@ -212,8 +212,8 @@ const App = () => {
             )}
           </StateContext.Consumer>
           {commandBarVisible && <CommandBar />}
-        </ScrollToEnd>
-        <ScrollToEnd className={containerClassName} mode="top">
+        </ReactScrollToBottom>
+        <ReactScrollToBottom className={containerClassName} mode="top">
           {commandBarVisible && <CommandBar />}
           <StateContext.Consumer>
             {({ sticky }) => (
@@ -231,7 +231,7 @@ const App = () => {
             )}
           </StateContext.Consumer>
           {commandBarVisible && <CommandBar />}
-        </ScrollToEnd>
+        </ReactScrollToBottom>
       </div>
       <div className="version">
         <code>react-scroll-to-bottom@{loadedVersion}</code> has loaded.

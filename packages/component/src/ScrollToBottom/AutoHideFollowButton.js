@@ -1,12 +1,12 @@
-import { css } from 'glamor';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import useScrollToEnd from '../hooks/useScrollToEnd';
 import useSticky from '../hooks/useSticky';
+import useStyleToClassName from '../hooks/internal/useStyleToClassName';
 
-const ROOT_CSS = css({
+const ROOT_STYLE = {
   backgroundColor: 'rgba(0, 0, 0, .2)',
   borderRadius: 10,
   borderWidth: 0,
@@ -25,15 +25,16 @@ const ROOT_CSS = css({
   '&:active': {
     backgroundColor: 'rgba(0, 0, 0, .6)'
   }
-});
+};
 
 const AutoHideFollowButton = ({ children, className }) => {
   const [sticky] = useSticky();
+  const rootCSS = useStyleToClassName()(ROOT_STYLE);
   const scrollToEnd = useScrollToEnd();
 
   return (
     !sticky && (
-      <button className={classNames(ROOT_CSS + '', (className || '') + '')} onClick={scrollToEnd} type="button">
+      <button className={classNames(rootCSS + '', (className || '') + '')} onClick={scrollToEnd} type="button">
         {children}
       </button>
     )

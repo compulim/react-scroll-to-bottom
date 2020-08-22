@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-
-import StateContext from '../ScrollToBottom/StateContext';
+import useStateContext from './internal/useStateContext';
 
 export default function useAnimating() {
-  const context = useContext(StateContext);
+  const { animating } = useStateContext();
 
-  return [context.animating];
+  return [animating];
 }

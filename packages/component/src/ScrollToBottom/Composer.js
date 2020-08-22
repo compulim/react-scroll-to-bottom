@@ -1,3 +1,4 @@
+import createEmotion from 'create-emotion';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -38,7 +39,7 @@ function isEnd(scrollTop, mode) {
   return (mode === MODE_TOP && scrollTop === 0) || (mode === MODE_BOTTOM && scrollTop === '100%');
 }
 
-const Composer = ({ checkInterval, children, debounce, mode }) => {
+const Composer = ({ checkInterval, children, debounce, mode, nonce }) => {
   mode = mode === MODE_TOP ? MODE_TOP : MODE_BOTTOM;
 
   const ignoreScrollEventBeforeRef = useRef(0);
@@ -257,14 +258,21 @@ const Composer = ({ checkInterval, children, debounce, mode }) => {
     ]
   );
 
+  const styleToClassName = useMemo(() => {
+    const emotion = createEmotion({ nonce });
+
+    return emotion.css.bind(emotion);
+  }, [nonce]);
+
   const internalContext = useMemo(
     () => ({
       observeScrollPosition,
       offsetHeight,
       scrollHeight,
-      setTarget
+      setTarget,
+      styleToClassName
     }),
-    [observeScrollPosition, offsetHeight, scrollHeight, setTarget]
+    [observeScrollPosition, offsetHeight, scrollHeight, setTarget, styleToClassName]
   );
 
   const animatingToEnd = animating && isEnd(scrollTop, mode);
@@ -342,14 +350,16 @@ Composer.defaultProps = {
   checkInterval: 100,
   children: undefined,
   debounce: 17,
-  mode: undefined
+  mode: undefined,
+  nonce: undefined
 };
 
 Composer.propTypes = {
   checkInterval: PropTypes.number,
   children: PropTypes.any,
   debounce: PropTypes.number,
-  mode: PropTypes.oneOf(['bottom', 'top'])
+  mode: PropTypes.oneOf(['bottom', 'top']),
+  nonce: PropTypes.string
 };
 
 export default Composer;

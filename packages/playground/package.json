@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "classnames": "2.2.6",
-    "glamor": "2.20.40",
+    "emotion": "10.0.27",
     "lorem-ipsum": "2.0.3",
     "react-interval": "2.1.1",
     "react-scroll-to-bottom": "0.0.0-0"
