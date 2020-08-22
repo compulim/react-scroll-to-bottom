@@ -26,7 +26,7 @@ Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https:/
 # Sample code
 
 ```jsx
-import { css } from 'glamor';
+import { css } from 'emotion';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
 const ROOT_CSS = css({
@@ -53,6 +53,7 @@ export default props =>
 | `debounce`              | `number` | `17`       | Set the debounce for tracking the `onScroll` event                           |
 | `followButtonClassName` | `string` |            | Set the class name for the follow button                                     |
 | `mode`                  | `string` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top         |
+| `nonce`                 | `string` |            | Set the nonce for injected `<style>`                                         |
 | `scrollViewClassName`   | `string` |            | Set the class name for the container element that house all `props.children` |
 
 ## Hooks
