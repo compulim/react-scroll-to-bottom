@@ -1,6 +1,6 @@
-import { css } from 'glamor';
+import createEmotion from 'create-emotion';
 import classNames from 'classnames';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import {
   useAnimating,
@@ -18,7 +18,7 @@ import {
   useSticky
 } from 'react-scroll-to-bottom';
 
-const ROOT_CSS = css({
+const ROOT_STYLE = {
   backgroundColor: '#FFF',
   boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
 
@@ -54,9 +54,11 @@ const ROOT_CSS = css({
       color: 'White'
     }
   }
-});
+};
 
-const CommandBar = () => {
+const CommandBar = ({ nonce }) => {
+  const rootCSS = useMemo(() => createEmotion({ nonce }).css(ROOT_STYLE), [nonce]);
+
   const scrollTopRef = useRef();
   const [animating] = useAnimating();
   const [atBottom] = useAtBottom();
@@ -91,7 +93,7 @@ const CommandBar = () => {
   );
 
   return (
-    <div className={ROOT_CSS + ''}>
+    <div className={rootCSS + ''}>
       <ul className="actions">
         <li>
           <button onClick={handleScrollToBottomClick}>Scroll to bottom</button>

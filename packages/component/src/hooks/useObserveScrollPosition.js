@@ -1,6 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import InternalContext from '../ScrollToBottom/InternalContext';
+import useInternalContext from './internal/useInternalContext';
 
 export default function useObserveScrollPosition(observer, deps = []) {
   if (typeof observer !== 'function') {
@@ -11,7 +11,7 @@ export default function useObserveScrollPosition(observer, deps = []) {
     );
   }
 
-  const { observeScrollPosition } = useContext(InternalContext);
+  const { observeScrollPosition } = useInternalContext();
 
   /* eslint-disable-next-line react-hooks/exhaustive-deps */
   useEffect(() => observer && observeScrollPosition(observer), [...deps, observeScrollPosition]);

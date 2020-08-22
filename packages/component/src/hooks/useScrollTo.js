@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-
-import FunctionContext from '../ScrollToBottom/FunctionContext';
+import useFunctionContext from './internal/useFunctionContext';
 
 export default function useScrollTo() {
-  const context = useContext(FunctionContext);
+  const { scrollTo } = useFunctionContext();
 
-  return context.scrollTo;
+  return scrollTo;
 }

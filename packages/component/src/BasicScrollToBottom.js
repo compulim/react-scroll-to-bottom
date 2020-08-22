@@ -1,4 +1,3 @@
-import { css } from 'glamor';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -6,10 +5,36 @@ import React from 'react';
 import AutoHideFollowButton from './ScrollToBottom/AutoHideFollowButton';
 import Composer from './ScrollToBottom/Composer';
 import Panel from './ScrollToBottom/Panel';
+import useStyleToClassName from './hooks/internal/useStyleToClassName';
 
-const ROOT_CSS = css({
+const ROOT_STYLE = {
   position: 'relative'
-});
+};
+
+const BasicScrollToBottomCore = ({ children, className, followButtonClassName, scrollViewClassName }) => {
+  const rootCSS = useStyleToClassName()(ROOT_STYLE);
+
+  return (
+    <div className={classNames(rootCSS + '', (className || '') + '')}>
+      <Panel className={(scrollViewClassName || '') + ''}>{children}</Panel>
+      <AutoHideFollowButton className={(followButtonClassName || '') + ''} />
+    </div>
+  );
+};
+
+BasicScrollToBottomCore.defaultProps = {
+  children: undefined,
+  className: undefined,
+  followButtonClassName: undefined,
+  scrollViewClassName: undefined
+};
+
+BasicScrollToBottomCore.propTypes = {
+  children: PropTypes.any,
+  className: PropTypes.string,
+  followButtonClassName: PropTypes.string,
+  scrollViewClassName: PropTypes.string
+};
 
 const BasicScrollToBottom = ({
   checkInterval,
@@ -18,15 +43,25 @@ const BasicScrollToBottom = ({
   debounce,
   followButtonClassName,
   mode,
+  nonce,
   scrollViewClassName
-}) => (
-  <Composer checkInterval={checkInterval} debounce={debounce} mode={mode}>
-    <div className={classNames(ROOT_CSS + '', (className || '') + '')}>
-      <Panel className={scrollViewClassName}>{children}</Panel>
-      <AutoHideFollowButton className={followButtonClassName} />
-    </div>
-  </Composer>
-);
+}) => {
+  const styleToClassName = useStyleToClassName();
+
+  const rootCSS = styleToClassName(ROOT_STYLE);
+
+  return (
+    <Composer checkInterval={checkInterval} debounce={debounce} mode={mode} nonce={nonce}>
+      <BasicScrollToBottomCore
+        className={className}
+        followButtonClassName={followButtonClassName}
+        scrollViewClassName={scrollViewClassName}
+      >
+        {children}
+      </BasicScrollToBottomCore>
+    </Composer>
+  );
+};
 
 BasicScrollToBottom.defaultProps = {
   checkInterval: undefined,
@@ -35,6 +70,7 @@ BasicScrollToBottom.defaultProps = {
   debounce: undefined,
   followButtonClassName: undefined,
   mode: undefined,
+  nonce: undefined,
   scrollViewClassName: undefined
 };
 
@@ -45,6 +81,7 @@ BasicScrollToBottom.propTypes = {
   debounce: PropTypes.number,
   followButtonClassName: PropTypes.string,
   mode: PropTypes.oneOf(['bottom', 'top']),
+  nonce: PropTypes.string,
   scrollViewClassName: PropTypes.string
 };
 

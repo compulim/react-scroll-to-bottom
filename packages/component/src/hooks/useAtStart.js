@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-
-import StateContext from '../ScrollToBottom/StateContext';
+import useStateContext from './internal/useStateContext';
 
 export default function useAtStart() {
-  const context = useContext(StateContext);
+  const { atStart } = useStateContext();
 
-  return [context.atStart];
+  return [atStart];
 }

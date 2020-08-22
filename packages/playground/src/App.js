@@ -1,18 +1,18 @@
-import { css } from 'glamor';
+import createEmotion from 'create-emotion';
+import { loremIpsum } from 'lorem-ipsum';
 import classNames from 'classnames';
 import Interval from 'react-interval';
-import { loremIpsum } from 'lorem-ipsum';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import ScrollToEnd, { StateContext } from 'react-scroll-to-bottom';
+import ReactScrollToBottom, { StateContext } from 'react-scroll-to-bottom';
 
 import CommandBar from './CommandBar';
 
-const FADE_IN_ANIMATION = css.keyframes({
+const FADE_IN_ANIMATION_KEYFRAMES = {
   '0%': { opacity: 0.2 },
   '100%': { opacity: 1 }
-});
+};
 
-const ROOT_CSS = css({
+const ROOT_STYLE = {
   '& > ul.button-bar': {
     display: 'flex',
     listStyleType: 'none',
@@ -40,44 +40,66 @@ const ROOT_CSS = css({
     bottom: 10,
     position: 'absolute'
   }
-});
+};
 
-const CONTAINER_CSS = css({
+const CONTAINER_STYLE = {
   borderColor: 'Black',
   borderStyle: 'solid',
   borderWidth: 1,
   height: 400,
   marginTop: 10
-});
+};
 
-const LARGE_CONTAINER_CSS = css({
+const LARGE_CONTAINER_STYLE = {
   height: 600
-});
+};
 
-const SCROLL_VIEW_CSS = css({
+const SCROLL_VIEW_STYLE = {
   backgroundColor: '#EEE'
-});
+};
 
-const SCROLL_VIEW_PADDING_CSS = css({
+const SCROLL_VIEW_PADDING_STYLE = {
   paddingLeft: 10,
   paddingRight: 10,
 
   '&:not(.sticky)': {
     backgroundColor: 'rgba(255, 0, 0, .1)'
-  },
-
-  '& > p': {
-    animation: `${FADE_IN_ANIMATION} 500ms`
   }
-});
+};
 
-const SMALL_CONTAINER_CSS = css({
+const SMALL_CONTAINER_STYLE = {
   height: 300
-});
+};
 
 const createParagraphs = count => new Array(count).fill().map(() => loremIpsum({ units: 'paragraph' }));
 
-const App = () => {
+const App = ({ nonce }) => {
+  const {
+    containerCSS,
+    largeContainerCSS,
+    rootCSS,
+    scrollViewCSS,
+    scrollViewPaddingCSS,
+    smallContainerCSS
+  } = useMemo(() => {
+    const { css, keyframes } = createEmotion({ nonce });
+
+    return {
+      containerCSS: css(CONTAINER_STYLE),
+      largeContainerCSS: css(LARGE_CONTAINER_STYLE),
+      rootCSS: css(ROOT_STYLE),
+      scrollViewCSS: css(SCROLL_VIEW_STYLE),
+      scrollViewPaddingCSS: css({
+        ...SCROLL_VIEW_PADDING_STYLE,
+
+        '& > p': {
+          animation: `${keyframes(FADE_IN_ANIMATION_KEYFRAMES)} 500ms`
+        }
+      }),
+      smallContainerCSS: css(SMALL_CONTAINER_STYLE)
+    };
+  }, [nonce]);
+
   const [containerSize, setContainerSize] = useState('');
   const [intervalEnabled, setIntervalEnabled] = useState(false);
   const [paragraphs, setParagraphs] = useState(createParagraphs(10));
@@ -110,10 +132,10 @@ const App = () => {
   const containerClassName = useMemo(
     () =>
       classNames(
-        CONTAINER_CSS + '',
-        containerSize === 'small' ? SMALL_CONTAINER_CSS + '' : containerSize === 'large' ? LARGE_CONTAINER_CSS + '' : ''
+        containerCSS + '',
+        containerSize === 'small' ? smallContainerCSS + '' : containerSize === 'large' ? largeContainerCSS + '' : ''
       ),
-    [containerSize]
+    [containerCSS, containerSize, largeContainerCSS, smallContainerCSS]
   );
 
   const handleKeyDown = useCallback(
@@ -157,7 +179,7 @@ const App = () => {
   }, [handleKeyDown]);
 
   return (
-    <div className={ROOT_CSS + ''}>
+    <div className={rootCSS + ''}>
       <ul className="button-bar">
         <li>
           <button onClick={handleAdd1}>Add new paragraph</button>
@@ -194,11 +216,11 @@ const App = () => {
         </li>
       </ul>
       <div className="panes">
-        <ScrollToEnd className={containerClassName} scrollViewClassName={SCROLL_VIEW_CSS + ''}>
-          {commandBarVisible && <CommandBar />}
+        <ReactScrollToBottom className={containerClassName} nonce="a1b2c3d" scrollViewClassName={scrollViewCSS + ''}>
+          {commandBarVisible && <CommandBar nonce={nonce} />}
           <StateContext.Consumer>
             {({ sticky }) => (
-              <div className={classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky })}>
+              <div className={classNames(scrollViewPaddingCSS + '', { sticky })}>
                 {paragraphs.map(paragraph => (
                   <p key={paragraph}>
                     {paragraph.startsWith('Button: ') ? (
@@ -211,13 +233,13 @@ const App = () => {
               </div>
             )}
           </StateContext.Consumer>
-          {commandBarVisible && <CommandBar />}
-        </ScrollToEnd>
-        <ScrollToEnd className={containerClassName} mode="top">
-          {commandBarVisible && <CommandBar />}
+          {commandBarVisible && <CommandBar nonce={nonce} />}
+        </ReactScrollToBottom>
+        <ReactScrollToBottom className={containerClassName} mode="top" nonce="a1b2c3d">
+          {commandBarVisible && <CommandBar nonce={nonce} />}
           <StateContext.Consumer>
             {({ sticky }) => (
-              <div className={classNames(SCROLL_VIEW_PADDING_CSS + '', { sticky })}>
+              <div className={classNames(scrollViewPaddingCSS + '', { sticky })}>
                 {[...paragraphs].reverse().map(paragraph => (
                   <p key={paragraph}>
                     {paragraph.startsWith('Button: ') ? (
@@ -230,8 +252,8 @@ const App = () => {
               </div>
             )}
           </StateContext.Consumer>
-          {commandBarVisible && <CommandBar />}
-        </ScrollToEnd>
+          {commandBarVisible && <CommandBar nonce={nonce} />}
+        </ReactScrollToBottom>
       </div>
       <div className="version">
         <code>react-scroll-to-bottom@{loadedVersion}</code> has loaded.

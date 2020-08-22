@@ -1,9 +1,7 @@
-import { useContext } from 'react';
-
-import StateContext from '../ScrollToBottom/StateContext';
+import useStateContext from './internal/useStateContext';
 
 export default function useMode() {
-  const context = useContext(StateContext);
+  const { mode } = useStateContext();
 
-  return [context.mode];
+  return [mode];
 }

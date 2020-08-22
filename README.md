@@ -15,9 +15,9 @@ Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https:/
 ## [3.0.0] - 2020-06-21
 
 - `scrollToBottom`/`scrollToEnd`/`scrollToStart`/`scrollToTop` now accept an option `{ behavior: 'auto' | 'smooth' }`
-   - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
-   - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
-   - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
+  - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
+  - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
+  - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
 
 ## [2.0.0] - 2020-05-07
 
@@ -26,7 +26,7 @@ Try out the demo at [https://compulim.github.io/react-scroll-to-bottom/](https:/
 # Sample code
 
 ```jsx
-import { css } from 'glamor';
+import { css } from 'emotion';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
 const ROOT_CSS = css({
@@ -34,26 +34,43 @@ const ROOT_CSS = css({
   width: 400
 });
 
-export default props =>
-  <ScrollToBottom className={ ROOT_CSS }>
-    <p>Nostrud nisi duis veniam ex esse laboris consectetur officia et. Velit cillum est veniam culpa magna sit exercitation excepteur consectetur ea proident. Minim pariatur nisi dolore Lorem ipsum adipisicing do. Ea cupidatat Lorem sunt fugiat. Irure est sunt nostrud commodo sint.</p>
-    <p>Duis consectetur ad in fugiat et aliquip esse adipisicing occaecat et sunt ea occaecat ad. Tempor anim consequat commodo veniam nostrud sunt deserunt adipisicing Lorem Lorem magna irure. Eu ut ipsum magna nulla sunt duis Lorem officia pariatur. Nostrud nisi anim nostrud ea est do nostrud cupidatat occaecat dolor labore do anim. Laborum quis veniam ipsum ullamco voluptate sit ea qui adipisicing aliqua sunt dolor nulla. Nulla consequat sunt qui amet. Pariatur esse pariatur veniam non fugiat laboris eu nulla incididunt.</p>
-    <p>Laboris duis do consectetur aliquip non aliquip ad ad quis minim. Aute magna tempor occaecat magna fugiat culpa. Commodo id eiusmod ea pariatur consequat fugiat minim est anim. Ipsum amet ipsum eu nisi. Exercitation minim amet incididunt tempor do ut id in officia eu sit est. Dolor qui laboris laboris tempor sunt velit eiusmod non ipsum exercitation ut sint ipsum officia.</p>
+export default props => (
+  <ScrollToBottom className={ROOT_CSS}>
+    <p>
+      Nostrud nisi duis veniam ex esse laboris consectetur officia et. Velit cillum est veniam culpa magna sit
+      exercitation excepteur consectetur ea proident. Minim pariatur nisi dolore Lorem ipsum adipisicing do. Ea
+      cupidatat Lorem sunt fugiat. Irure est sunt nostrud commodo sint.
+    </p>
+    <p>
+      Duis consectetur ad in fugiat et aliquip esse adipisicing occaecat et sunt ea occaecat ad. Tempor anim consequat
+      commodo veniam nostrud sunt deserunt adipisicing Lorem Lorem magna irure. Eu ut ipsum magna nulla sunt duis Lorem
+      officia pariatur. Nostrud nisi anim nostrud ea est do nostrud cupidatat occaecat dolor labore do anim. Laborum
+      quis veniam ipsum ullamco voluptate sit ea qui adipisicing aliqua sunt dolor nulla. Nulla consequat sunt qui amet.
+      Pariatur esse pariatur veniam non fugiat laboris eu nulla incididunt.
+    </p>
+    <p>
+      Laboris duis do consectetur aliquip non aliquip ad ad quis minim. Aute magna tempor occaecat magna fugiat culpa.
+      Commodo id eiusmod ea pariatur consequat fugiat minim est anim. Ipsum amet ipsum eu nisi. Exercitation minim amet
+      incididunt tempor do ut id in officia eu sit est. Dolor qui laboris laboris tempor sunt velit eiusmod non ipsum
+      exercitation ut sint ipsum officia.
+    </p>
   </ScrollToBottom>
+);
 ```
 
 > We use [`glamor`](https://github.com/threepointone/glamor/) for component styles. It is not required, but we don't support `style` props for performance reason.
 
 ## Props
 
-| Name                    | Type     | Default    | Description                                                                  |
-|-------------------------|----------|------------|------------------------------------------------------------------------------|
-| `checkInterval`         | `number` | 150        | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)   |
-| `className`             | `string` |            | Set the class name for the root element                                      |
-| `debounce`              | `number` | `17`       | Set the debounce for tracking the `onScroll` event                           |
-| `followButtonClassName` | `string` |            | Set the class name for the follow button                                     |
-| `mode`                  | `string` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top         |
-| `scrollViewClassName`   | `string` |            | Set the class name for the container element that house all `props.children` |
+| Name                    | Type     | Default    | Description                                                                                                                    |
+| ----------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `checkInterval`         | `number` | 150        | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)                                                     |
+| `className`             | `string` |            | Set the class name for the root element                                                                                        |
+| `debounce`              | `number` | `17`       | Set the debounce for tracking the `onScroll` event                                                                             |
+| `followButtonClassName` | `string` |            | Set the class name for the follow button                                                                                       |
+| `mode`                  | `string` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |
+| `nonce`                 | `string` |            | Set the nonce for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) |
+| `scrollViewClassName`   | `string` |            | Set the class name for the container element that house all `props.children`                                                   |
 
 ## Hooks
 
@@ -173,19 +190,33 @@ const Content = () => {
 
   return (
     <React.Fragment>
-      <p>Labore commodo consectetur commodo et Lorem mollit voluptate velit adipisicing proident sit. Dolor consequat nostrud aliquip ea anim enim. Culpa quis tempor et quis esse proident cupidatat reprehenderit laborum ullamco.</p>
-      <p>Incididunt labore nulla cupidatat occaecat elit esse occaecat culpa irure et nisi excepteur. Duis Lorem labore consectetur nostrud et voluptate culpa consequat enim reprehenderit. Id voluptate occaecat anim consequat id ea eiusmod laborum proident irure veniam esse. Aliquip nostrud culpa nostrud laborum cillum adipisicing dolore. Est tempor labore Lorem ad cupidatat reprehenderit exercitation pariatur officia ex adipisicing cupidatat exercitation.</p>
-      <p>Est labore cupidatat exercitation est laboris et tempor Lorem irure velit ea commodo sint officia. Ullamco exercitation cillum est fugiat do. Enim qui eu veniam nostrud tempor elit. Duis elit mollit ut reprehenderit sit adipisicing proident culpa veniam sint veniam consectetur fugiat Lorem. Sint dolor proident commodo proident non cupidatat labore.</p>
+      <p>
+        Labore commodo consectetur commodo et Lorem mollit voluptate velit adipisicing proident sit. Dolor consequat
+        nostrud aliquip ea anim enim. Culpa quis tempor et quis esse proident cupidatat reprehenderit laborum ullamco.
+      </p>
+      <p>
+        Incididunt labore nulla cupidatat occaecat elit esse occaecat culpa irure et nisi excepteur. Duis Lorem labore
+        consectetur nostrud et voluptate culpa consequat enim reprehenderit. Id voluptate occaecat anim consequat id ea
+        eiusmod laborum proident irure veniam esse. Aliquip nostrud culpa nostrud laborum cillum adipisicing dolore. Est
+        tempor labore Lorem ad cupidatat reprehenderit exercitation pariatur officia ex adipisicing cupidatat
+        exercitation.
+      </p>
+      <p>
+        Est labore cupidatat exercitation est laboris et tempor Lorem irure velit ea commodo sint officia. Ullamco
+        exercitation cillum est fugiat do. Enim qui eu veniam nostrud tempor elit. Duis elit mollit ut reprehenderit sit
+        adipisicing proident culpa veniam sint veniam consectetur fugiat Lorem. Sint dolor proident commodo proident non
+        cupidatat labore.
+      </p>
       {!sticky && <button onClick={scrollToBottom}>Click me to scroll to bottom</button>}
     </React.Fragment>
   );
-}
+};
 
 export default () => (
   <ScrollToBottom>
     <Content />
   </ScrollToBottom>
-)
+);
 ```
 
 ## Context
@@ -303,28 +334,46 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 const Content = ({ scrollToBottom, sticky }) => {
   return (
     <React.Fragment>
-      <p>Labore commodo consectetur commodo et Lorem mollit voluptate velit adipisicing proident sit. Dolor consequat nostrud aliquip ea anim enim. Culpa quis tempor et quis esse proident cupidatat reprehenderit laborum ullamco.</p>
-      <p>Incididunt labore nulla cupidatat occaecat elit esse occaecat culpa irure et nisi excepteur. Duis Lorem labore consectetur nostrud et voluptate culpa consequat enim reprehenderit. Id voluptate occaecat anim consequat id ea eiusmod laborum proident irure veniam esse. Aliquip nostrud culpa nostrud laborum cillum adipisicing dolore. Est tempor labore Lorem ad cupidatat reprehenderit exercitation pariatur officia ex adipisicing cupidatat exercitation.</p>
-      <p>Est labore cupidatat exercitation est laboris et tempor Lorem irure velit ea commodo sint officia. Ullamco exercitation cillum est fugiat do. Enim qui eu veniam nostrud tempor elit. Duis elit mollit ut reprehenderit sit adipisicing proident culpa veniam sint veniam consectetur fugiat Lorem. Sint dolor proident commodo proident non cupidatat labore.</p>
+      <p>
+        Labore commodo consectetur commodo et Lorem mollit voluptate velit adipisicing proident sit. Dolor consequat
+        nostrud aliquip ea anim enim. Culpa quis tempor et quis esse proident cupidatat reprehenderit laborum ullamco.
+      </p>
+      <p>
+        Incididunt labore nulla cupidatat occaecat elit esse occaecat culpa irure et nisi excepteur. Duis Lorem labore
+        consectetur nostrud et voluptate culpa consequat enim reprehenderit. Id voluptate occaecat anim consequat id ea
+        eiusmod laborum proident irure veniam esse. Aliquip nostrud culpa nostrud laborum cillum adipisicing dolore. Est
+        tempor labore Lorem ad cupidatat reprehenderit exercitation pariatur officia ex adipisicing cupidatat
+        exercitation.
+      </p>
+      <p>
+        Est labore cupidatat exercitation est laboris et tempor Lorem irure velit ea commodo sint officia. Ullamco
+        exercitation cillum est fugiat do. Enim qui eu veniam nostrud tempor elit. Duis elit mollit ut reprehenderit sit
+        adipisicing proident culpa veniam sint veniam consectetur fugiat Lorem. Sint dolor proident commodo proident non
+        cupidatat labore.
+      </p>
       {!sticky && <button onClick={scrollToBottom}>Click me to scroll to bottom</button>}
     </React.Fragment>
   );
-}
+};
 
 export default () => (
   <ScrollToBottom>
     <FunctionContext.Consumer>
-      {({ scrollToBottom }) =>
+      {({ scrollToBottom }) => (
         <StateContext.Consumer>
-          {({ sticky }) =>
-            <Content scrollToBottom={scrollToBottom} sticky={sticky} />
-          }
+          {({ sticky }) => <Content scrollToBottom={scrollToBottom} sticky={sticky} />}
         </StateContext.Consumer>
-      }
+      )}
     </FunctionContext.Consumer>
   </ScrollToBottom>
-)
+);
 ```
+
+# Security
+
+We support nonce-based [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy). To enable, the following directive is required:
+
+- [`style-src 'nonce-XXX'`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src)
 
 # Road map
 
