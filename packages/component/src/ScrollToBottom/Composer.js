@@ -265,7 +265,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce }) => {
 
   const styleToClassName = useMemo(() => {
     const emotion =
-      emotionPool[nonce] || (emotionPool[nonce] = createEmotion({ key: `rstb-${createCSSKey()}`, nonce }));
+      emotionPool[nonce] || (emotionPool[nonce] = createEmotion({ key: `react-scroll-to-bottom--css-${createCSSKey()}`, nonce }));
 
     return style => emotion.css(style) + '';
   }, [nonce]);
