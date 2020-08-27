@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Support `nonce` prop for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy), in PR [#62](https://github.com/compulim/react-scroll-to-bottom/pull/62) and PR [#63](https://github.com/compulim/react-scroll-to-bottom/pull/63)
+- Support `nonce` prop for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy), in PR [#62](https://github.com/compulim/react-scroll-to-bottom/pull/62), PR [#63](https://github.com/compulim/react-scroll-to-bottom/pull/63) and PR [#64](https://github.com/compulim/react-scroll-to-bottom/pull/64)
 
 ### Changed
 
