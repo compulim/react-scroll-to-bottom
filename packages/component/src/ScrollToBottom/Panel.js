@@ -16,7 +16,7 @@ const Panel = ({ children, className }) => {
   const rootCSS = useStyleToClassName()(ROOT_STYLE);
 
   return (
-    <div className={classNames(rootCSS + '', (className || '') + '')} ref={setTarget}>
+    <div className={classNames(rootCSS, (className || '') + '')} ref={setTarget}>
       {children}
     </div>
   );
