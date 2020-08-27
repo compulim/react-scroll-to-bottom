@@ -34,7 +34,7 @@ const AutoHideFollowButton = ({ children, className }) => {
 
   return (
     !sticky && (
-      <button className={classNames(rootCSS + '', (className || '') + '')} onClick={scrollToEnd} type="button">
+      <button className={classNames(rootCSS, (className || '') + '')} onClick={scrollToEnd} type="button">
         {children}
       </button>
     )

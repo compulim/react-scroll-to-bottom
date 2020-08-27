@@ -2,6 +2,7 @@ import createEmotion from 'create-emotion';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import createCSSKey from '../createCSSKey';
 import EventSpy from '../EventSpy';
 import FunctionContext from './FunctionContext';
 import InternalContext from './InternalContext';
@@ -13,6 +14,10 @@ const MODE_BOTTOM = 'bottom';
 const MODE_TOP = 'top';
 const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
+
+// We pool the emotion object by nonce.
+// This is to make sure we don't generate too many unneeded <style> tags.
+const emotionPool = {};
 
 function setImmediateInterval(fn, ms) {
   fn();
@@ -259,9 +264,10 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce }) => {
   );
 
   const styleToClassName = useMemo(() => {
-    const emotion = createEmotion({ key: 'rstb', nonce });
+    const emotion =
+      emotionPool[nonce] || (emotionPool[nonce] = createEmotion({ key: `rstb-${createCSSKey()}`, nonce }));
 
-    return emotion.css.bind(emotion);
+    return style => emotion.css(style) + '';
   }, [nonce]);
 
   const internalContext = useMemo(

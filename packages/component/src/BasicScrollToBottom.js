@@ -15,7 +15,7 @@ const BasicScrollToBottomCore = ({ children, className, followButtonClassName, s
   const rootCSS = useStyleToClassName()(ROOT_STYLE);
 
   return (
-    <div className={classNames(rootCSS + '', (className || '') + '')}>
+    <div className={classNames(rootCSS, (className || '') + '')}>
       <Panel className={(scrollViewClassName || '') + ''}>{children}</Panel>
       <AutoHideFollowButton className={(followButtonClassName || '') + ''} />
     </div>
@@ -46,10 +46,6 @@ const BasicScrollToBottom = ({
   nonce,
   scrollViewClassName
 }) => {
-  const styleToClassName = useStyleToClassName();
-
-  const rootCSS = styleToClassName(ROOT_STYLE);
-
   return (
     <Composer checkInterval={checkInterval} debounce={debounce} mode={mode} nonce={nonce}>
       <BasicScrollToBottomCore
