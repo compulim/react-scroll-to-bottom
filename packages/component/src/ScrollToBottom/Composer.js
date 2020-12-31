@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import createCSSKey from '../createCSSKey';
+import createDebug from '../utils/debug';
 import EventSpy from '../EventSpy';
 import FunctionContext from './FunctionContext';
 import InternalContext from './InternalContext';
@@ -16,6 +17,8 @@ const MODE_BOTTOM = 'bottom';
 const MODE_TOP = 'top';
 const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
+
+const debug = createDebug('<ScrollToBottom>');
 
 // We pool the emotion object by nonce.
 // This is to make sure we don't generate too many unneeded <style> tags.
@@ -84,13 +87,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
   );
 
   const handleSpineToEnd = useCallback(() => {
-    console.log(
-      '%c<ScrollToBottom>%c %cSpineTo%c: %conEnd%c is fired.',
-      ...styleConsole('green'),
-      ...styleConsole('magenta'),
-      ...styleConsole('orange'),
-      { animateTo }
-    );
+    debug('%cSpineTo%c: %conEnd%c is fired.', ...styleConsole('magenta'), ...styleConsole('orange'), { animateTo });
 
     ignoreScrollEventBeforeRef.current = Date.now();
 
@@ -112,11 +109,10 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
     (nextAnimateTo, { behavior } = {}) => {
       // If it is trying to scroll to a position which is not "atEnd", it should set sticky to false after scroll ended.
 
-      console.log(
-        `%c<ScrollToBottom>%c %cscrollTo%c: Will scroll to %c${
+      debug(
+        `%cscrollTo%c: Will scroll to %c${
           typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
         }%c`,
-        ...styleConsole('green'),
         ...styleConsole('lime', ''),
         ...styleConsole('purple')
       );
@@ -141,11 +137,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
 
   const scrollToBottom = useCallback(
     ({ behavior } = {}) => {
-      console.log(
-        '%c<ScrollToBottom>%c %cscrollToBottom%c: Called',
-        ...styleConsole('green'),
-        ...styleConsole('yellow', '')
-      );
+      debug('%cscrollToBottom%c: Called', ...styleConsole('yellow', ''));
 
       behavior !== 'smooth' &&
         console.warn(
@@ -159,11 +151,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
 
   const scrollToTop = useCallback(
     ({ behavior } = {}) => {
-      console.log(
-        '%c<ScrollToBottom>%c %cscrollToTop%c: Called',
-        ...styleConsole('green'),
-        ...styleConsole('yellow', '')
-      );
+      debug('%cscrollToTop%c: Called', ...styleConsole('yellow', ''));
 
       behavior !== 'smooth' &&
         console.warn(
@@ -177,11 +165,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
 
   const scrollToEnd = useCallback(
     ({ behavior } = {}) => {
-      console.log(
-        '%c<ScrollToBottom>%c %cscrollToEnd%c: Called',
-        ...styleConsole('green'),
-        ...styleConsole('yellow', '')
-      );
+      debug('%cscrollToEnd%c: Called', ...styleConsole('yellow', ''));
 
       behavior !== 'smooth' &&
         console.warn(
@@ -197,11 +181,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
 
   const scrollToStart = useCallback(
     ({ behavior } = {}) => {
-      console.log(
-        '%c<ScrollToBottom>%c %cscrollToStart%c: Called',
-        ...styleConsole('green'),
-        ...styleConsole('yellow', '')
-      );
+      debug('%cscrollToStart%c: Called', ...styleConsole('yellow', ''));
 
       behavior !== 'smooth' &&
         console.warn(
@@ -245,28 +225,26 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
         nextAnimateTo = animateFrom + nextValue;
       }
 
-      console.groupCollapsed(
-        `%c<ScrollToBottom>%c %cscrollToSticky%c: Will animate from %c${animateFrom}px%c to %c${
-          typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
-        }%c (%c${(nextAnimateTo === '100%' ? maxValue : nextAnimateTo) + animateFrom}px%c)`,
-        ...styleConsole('green'),
-        ...styleConsole('orange'),
-        ...styleConsole('purple'),
-        ...styleConsole('purple'),
-        ...styleConsole('purple')
+      debug(
+        [
+          `%cscrollToSticky%c: Will animate from %c${animateFrom}px%c to %c${
+            typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
+          }%c (%c${(nextAnimateTo === '100%' ? maxValue : nextAnimateTo) + animateFrom}px%c)`,
+          ...styleConsole('orange'),
+          ...styleConsole('purple'),
+          ...styleConsole('purple'),
+          ...styleConsole('purple')
+        ],
+        {
+          animateFrom,
+          maxValue,
+          minValue,
+          nextAnimateTo,
+          nextScrollBy: nextValue,
+          offsetHeight,
+          scrollHeight
+        }
       );
-
-      console.log({
-        animateFrom,
-        maxValue,
-        minValue,
-        nextAnimateTo,
-        nextScrollBy: nextValue,
-        offsetHeight,
-        scrollHeight
-      });
-
-      console.groupEnd();
 
       scrollTo(nextAnimateTo, { behavior: 'smooth' });
     }
@@ -322,55 +300,51 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
         const nextSticky = (animating && isEnd(animateTo, mode)) || atEnd;
 
         if (sticky !== nextSticky) {
-          console.groupCollapsed(
-            `%c<ScrollToBottom>%c %conScroll%c: %csetSticky%c(%c${nextSticky}%c)`,
-            ...styleConsole('green'),
-            ...styleConsole('red'),
-            ...styleConsole('red'),
-            ...styleConsole('purple')
+          debug(
+            [
+              `%conScroll%c: %csetSticky%c(%c${nextSticky}%c)`,
+              ...styleConsole('red'),
+              ...styleConsole('red'),
+              ...styleConsole('purple')
+            ],
+            [
+              `(animating = %c${animating}%c && isEnd = %c${isEnd(animateTo, mode)}%c) || atEnd = %c${atEnd}%c`,
+              ...styleConsole('purple'),
+              ...styleConsole('purple'),
+              ...styleConsole('purple'),
+              {
+                animating,
+                animateTo,
+                atEnd,
+                mode,
+                offsetHeight: target.offsetHeight,
+                scrollHeight: target.scrollHeight,
+                sticky,
+                nextSticky
+              }
+            ]
           );
-
-          console.log(
-            `(animating = %c${animating}%c && isEnd = %c${isEnd(animateTo, mode)}%c) || atEnd = %c${atEnd}%c`,
-            ...styleConsole('purple'),
-            ...styleConsole('purple'),
-            ...styleConsole('purple'),
-            {
-              animating,
-              animateTo,
-              atEnd,
-              mode,
-              offsetHeight: target.offsetHeight,
-              scrollHeight: target.scrollHeight,
-              sticky,
-              nextSticky
-            }
-          );
-
-          console.groupEnd();
 
           setSticky(nextSticky);
         }
       } else if (sticky) {
-        console.groupCollapsed(
-          `%c<ScrollToBottom>%c %conScroll%c: Size changed while sticky, calling %cscrollToSticky()%c`,
-          ...styleConsole('green'),
-          ...styleConsole('red'),
-          ...styleConsole('orange'),
+        debug(
+          [
+            `%conScroll%c: Size changed while sticky, calling %cscrollToSticky()%c`,
+            ...styleConsole('red'),
+            ...styleConsole('orange'),
+            {
+              offsetHeightChanged,
+              scrollHeightChanged
+            }
+          ],
           {
-            offsetHeightChanged,
-            scrollHeightChanged
+            nextOffsetHeight,
+            prevOffsetHeight: offsetHeight,
+            nextScrollHeight,
+            prevScrollHeight: scrollHeight
           }
         );
-
-        console.log({
-          nextOffsetHeight,
-          prevOffsetHeight: offsetHeight,
-          nextScrollHeight,
-          prevScrollHeight: scrollHeight
-        });
-
-        console.groupEnd();
 
         scrollToSticky();
       }
@@ -418,9 +392,8 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
             if (!animating) {
               animateFromRef.current = target.scrollTop;
 
-              console.log(
-                `%c<ScrollToBottom>%c %cInterval check%c: Should sticky but not at end, calling %cscrollToSticky()%c to scroll`,
-                ...styleConsole('green'),
+              debug(
+                `%cInterval check%c: Should sticky but not at end, calling %cscrollToSticky()%c to scroll`,
                 ...styleConsole('navy'),
                 ...styleConsole('orange')
               );
@@ -511,7 +484,7 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
     }
   }, [target]);
 
-  console.log(`%c<ScrollToBottom>%c %cRender%c: Render`, ...styleConsole('green'), ...styleConsole('cyan', ''), {
+  debug(`%cRender%c: Render`, ...styleConsole('cyan', ''), {
     animateTo,
     animating,
     sticky
