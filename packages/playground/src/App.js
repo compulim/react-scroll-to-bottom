@@ -1,11 +1,12 @@
-import createEmotion from 'create-emotion';
-import { loremIpsum } from 'lorem-ipsum';
+import { LoremIpsum, loremIpsum } from 'lorem-ipsum';
 import classNames from 'classnames';
+import createEmotion from 'create-emotion';
 import Interval from 'react-interval';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactScrollToBottom, { StateContext } from 'react-scroll-to-bottom';
 
 import CommandBar from './CommandBar';
+import StatusBar from './StatusBar';
 
 const FADE_IN_ANIMATION_KEYFRAMES = {
   '0%': { opacity: 0.2 },
@@ -71,6 +72,11 @@ const SMALL_CONTAINER_STYLE = {
   height: 300
 };
 
+const STATUS_BAR_CSS = {
+  bottom: 0,
+  position: 'sticky'
+};
+
 const createParagraphs = count => new Array(count).fill().map(() => loremIpsum({ units: 'paragraph' }));
 
 const App = ({ nonce }) => {
@@ -80,7 +86,8 @@ const App = ({ nonce }) => {
     rootCSS,
     scrollViewCSS,
     scrollViewPaddingCSS,
-    smallContainerCSS
+    smallContainerCSS,
+    statusBarCSS
   } = useMemo(() => {
     const { css, keyframes } = createEmotion({ nonce });
 
@@ -96,7 +103,8 @@ const App = ({ nonce }) => {
           animation: `${keyframes(FADE_IN_ANIMATION_KEYFRAMES)} 500ms`
         }
       }),
-      smallContainerCSS: css(SMALL_CONTAINER_STYLE)
+      smallContainerCSS: css(SMALL_CONTAINER_STYLE),
+      statusBarCSS: css(STATUS_BAR_CSS)
     };
   }, [nonce]);
 
@@ -104,8 +112,21 @@ const App = ({ nonce }) => {
   const [intervalEnabled, setIntervalEnabled] = useState(false);
   const [paragraphs, setParagraphs] = useState(createParagraphs(10));
   const [commandBarVisible, setCommandBarVisible] = useState(false);
+  const [limitAutoScrollHeight, setLimitAutoScrollHeight] = useState(false);
   const [loadedVersion] = useState(() =>
     document.querySelector('head meta[name="react-scroll-to-bottom:version"]').getAttribute('content')
+  );
+  const [disableScrollToBottomPanel, setDisableScrollToBottomPanel] = useState(false);
+  const [disableScrollToTopPanel, setDisableScrollToTopPanel] = useState(true);
+
+  const handleDisableScrollToBottomPanelClick = useCallback(
+    ({ target: { checked } }) => setDisableScrollToBottomPanel(checked),
+    [setDisableScrollToBottomPanel]
+  );
+
+  const handleDisableScrollToTopPanelClick = useCallback(
+    ({ target: { checked } }) => setDisableScrollToTopPanel(checked),
+    [setDisableScrollToTopPanel]
   );
 
   const handleAdd = useCallback(count => setParagraphs([...paragraphs, ...createParagraphs(count)]), [
@@ -118,6 +139,14 @@ const App = ({ nonce }) => {
     () => setParagraphs([...paragraphs, 'Button: ' + loremIpsum({ units: 'words' })]),
     [paragraphs, setParagraphs]
   );
+  const handleAddSuccessively = useCallback(() => {
+    const lorem = new LoremIpsum();
+    const nextParagraphs = [...paragraphs, lorem.generateSentences(1)];
+
+    setParagraphs(nextParagraphs);
+
+    requestAnimationFrame(() => setParagraphs([...nextParagraphs, lorem.generateParagraphs(5)]));
+  }, [paragraphs, setParagraphs]);
   const handleClear = useCallback(() => setParagraphs([]), [setParagraphs]);
   const handleCommandBarVisibleChange = useCallback(({ target: { checked } }) => setCommandBarVisible(checked), [
     setCommandBarVisible
@@ -127,7 +156,11 @@ const App = ({ nonce }) => {
   const handleContainerSizeSmall = useCallback(() => setContainerSize('small'), [setContainerSize]);
   const handleIntervalEnabledChange = useCallback(
     ({ target: { checked: intervalEnabled } }) => setIntervalEnabled(intervalEnabled),
-    []
+    [setIntervalEnabled]
+  );
+  const handleLimitAutoScrollHeightChange = useCallback(
+    ({ target: { checked } }) => setLimitAutoScrollHeight(checked),
+    [setLimitAutoScrollHeight]
   );
   const containerClassName = useMemo(
     () =>
@@ -178,6 +211,8 @@ const App = ({ nonce }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  const scroller = useCallback(() => 100, []);
+
   return (
     <div className={rootCSS + ''}>
       <ul className="button-bar">
@@ -203,6 +238,14 @@ const App = ({ nonce }) => {
           <button onClick={handleAddButton}>Add a button</button>
         </li>
         <li>
+          <button
+            onClick={handleAddSuccessively}
+            title='When combined with "limit auto scroll" checkbox, this button should pause auto-scroll.'
+          >
+            Add successively
+          </button>
+        </li>
+        <li>
           <label>
             <input checked={intervalEnabled} onChange={handleIntervalEnabledChange} type="checkbox" />
             Add one every second
@@ -214,46 +257,88 @@ const App = ({ nonce }) => {
             Show command bar
           </label>
         </li>
+        <li>
+          <label>
+            <input checked={limitAutoScrollHeight} onChange={handleLimitAutoScrollHeightChange} type="checkbox" />
+            Limit auto scroll height to 100px
+          </label>
+        </li>
       </ul>
       <div className="panes">
-        <ReactScrollToBottom className={containerClassName} nonce="a1b2c3d" scrollViewClassName={scrollViewCSS + ''}>
-          {commandBarVisible && <CommandBar nonce={nonce} />}
-          <StateContext.Consumer>
-            {({ sticky }) => (
-              <div className={classNames(scrollViewPaddingCSS + '', { sticky })}>
-                {paragraphs.map(paragraph => (
-                  <p key={paragraph}>
-                    {paragraph.startsWith('Button: ') ? (
-                      <button type="button">{paragraph.substr(8)}</button>
-                    ) : (
-                      paragraph
-                    )}
-                  </p>
-                ))}
-              </div>
-            )}
-          </StateContext.Consumer>
-          {commandBarVisible && <CommandBar nonce={nonce} />}
-        </ReactScrollToBottom>
-        <ReactScrollToBottom className={containerClassName} mode="top" nonce="a1b2c3d">
-          {commandBarVisible && <CommandBar nonce={nonce} />}
-          <StateContext.Consumer>
-            {({ sticky }) => (
-              <div className={classNames(scrollViewPaddingCSS + '', { sticky })}>
-                {[...paragraphs].reverse().map(paragraph => (
-                  <p key={paragraph}>
-                    {paragraph.startsWith('Button: ') ? (
-                      <button type="button">{paragraph.substr(8)}</button>
-                    ) : (
-                      paragraph
-                    )}
-                  </p>
-                ))}
-              </div>
-            )}
-          </StateContext.Consumer>
-          {commandBarVisible && <CommandBar nonce={nonce} />}
-        </ReactScrollToBottom>
+        <div>
+          {disableScrollToBottomPanel ? (
+            <div className={containerClassName} />
+          ) : (
+            <ReactScrollToBottom
+              className={containerClassName}
+              nonce="a1b2c3d"
+              scroller={limitAutoScrollHeight ? scroller : undefined}
+              scrollViewClassName={scrollViewCSS + ''}
+            >
+              {commandBarVisible && <CommandBar nonce={nonce} />}
+              <StateContext.Consumer>
+                {({ sticky }) => (
+                  <div className={classNames(scrollViewPaddingCSS + '', { sticky })}>
+                    {paragraphs.map(paragraph => (
+                      <p key={paragraph}>
+                        {paragraph.startsWith('Button: ') ? (
+                          <button type="button">{paragraph.substr(8)}</button>
+                        ) : (
+                          paragraph
+                        )}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </StateContext.Consumer>
+              {commandBarVisible && <CommandBar nonce={nonce} />}
+              {commandBarVisible && <StatusBar className={statusBarCSS} nonce={nonce} />}
+            </ReactScrollToBottom>
+          )}
+          <label>
+            <input
+              checked={disableScrollToBottomPanel}
+              onChange={handleDisableScrollToBottomPanelClick}
+              type="checkbox"
+            />
+            Disable this panel
+          </label>
+        </div>
+        <div>
+          {disableScrollToTopPanel ? (
+            <div className={containerClassName} />
+          ) : (
+            <ReactScrollToBottom
+              className={containerClassName}
+              mode="top"
+              nonce="a1b2c3d"
+              scroller={limitAutoScrollHeight ? scroller : undefined}
+            >
+              {commandBarVisible && <CommandBar nonce={nonce} />}
+              <StateContext.Consumer>
+                {({ sticky }) => (
+                  <div className={classNames(scrollViewPaddingCSS + '', { sticky })}>
+                    {[...paragraphs].reverse().map(paragraph => (
+                      <p key={paragraph}>
+                        {paragraph.startsWith('Button: ') ? (
+                          <button type="button">{paragraph.substr(8)}</button>
+                        ) : (
+                          paragraph
+                        )}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </StateContext.Consumer>
+              {commandBarVisible && <CommandBar nonce={nonce} />}
+              {commandBarVisible && <StatusBar className={statusBarCSS} nonce={nonce} />}
+            </ReactScrollToBottom>
+          )}
+          <label>
+            <input checked={disableScrollToTopPanel} onChange={handleDisableScrollToTopPanelClick} type="checkbox" />
+            Disable this panel
+          </label>
+        </div>
       </div>
       <div className="version">
         <code>react-scroll-to-bottom@{loadedVersion}</code> has loaded.

@@ -1,57 +1,35 @@
-import createEmotion from 'create-emotion';
 import classNames from 'classnames';
+import createEmotion from 'create-emotion';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import {
-  useAnimating,
-  useAtBottom,
-  useAtEnd,
-  useAtStart,
-  useAtTop,
-  useMode,
   useObserveScrollPosition,
   useScrollTo,
   useScrollToBottom,
   useScrollToEnd,
   useScrollToStart,
-  useScrollToTop,
-  useSticky
+  useScrollToTop
 } from 'react-scroll-to-bottom';
 
 const ROOT_STYLE = {
-  backgroundColor: '#FFF',
-  boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
+  '&.command-bar': {
+    backgroundColor: '#FFF',
+    boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
 
-  '& > ul': {
-    display: 'flex',
-    listStyleType: 'none',
-    margin: 0,
-    padding: 10,
-
-    '&:first-child': {
-      paddingBottom: 0
+    '& .command-bar__actions': {
+      display: 'flex',
+      listStyleType: 'none',
+      margin: 0,
+      padding: 10
     },
 
-    '& > li:not(:first-child)': {
-      marginLeft: 4
-    }
-  },
+    '& .command-bar__action': {
+      fontSize: 11,
+      height: 40,
 
-  '& > .badges > li': {
-    alignItems: 'center',
-    backgroundColor: '#DDD',
-    borderRadius: 5,
-    display: 'flex',
-    flex: 1,
-    fontFamily: 'Arial',
-    fontSize: '50%',
-    justifyContent: 'center',
-    padding: '2px 4px',
-    textAlign: 'center',
-
-    '&.lit': {
-      backgroundColor: 'Red',
-      color: 'White'
+      '&:not(:first-child)': {
+        marginLeft: 4
+      }
     }
   }
 };
@@ -60,13 +38,6 @@ const CommandBar = ({ nonce }) => {
   const rootCSS = useMemo(() => createEmotion({ nonce }).css(ROOT_STYLE), [nonce]);
 
   const scrollTopRef = useRef();
-  const [animating] = useAnimating();
-  const [atBottom] = useAtBottom();
-  const [atEnd] = useAtEnd();
-  const [atStart] = useAtStart();
-  const [atTop] = useAtTop();
-  const [mode] = useMode();
-  const [sticky] = useSticky();
 
   const scrollTo = useScrollTo();
   const scrollToBottom = useScrollToBottom();
@@ -93,33 +64,34 @@ const CommandBar = ({ nonce }) => {
   );
 
   return (
-    <div className={rootCSS + ''}>
-      <ul className="actions">
+    <div className={classNames(rootCSS + '', 'command-bar')}>
+      <ul className="command-bar__actions">
         <li>
-          <button onClick={handleScrollToBottomClick}>Scroll to bottom</button>
+          <button className="command-bar__action" onClick={handleScrollToBottomClick}>
+            Scroll to bottom
+          </button>
         </li>
         <li>
-          <button onClick={handleScrollToTopClick}>Scroll to top</button>
+          <button className="command-bar__action" onClick={handleScrollToTopClick}>
+            Scroll to top
+          </button>
         </li>
         <li>
-          <button onClick={handleScrollToStartClick}>Scroll to start</button>
+          <button className="command-bar__action" onClick={handleScrollToStartClick}>
+            Scroll to start
+          </button>
         </li>
         <li>
-          <button onClick={handleScrollToEndClick}>Scroll to end</button>
+          <button className="command-bar__action" onClick={handleScrollToEndClick}>
+            Scroll to end
+          </button>
         </li>
         <li>
-          <button onClick={handleScrollTo100pxClick}>100px</button>
+          <button className="command-bar__action" onClick={handleScrollTo100pxClick}>
+            100px
+          </button>
         </li>
         <li ref={scrollTopRef}></li>
-      </ul>
-      <ul className="badges">
-        <li className={classNames({ lit: animating })}>ANIMATING</li>
-        <li className={classNames({ lit: atBottom })}>AT BOTTOM</li>
-        <li className={classNames({ lit: atEnd })}>AT END</li>
-        <li className={classNames({ lit: atStart })}>AT START</li>
-        <li className={classNames({ lit: atTop })}>AT TOP</li>
-        <li className={classNames({ lit: mode !== 'top' })}>STICK TO BOTTOM</li>
-        <li className={classNames({ lit: sticky })}>STICKY</li>
       </ul>
     </div>
   );

@@ -44,10 +44,11 @@ const BasicScrollToBottom = ({
   followButtonClassName,
   mode,
   nonce,
+  scroller,
   scrollViewClassName
 }) => {
   return (
-    <Composer checkInterval={checkInterval} debounce={debounce} mode={mode} nonce={nonce}>
+    <Composer checkInterval={checkInterval} debounce={debounce} mode={mode} nonce={nonce} scroller={scroller}>
       <BasicScrollToBottomCore
         className={className}
         followButtonClassName={followButtonClassName}
