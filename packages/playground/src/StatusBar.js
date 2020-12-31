@@ -45,6 +45,11 @@ const ROOT_STYLE = {
       '&.status-bar__badge--lit': {
         backgroundColor: 'Red',
         color: 'White'
+      },
+
+      '&.status-bar__badge--lit-green': {
+        backgroundColor: 'Green',
+        color: 'White'
       }
     }
   }
@@ -78,16 +83,19 @@ const StatusBar = ({ className, nonce }) => {
   return (
     <div className={classNames(rootCSS + '', 'status-bar', className)}>
       <ul className="status-bar__badges">
+        <li className={classNames('status-bar__badge', { 'status-bar__badge--lit-green': mode !== 'top' })}>
+          STICK TO BOTTOM
+        </li>
         <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': animating })}>ANIMATING</li>
-        <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': animatingToEnd })}>ANIMATING TO END</li>
+        <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': animatingToEnd })}>
+          ANIMATING TO END
+        </li>
         <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': atBottom })}>AT BOTTOM</li>
         <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': atEnd })}>AT END</li>
         <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': atStart })}>AT START</li>
         <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': atTop })}>AT TOP</li>
-        <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': mode !== 'top' })}>
-          STICK TO BOTTOM
-        </li>
         <li className={classNames('status-bar__badge', { 'status-bar__badge--lit': sticky })}>STICKY</li>
+        <li className={classNames('status-bar__badge')} ref={scrollTopRef}></li>
       </ul>
     </div>
   );

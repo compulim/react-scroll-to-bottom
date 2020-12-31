@@ -77,3 +77,14 @@ Expect:
 Expect:
 
 - It should retain stickiness after the container is emptied
+
+### Scroll to bottom while at bottom
+
+- [ ] Show command bar
+- [ ] Scroll to bottom, it should gain stickiness
+- [ ] Uncheck "Smooth" checkbox
+- [ ] Click the "Scroll to end" button multiple times
+
+Expect:
+
+- It should not lose stickiness after clicking on the "Scroll to end" button multiple times

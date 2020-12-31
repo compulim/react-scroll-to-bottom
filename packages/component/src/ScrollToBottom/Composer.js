@@ -135,8 +135,11 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
 
         setAnimateTo(nextAnimateTo);
       }
+
+      // This is for handling a case. When calling scrollTo('100%', { behavior: 'auto' }) multiple times, it would lose stickiness.
+      isEnd(nextAnimateTo, mode) && setSticky(true);
     },
-    [handleSpineToEnd, setAnimateTo, target]
+    [handleSpineToEnd, mode, setAnimateTo, setSticky, target]
   );
 
   const scrollToBottom = useCallback(

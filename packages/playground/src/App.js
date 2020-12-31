@@ -117,7 +117,7 @@ const App = ({ nonce }) => {
     document.querySelector('head meta[name="react-scroll-to-bottom:version"]').getAttribute('content')
   );
   const [disableScrollToBottomPanel, setDisableScrollToBottomPanel] = useState(false);
-  const [disableScrollToTopPanel, setDisableScrollToTopPanel] = useState(true);
+  const [disableScrollToTopPanel, setDisableScrollToTopPanel] = useState(false);
 
   const handleDisableScrollToBottomPanelClick = useCallback(
     ({ target: { checked } }) => setDisableScrollToBottomPanel(checked),

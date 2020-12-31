@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import createEmotion from 'create-emotion';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
-  useObserveScrollPosition,
   useScrollTo,
   useScrollToBottom,
   useScrollToEnd,
@@ -37,30 +36,23 @@ const ROOT_STYLE = {
 const CommandBar = ({ nonce }) => {
   const rootCSS = useMemo(() => createEmotion({ nonce }).css(ROOT_STYLE), [nonce]);
 
-  const scrollTopRef = useRef();
-
   const scrollTo = useScrollTo();
   const scrollToBottom = useScrollToBottom();
   const scrollToEnd = useScrollToEnd();
   const scrollToStart = useScrollToStart();
   const scrollToTop = useScrollToTop();
+  const [options, setOptions] = useState({ behavior: 'smooth' });
 
-  const handleScrollTo100pxClick = useCallback(() => scrollTo(100, { behavior: 'smooth' }), [scrollTo]);
-  const handleScrollToBottomClick = useCallback(() => scrollToBottom({ behavior: 'smooth' }), [scrollToBottom]);
-  const handleScrollToEndClick = useCallback(() => scrollToEnd({ behavior: 'smooth' }), [scrollToEnd]);
-  const handleScrollToStartClick = useCallback(() => scrollToStart({ behavior: 'smooth' }), [scrollToStart]);
-  const handleScrollToTopClick = useCallback(() => scrollToTop({ behavior: 'smooth' }), [scrollToTop]);
-
-  useObserveScrollPosition(
-    ({ scrollTop }) => {
-      const { current } = scrollTopRef;
-
-      // We are directly writing to "innerText" for performance reason.
-      if (current) {
-        current.innerText = scrollTop + 'px';
-      }
+  const handleScrollTo100pxClick = useCallback(() => scrollTo(100, options), [options, scrollTo]);
+  const handleScrollToBottomClick = useCallback(() => scrollToBottom(options), [options, scrollToBottom]);
+  const handleScrollToEndClick = useCallback(() => scrollToEnd(options), [options, scrollToEnd]);
+  const handleScrollToStartClick = useCallback(() => scrollToStart(options), [options, scrollToStart]);
+  const handleScrollToTopClick = useCallback(() => scrollToTop(options), [options, scrollToTop]);
+  const handleSmoothChange = useCallback(
+    ({ target: { checked } }) => {
+      setOptions({ behavior: checked ? 'smooth' : 'auto' });
     },
-    [scrollTopRef]
+    [setOptions]
   );
 
   return (
@@ -91,7 +83,12 @@ const CommandBar = ({ nonce }) => {
             100px
           </button>
         </li>
-        <li ref={scrollTopRef}></li>
+        <li>
+          <label>
+            <input checked={options.behavior === 'smooth'} onChange={handleSmoothChange} type="checkbox" />
+            Smooth
+          </label>
+        </li>
       </ul>
     </div>
   );
