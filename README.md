@@ -62,15 +62,17 @@ export default props => (
 
 ## Props
 
-| Name                    | Type     | Default    | Description                                                                                                                    |
-| ----------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `checkInterval`         | `number` | 150        | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)                                                     |
-| `className`             | `string` |            | Set the class name for the root element                                                                                        |
-| `debounce`              | `number` | `17`       | Set the debounce for tracking the `onScroll` event                                                                             |
-| `followButtonClassName` | `string` |            | Set the class name for the follow button                                                                                       |
-| `mode`                  | `string` | `"bottom"` | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |
-| `nonce`                 | `string` |            | Set the nonce for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) |
-| `scrollViewClassName`   | `string` |            | Set the class name for the container element that house all `props.children`                                                   |
+| Name                    | Type       | Default          | Description                                                                                                                    |
+| ----------------------- | ---------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `checkInterval`         | `number`   | 150              | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)                                                     |
+| `className`             | `string`   |                  | Set the class name for the root element                                                                                        |
+| `debounce`              | `number`   | `17`             | Set the debounce for tracking the `onScroll` event                                                                             |
+| `followButtonClassName` | `string`   |                  | Set the class name for the follow button                                                                                       |
+| `initialScrollBehavior` | `string`   | `smooth`         | Set the initial scroll behavior, either `"auto"` (discrete scrolling) or `"smooth"`                                            |
+| `mode`                  | `string`   | `"bottom"`       | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |
+| `nonce`                 | `string`   |                  | Set the nonce for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) |
+| `scroller`              | `function` | `() => Infinity` | A function to determine how far should scroll when scroll is needed                                                            |
+| `scrollViewClassName`   | `string`   |                  | Set the class name for the container element that house all `props.children`                                                   |
 
 ## Hooks
 
@@ -368,6 +370,32 @@ export default () => (
   </ScrollToBottom>
 );
 ```
+
+## Programmatically pausing scroll
+
+> This only works when `mode` prop is set to `bottom` (default).
+
+You can pass a function to the `scroller` prop to customize how far to scroll (in pixel) when the content changed. The signature of the scroller function is:
+
+```js
+scroller({ maxValue, minValue, offsetHeight, scrollHeight, scrollTop }) => number;
+```
+
+| Argument       | Type     | Description                                                                                |
+| -------------- | -------- | ------------------------------------------------------------------------------------------ |
+| `maxValue`     | `number` | Maximum distance (in pixel) to scroll                                                      |
+| `minValue`     | `number` | Minimum distance (in pixel) to scroll, see notes below                                     |
+| `offsetHeight` | `number` | View height of the scrollable container                                                    |
+| `scrollHeight` | `number` | Total height of the content in the container, must be equal or greater than `offsetHeight` |
+| `scrollTop`    | `number` | Current scroll position (in pixel)                                                         |
+
+Note: the `scroller` function will get called when the scrollable is sticky and the content size change. If the scrollable is not sticky, the function will not be called as animation is not needed.
+
+When the scrollable is animating, if there are new contents added to the scrollable, the `scroller` function will get called again with `minValue` set to the current position. The `minValue` means how far the animation has already scrolled.
+
+By default, the `scroller` function will returns `Infinity`. When new content is added, it will scroll all the way to the bottom.
+
+You can return a different value (in number) to indicates how far you want to scroll when the content has changed. If you return `0`, the scrollable will stop scrolling for any new content. Returning any values less than `maxValue` will make the scrollable to lose its stickiness after animation. After the scrollable lose its stickiness, the `scroller` function will not be called again for any future content change, until the scrollable regains its stickiness.
 
 # Security
 
