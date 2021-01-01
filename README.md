@@ -375,7 +375,7 @@ export default () => (
 
 > This only works when `mode` prop is set to `bottom` (default).
 
-You can pass a function to the `scroller` prop to customize how far to scroll (in pixel) when the content changed. The signature of the scroller function is:
+You can pass a function to the `scroller` prop to customize how far the scrollable should animate/scroll (in pixel) when its content changed. The signature of the scroller function is:
 
 ```js
 scroller({ maxValue, minValue, offsetHeight, scrollHeight, scrollTop }) => number;
