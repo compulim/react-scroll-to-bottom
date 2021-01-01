@@ -271,6 +271,7 @@ const App = ({ nonce }) => {
           ) : (
             <ReactScrollToBottom
               className={containerClassName}
+              initialScrollBehavior="auto"
               nonce="a1b2c3d"
               scroller={limitAutoScrollHeight ? scroller : undefined}
               scrollViewClassName={scrollViewCSS + ''}
@@ -310,6 +311,7 @@ const App = ({ nonce }) => {
           ) : (
             <ReactScrollToBottom
               className={containerClassName}
+              initialScrollBehavior="auto"
               mode="top"
               nonce="a1b2c3d"
               scroller={limitAutoScrollHeight ? scroller : undefined}

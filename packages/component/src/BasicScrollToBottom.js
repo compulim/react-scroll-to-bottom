@@ -42,13 +42,21 @@ const BasicScrollToBottom = ({
   className,
   debounce,
   followButtonClassName,
+  initialScrollBehavior,
   mode,
   nonce,
   scroller,
   scrollViewClassName
 }) => {
   return (
-    <Composer checkInterval={checkInterval} debounce={debounce} mode={mode} nonce={nonce} scroller={scroller}>
+    <Composer
+      checkInterval={checkInterval}
+      debounce={debounce}
+      initialScrollBehavior={initialScrollBehavior}
+      mode={mode}
+      nonce={nonce}
+      scroller={scroller}
+    >
       <BasicScrollToBottomCore
         className={className}
         followButtonClassName={followButtonClassName}
@@ -66,6 +74,7 @@ BasicScrollToBottom.defaultProps = {
   className: undefined,
   debounce: undefined,
   followButtonClassName: undefined,
+  initialScrollBehavior: false,
   mode: undefined,
   nonce: undefined,
   scrollViewClassName: undefined
@@ -77,6 +86,7 @@ BasicScrollToBottom.propTypes = {
   className: PropTypes.string,
   debounce: PropTypes.number,
   followButtonClassName: PropTypes.string,
+  initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,
   scrollViewClassName: PropTypes.string

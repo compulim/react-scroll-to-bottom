@@ -49,10 +49,11 @@ function isEnd(animateTo, mode) {
   return animateTo === (mode === MODE_TOP ? 0 : '100%');
 }
 
-const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) => {
+const Composer = ({ checkInterval, children, debounce, initialScrollBehavior, mode, nonce, scroller }) => {
   mode = mode === MODE_TOP ? MODE_TOP : MODE_BOTTOM;
 
   const ignoreScrollEventBeforeRef = useRef(0);
+  const initialScrollBehaviorRef = useRef(initialScrollBehavior);
   const [animateTo, setAnimateTo] = useState(mode === MODE_TOP ? 0 : '100%');
   const [target, setTarget] = useState(null);
 
@@ -204,6 +205,15 @@ const Composer = ({ checkInterval, children, debounce, mode, nonce, scroller }) 
 
   const scrollToSticky = useCallback(() => {
     if (target) {
+      if (initialScrollBehaviorRef.current === 'auto') {
+        debug(`%ctarget changed%c: Initial scroll`, ...styleConsole('blue'));
+
+        target.scrollTop = mode === MODE_TOP ? 0 : target.scrollHeight - target.offsetHeight;
+        initialScrollBehaviorRef.current = false;
+
+        return;
+      }
+
       // This is very similar to scrollToEnd().
       // Instead of scrolling to end, it will call props.scroller() to determines how far it should scroll.
       // This function could be called while it is auto-scrolling.
@@ -523,6 +533,7 @@ Composer.defaultProps = {
   checkInterval: 100,
   children: undefined,
   debounce: 17,
+  initialScrollBehavior: false,
   mode: undefined,
   nonce: undefined,
   scroller: DEFAULT_SCROLLER
@@ -532,6 +543,7 @@ Composer.propTypes = {
   checkInterval: PropTypes.number,
   children: PropTypes.any,
   debounce: PropTypes.number,
+  initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,
   scroller: PropTypes.func
