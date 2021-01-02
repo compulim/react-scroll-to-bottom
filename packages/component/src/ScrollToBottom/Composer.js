@@ -118,7 +118,7 @@ const Composer = ({
 
     isEnd(animateTo, mode) || setSticky(false);
     setAnimateTo(null);
-  }, [animateTo, ignoreScrollEventBeforeRef, mode, setAnimateTo, setSticky]);
+  }, [animateTo, debug, ignoreScrollEventBeforeRef, mode, setAnimateTo, setSticky]);
 
   // Function context
   const scrollTo = useCallback(
@@ -164,7 +164,7 @@ const Composer = ({
       // This is for handling a case. When calling scrollTo('100%', { behavior: 'auto' }) multiple times, it would lose stickiness.
       isEnd(nextAnimateTo, mode) && setSticky(true);
     },
-    [handleSpineToEnd, mode, setAnimateTo, setSticky, target]
+    [debug, handleSpineToEnd, mode, setAnimateTo, setSticky, target]
   );
 
   const scrollToBottom = useCallback(
@@ -178,7 +178,7 @@ const Composer = ({
 
       scrollTo('100%', { behavior: behavior || 'smooth' });
     },
-    [scrollTo]
+    [debug, scrollTo]
   );
 
   const scrollToTop = useCallback(
@@ -192,7 +192,7 @@ const Composer = ({
 
       scrollTo(0, { behavior: behavior || 'smooth' });
     },
-    [scrollTo]
+    [debug, scrollTo]
   );
 
   const scrollToEnd = useCallback(
@@ -208,7 +208,7 @@ const Composer = ({
 
       mode === MODE_TOP ? scrollToTop(options) : scrollToBottom(options);
     },
-    [mode, scrollToBottom, scrollToTop]
+    [debug, mode, scrollToBottom, scrollToTop]
   );
 
   const scrollToStart = useCallback(
@@ -224,7 +224,7 @@ const Composer = ({
 
       mode === MODE_TOP ? scrollToBottom(options) : scrollToTop(options);
     },
-    [mode, scrollToBottom, scrollToTop]
+    [debug, mode, scrollToBottom, scrollToTop]
   );
 
   const scrollToSticky = useCallback(() => {
@@ -288,7 +288,7 @@ const Composer = ({
 
       scrollTo(nextAnimateTo, { behavior: 'smooth' });
     }
-  }, [animateFromRef, mode, scroller, scrollTo, target]);
+  }, [animateFromRef, debug, mode, scroller, scrollTo, target]);
 
   const handleScroll = useCallback(
     ({ timeStampLow }) => {
@@ -396,6 +396,7 @@ const Composer = ({
     [
       animateTo,
       animating,
+      debug,
       ignoreScrollEventBeforeRef,
       mode,
       offsetHeightRef,
@@ -456,7 +457,7 @@ const Composer = ({
 
       return () => clearInterval(timeout);
     }
-  }, [animating, checkInterval, mode, scrollToSticky, setSticky, sticky, target]);
+  }, [animating, checkInterval, debug, mode, scrollToSticky, setSticky, sticky, target]);
 
   const styleToClassName = useMemo(() => {
     const emotion =
@@ -492,7 +493,7 @@ const Composer = ({
       animatingToEnd: animating && isEnd(animateTo, mode),
       sticky
     }),
-    [animating, animateTo, sticky]
+    [animating, animateTo, debug, mode, sticky]
   );
 
   const functionContext = useMemo(
