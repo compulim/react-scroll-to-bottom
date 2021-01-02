@@ -1,7 +1,7 @@
 import useStateContext from './internal/useStateContext';
 
 export default function useAtBottom() {
-  const { atBottom } = useStateContext();
+  const { atBottom } = useStateContext(1);
 
   return [atBottom];
 }

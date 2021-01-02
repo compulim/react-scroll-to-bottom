@@ -19,6 +19,12 @@ export default function debug(category, { force = false } = {}) {
       return;
     }
 
+    const [arg0] = args;
+
+    if (typeof arg0 === 'function') {
+      args = arg0();
+    }
+
     const lines = Array.isArray(args[0]) ? args : [args];
     const oneLiner = lines.length === 1;
 

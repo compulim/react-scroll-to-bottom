@@ -8,7 +8,8 @@ import EventSpy from '../EventSpy';
 import FunctionContext from './FunctionContext';
 import InternalContext from './InternalContext';
 import SpineTo from '../SpineTo';
-import StateContext from './StateContext';
+import State1Context from './State1Context';
+import State2Context from './State2Context';
 import styleConsole from '../utils/styleConsole';
 
 const DEFAULT_SCROLLER = () => Infinity;
@@ -97,7 +98,12 @@ const Composer = ({
   );
 
   const handleSpineToEnd = useCallback(() => {
-    debug('%cSpineTo%c: %conEnd%c is fired.', ...styleConsole('magenta'), ...styleConsole('orange'), { animateTo });
+    debug(() => [
+      '%cSpineTo%c: %conEnd%c is fired.',
+      ...styleConsole('magenta'),
+      ...styleConsole('orange'),
+      { animateTo }
+    ]);
 
     ignoreScrollEventBeforeRef.current = Date.now();
 
@@ -123,7 +129,7 @@ const Composer = ({
 
       // If it is trying to scroll to a position which is not "atEnd", it should set sticky to false after scroll ended.
 
-      debug(
+      debug(() => [
         [
           `%cscrollTo%c: Will scroll to %c${
             typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
@@ -136,7 +142,7 @@ const Composer = ({
           nextAnimateTo,
           target
         }
-      );
+      ]);
 
       if (behavior === 'auto') {
         // Stop any existing animation
@@ -163,7 +169,7 @@ const Composer = ({
 
   const scrollToBottom = useCallback(
     ({ behavior } = {}) => {
-      debug('%cscrollToBottom%c: Called', ...styleConsole('yellow', ''));
+      debug(() => ['%cscrollToBottom%c: Called', ...styleConsole('yellow', '')]);
 
       behavior !== 'smooth' &&
         console.warn(
@@ -177,7 +183,7 @@ const Composer = ({
 
   const scrollToTop = useCallback(
     ({ behavior } = {}) => {
-      debug('%cscrollToTop%c: Called', ...styleConsole('yellow', ''));
+      debug(() => ['%cscrollToTop%c: Called', ...styleConsole('yellow', '')]);
 
       behavior !== 'smooth' &&
         console.warn(
@@ -191,7 +197,7 @@ const Composer = ({
 
   const scrollToEnd = useCallback(
     ({ behavior } = {}) => {
-      debug('%cscrollToEnd%c: Called', ...styleConsole('yellow', ''));
+      debug(() => ['%cscrollToEnd%c: Called', ...styleConsole('yellow', '')]);
 
       behavior !== 'smooth' &&
         console.warn(
@@ -207,7 +213,7 @@ const Composer = ({
 
   const scrollToStart = useCallback(
     ({ behavior } = {}) => {
-      debug('%cscrollToStart%c: Called', ...styleConsole('yellow', ''));
+      debug(() => ['%cscrollToStart%c: Called', ...styleConsole('yellow', '')]);
 
       behavior !== 'smooth' &&
         console.warn(
@@ -224,7 +230,7 @@ const Composer = ({
   const scrollToSticky = useCallback(() => {
     if (target) {
       if (initialScrollBehaviorRef.current === 'auto') {
-        debug(`%ctarget changed%c: Initial scroll`, ...styleConsole('blue'));
+        debug(() => [`%ctarget changed%c: Initial scroll`, ...styleConsole('blue')]);
 
         target.scrollTop = mode === MODE_TOP ? 0 : target.scrollHeight - target.offsetHeight;
         initialScrollBehaviorRef.current = false;
@@ -257,7 +263,7 @@ const Composer = ({
         nextAnimateTo = '100%';
       }
 
-      debug(
+      debug(() => [
         [
           `%cscrollToSticky%c: Will animate from %c${animateFrom}px%c to %c${
             typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
@@ -278,7 +284,7 @@ const Composer = ({
           scrollHeight,
           scrollTop
         }
-      );
+      ]);
 
       scrollTo(nextAnimateTo, { behavior: 'smooth' });
     }
@@ -334,7 +340,7 @@ const Composer = ({
         const nextSticky = (animating && isEnd(animateTo, mode)) || atEnd;
 
         if (sticky !== nextSticky) {
-          debug(
+          debug(() => [
             [
               `%conScroll%c: %csetSticky%c(%c${nextSticky}%c)`,
               ...styleConsole('red'),
@@ -357,12 +363,12 @@ const Composer = ({
                 nextSticky
               }
             ]
-          );
+          ]);
 
           setSticky(nextSticky);
         }
       } else if (sticky) {
-        debug(
+        debug(() => [
           [
             `%conScroll%c: Size changed while sticky, calling %cscrollToSticky()%c`,
             ...styleConsole('red'),
@@ -378,7 +384,7 @@ const Composer = ({
             nextScrollHeight,
             prevScrollHeight: scrollHeight
           }
-        );
+        ]);
 
         scrollToSticky();
       }
@@ -427,11 +433,11 @@ const Composer = ({
               if (!animating) {
                 animateFromRef.current = target.scrollTop;
 
-                debug(
+                debug(() => [
                   `%cInterval check%c: Should sticky but not at end, calling %cscrollToSticky()%c to scroll`,
                   ...styleConsole('navy'),
                   ...styleConsole('orange')
-                );
+                ]);
 
                 scrollToSticky();
               }
@@ -450,7 +456,7 @@ const Composer = ({
 
       return () => clearInterval(timeout);
     }
-  }, [animating, checkInterval, mode, scroller, scrollToSticky, setSticky, sticky, target]);
+  }, [animating, checkInterval, mode, scrollToSticky, setSticky, sticky, target]);
 
   const styleToClassName = useMemo(() => {
     const emotion =
@@ -469,18 +475,24 @@ const Composer = ({
     [observeScrollPosition, setTarget, styleToClassName]
   );
 
-  const stateContext = useMemo(
+  const state1Context = useMemo(
     () => ({
-      animating,
-      animatingToEnd: animating && isEnd(animateTo, mode),
       atBottom,
       atEnd,
       atStart,
       atTop,
-      mode,
+      mode
+    }),
+    [atBottom, atEnd, atStart, atTop, mode]
+  );
+
+  const state2Context = useMemo(
+    () => ({
+      animating,
+      animatingToEnd: animating && isEnd(animateTo, mode),
       sticky
     }),
-    [animating, animateTo, atBottom, atEnd, atStart, atTop, mode, sticky]
+    [animating, animateTo, sticky]
   );
 
   const functionContext = useMemo(
@@ -525,23 +537,28 @@ const Composer = ({
     }
   }, [target]);
 
-  debug([`%cRender%c: Render`, ...styleConsole('cyan', '')], {
-    animateTo,
-    animating,
-    sticky,
-    target
-  });
+  debug(() => [
+    [`%cRender%c: Render`, ...styleConsole('cyan', '')],
+    {
+      animateTo,
+      animating,
+      sticky,
+      target
+    }
+  ]);
 
   return (
     <InternalContext.Provider value={internalContext}>
       <FunctionContext.Provider value={functionContext}>
-        <StateContext.Provider value={stateContext}>
-          {children}
-          {target && <EventSpy debounce={debounce} name="scroll" onEvent={handleScroll} target={target} />}
-          {target && animateTo !== null && (
-            <SpineTo name="scrollTop" onEnd={handleSpineToEnd} target={target} value={animateTo} />
-          )}
-        </StateContext.Provider>
+        <State1Context.Provider value={state1Context}>
+          <State2Context.Provider value={state2Context}>
+            {children}
+            {target && <EventSpy debounce={debounce} name="scroll" onEvent={handleScroll} target={target} />}
+            {target && animateTo !== null && (
+              <SpineTo name="scrollTop" onEnd={handleSpineToEnd} target={target} value={animateTo} />
+            )}
+          </State2Context.Provider>
+        </State1Context.Provider>
       </FunctionContext.Provider>
     </InternalContext.Provider>
   );
