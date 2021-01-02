@@ -18,8 +18,6 @@ const MODE_TOP = 'top';
 const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
 
-const debug = createDebug('<ScrollToBottom>');
-
 // We pool the emotion object by nonce.
 // This is to make sure we don't generate too many unneeded <style> tags.
 const emotionPool = {};
@@ -49,7 +47,18 @@ function isEnd(animateTo, mode) {
   return animateTo === (mode === MODE_TOP ? 0 : '100%');
 }
 
-const Composer = ({ checkInterval, children, debounce, initialScrollBehavior, mode, nonce, scroller }) => {
+const Composer = ({
+  checkInterval,
+  children,
+  debounce,
+  debug: forceDebug,
+  initialScrollBehavior,
+  mode,
+  nonce,
+  scroller
+}) => {
+  const debug = useMemo(() => createDebug(`<ScrollToBottom>`, { force: forceDebug }), [forceDebug]);
+
   mode = mode === MODE_TOP ? MODE_TOP : MODE_BOTTOM;
 
   const ignoreScrollEventBeforeRef = useRef(0);
@@ -115,19 +124,28 @@ const Composer = ({ checkInterval, children, debounce, initialScrollBehavior, mo
       // If it is trying to scroll to a position which is not "atEnd", it should set sticky to false after scroll ended.
 
       debug(
-        `%cscrollTo%c: Will scroll to %c${
-          typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
-        }%c`,
-        ...styleConsole('lime', ''),
-        ...styleConsole('purple')
+        [
+          `%cscrollTo%c: Will scroll to %c${
+            typeof nextAnimateTo === 'number' ? nextAnimateTo + 'px' : nextAnimateTo.replace(/%/gu, '%%')
+          }%c`,
+          ...styleConsole('lime', ''),
+          ...styleConsole('purple')
+        ],
+        {
+          behavior,
+          nextAnimateTo,
+          target
+        }
       );
 
       if (behavior === 'auto') {
         // Stop any existing animation
         handleSpineToEnd();
 
-        // Jump to the scroll position
-        target.scrollTop = nextAnimateTo === '100%' ? target.scrollHeight - target.offsetHeight : nextAnimateTo;
+        if (target) {
+          // Jump to the scroll position
+          target.scrollTop = nextAnimateTo === '100%' ? target.scrollHeight - target.offsetHeight : nextAnimateTo;
+        }
       } else {
         behavior !== 'smooth' &&
           console.warn(
@@ -221,25 +239,22 @@ const Composer = ({ checkInterval, children, debounce, initialScrollBehavior, mo
       const { current: animateFrom } = animateFromRef;
       const { offsetHeight, scrollHeight, scrollTop } = target;
 
-      const maxValue = mode === MODE_TOP ? 0 : Math.max(0, scrollHeight - offsetHeight - animateFrom);
-      const minValue = Math.max(0, scrollTop - animateFrom);
+      const maxValue = mode === MODE_TOP ? 0 : Math.max(0, scrollHeight - offsetHeight - scrollTop);
+      const minValue = Math.max(0, animateFrom - scrollTop);
 
-      const nextValue = Math.max(
-        0,
-        Math.min(maxValue, scroller({ maxValue, minValue, offsetHeight, scrollHeight, scrollTop }))
-      );
+      const rawNextValue = scroller({ maxValue, minValue, offsetHeight, scrollHeight, scrollTop });
+
+      const nextValue = Math.max(0, Math.min(maxValue, rawNextValue));
 
       let nextAnimateTo;
 
-      if (mode === MODE_TOP) {
-        nextAnimateTo = animateFrom - nextValue;
-      } else if (nextValue === maxValue) {
+      if (mode === MODE_TOP || nextValue !== maxValue) {
+        nextAnimateTo = scrollTop + nextValue;
+      } else {
         // When scrolling to bottom, we should scroll to "100%".
         // Otherwise, if we scroll to any number, it will lose stickiness when elements are adding too fast.
         // "100%" is a special argument intended to make sure stickiness is not lost while new elements are being added.
         nextAnimateTo = '100%';
-      } else {
-        nextAnimateTo = animateFrom + nextValue;
       }
 
       debug(
@@ -257,9 +272,11 @@ const Composer = ({ checkInterval, children, debounce, initialScrollBehavior, mo
           maxValue,
           minValue,
           nextAnimateTo,
-          nextScrollBy: nextValue,
+          nextValue,
           offsetHeight,
-          scrollHeight
+          rawNextValue,
+          scrollHeight,
+          scrollTop
         }
       );
 
@@ -508,10 +525,11 @@ const Composer = ({ checkInterval, children, debounce, initialScrollBehavior, mo
     }
   }, [target]);
 
-  debug(`%cRender%c: Render`, ...styleConsole('cyan', ''), {
+  debug([`%cRender%c: Render`, ...styleConsole('cyan', '')], {
     animateTo,
     animating,
-    sticky
+    sticky,
+    target
   });
 
   return (
@@ -533,7 +551,8 @@ Composer.defaultProps = {
   checkInterval: 100,
   children: undefined,
   debounce: 17,
-  initialScrollBehavior: false,
+  debug: false,
+  initialScrollBehavior: 'smooth',
   mode: undefined,
   nonce: undefined,
   scroller: DEFAULT_SCROLLER
@@ -543,6 +562,7 @@ Composer.propTypes = {
   checkInterval: PropTypes.number,
   children: PropTypes.any,
   debounce: PropTypes.number,
+  debug: PropTypes.bool,
   initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,

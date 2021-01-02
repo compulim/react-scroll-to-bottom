@@ -9,8 +9,8 @@ function format(category, arg0, ...args) {
   return [`%c${category}%c ${arg0}`, ...styleConsole('green', 'white'), ...args];
 }
 
-export default function debug(category) {
-  if (NODE_ENV !== 'development') {
+export default function debug(category, { force = false } = {}) {
+  if (!force && NODE_ENV !== 'development') {
     return () => 0;
   }
 

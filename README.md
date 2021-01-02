@@ -67,6 +67,7 @@ export default props => (
 | `checkInterval`         | `number`   | 150              | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)                                                     |
 | `className`             | `string`   |                  | Set the class name for the root element                                                                                        |
 | `debounce`              | `number`   | `17`             | Set the debounce for tracking the `onScroll` event                                                                             |
+| `debug`                 | `bool`     | false            | Show debug information in console                                                                                              |
 | `followButtonClassName` | `string`   |                  | Set the class name for the follow button                                                                                       |
 | `initialScrollBehavior` | `string`   | `smooth`         | Set the initial scroll behavior, either `"auto"` (discrete scrolling) or `"smooth"`                                            |
 | `mode`                  | `string`   | `"bottom"`       | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |
