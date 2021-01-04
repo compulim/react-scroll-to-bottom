@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import useInternalContext from './internal/useInternalContext';
 
 export default function useObserveScrollPosition(observer, deps = []) {
-  if (typeof observer !== 'function') {
+  if (observer && typeof observer !== 'function') {
     console.error('react-scroll-to-bottom: First argument passed to "useObserveScrollPosition" must be a function.');
   } else if (!Array.isArray(deps)) {
     console.error(
