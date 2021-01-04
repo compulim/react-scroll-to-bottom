@@ -377,7 +377,7 @@ export default () => (
 You can use `useObserveScrollPosition` to listen to scroll change.
 
 ```js
-// ThisA is the content rendered inside the scrollable container
+// This is the content rendered inside the scrollable container
 const ScrollContent = () => {
   const observer = useCallback(({ scrollTop }) => {
     console.log(scrollTop);
