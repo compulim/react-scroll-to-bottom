@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added `scroller` prop for limiting scroll distance when `mode` is set to `bottom`, in PR [#73](https://github.com/compulim/react-scroll-to-bottom/pull/73)
+- Added `initialScrollBehavior` prop for first scroll behavior. When set to `"auto"` (discrete scrolling), it will jump to end on initialization. in PR [#73](https://github.com/compulim/react-scroll-to-bottom/pull/73)
+- Added `debug` prop for dumping debug log to console, in PR [#73](https://github.com/compulim/react-scroll-to-bottom/pull/73)
+- Improved performance by separating `StateContext` into 2 tiers, in PR [#73](https://github.com/compulim/react-scroll-to-bottom/pull/73)
+
+### Fixed
+
+- Emptying container should regain stickiness, in PR [#73](https://github.com/compulim/react-scroll-to-bottom/pull/73)
+
 ## [4.0.0] - 2020-09-01
 
 ### Added
