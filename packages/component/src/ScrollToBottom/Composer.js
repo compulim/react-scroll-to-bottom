@@ -10,7 +10,7 @@ import InternalContext from './InternalContext';
 import SpineTo from '../SpineTo';
 import State1Context from './State1Context';
 import State2Context from './State2Context';
-import StateContext from '../StateContext';
+import StateContext from './StateContext';
 import styleConsole from '../utils/styleConsole';
 
 const DEFAULT_SCROLLER = () => Infinity;
