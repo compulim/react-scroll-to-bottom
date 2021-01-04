@@ -372,6 +372,34 @@ export default () => (
 );
 ```
 
+## Observing scroll position
+
+You can use `useObserveScrollPosition` to listen to scroll change.
+
+```js
+// ThisA is the content rendered inside the scrollable container
+const ScrollContent = () => {
+  const observer = useCallback(({ scrollTop }) => {
+    console.log(scrollTop);
+  }, []);
+
+  useObserveScrollPosition(observer);
+
+  return <div>Hello, World!</div>;
+};
+```
+
+> If you want to turn off the hook, in the render call, pass a falsy value, e.g. `useObserveScrollPosition(false)`.
+
+Please note that the observer will called very frequently, it is recommended:
+
+- Only observe the scroll position when needed
+- Don't put too much logic inside the callback function
+- If logic is needed, consider deferring handling using `setTimeout` or similar functions
+- Make sure the callback function passed on each render call is memoized appropriately, e.g. `useCallback`
+
+For best practices on handling `scroll` event, please read [this article](https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event).
+
 ## Programmatically pausing scroll
 
 > This only works when `mode` prop is set to `bottom` (default).
