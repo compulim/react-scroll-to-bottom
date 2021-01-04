@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.1.0] - 2021-01-03
+
 ### Added
 
 - Added `scroller` prop for limiting scroll distance when `mode` is set to `bottom`, in PR [#73](https://github.com/compulim/react-scroll-to-bottom/pull/73)
