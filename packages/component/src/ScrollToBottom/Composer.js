@@ -10,6 +10,7 @@ import InternalContext from './InternalContext';
 import SpineTo from '../SpineTo';
 import State1Context from './State1Context';
 import State2Context from './State2Context';
+import StateContext from '../StateContext';
 import styleConsole from '../utils/styleConsole';
 
 const DEFAULT_SCROLLER = () => Infinity;
@@ -496,6 +497,14 @@ const Composer = ({
     [animating, animateTo, debug, mode, sticky]
   );
 
+  const combinedStateContext = useMemo(
+    () => ({
+      ...state1Context,
+      ...state2Context
+    }),
+    [state1Context, state2Context]
+  );
+
   const functionContext = useMemo(
     () => ({
       scrollTo,
@@ -551,15 +560,17 @@ const Composer = ({
   return (
     <InternalContext.Provider value={internalContext}>
       <FunctionContext.Provider value={functionContext}>
-        <State1Context.Provider value={state1Context}>
-          <State2Context.Provider value={state2Context}>
-            {children}
-            {target && <EventSpy debounce={debounce} name="scroll" onEvent={handleScroll} target={target} />}
-            {target && animateTo !== null && (
-              <SpineTo name="scrollTop" onEnd={handleSpineToEnd} target={target} value={animateTo} />
-            )}
-          </State2Context.Provider>
-        </State1Context.Provider>
+        <StateContext.Provider value={combinedStateContext}>
+          <State1Context.Provider value={state1Context}>
+            <State2Context.Provider value={state2Context}>
+              {children}
+              {target && <EventSpy debounce={debounce} name="scroll" onEvent={handleScroll} target={target} />}
+              {target && animateTo !== null && (
+                <SpineTo name="scrollTop" onEnd={handleSpineToEnd} target={target} value={animateTo} />
+              )}
+            </State2Context.Provider>
+          </State1Context.Provider>
+        </StateContext.Provider>
       </FunctionContext.Provider>
     </InternalContext.Provider>
   );
