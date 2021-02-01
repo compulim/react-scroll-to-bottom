@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fixed [#75](https://github.com/compulim/react-scroll-to-bottom/issues/75). If `debug` is set, it will show debug in console log. If not specified, it will fallback to `NODE_ENV === 'production'`, in PR [#XXX](https://github.com/compulim/react-scroll-to-bottom/pull/XXX).
+- Fixed [#75](https://github.com/compulim/react-scroll-to-bottom/issues/75). If `debug` is set, it will show debug in console log. If not specified, it will fallback to `NODE_ENV === 'production'`, in PR [#77](https://github.com/compulim/react-scroll-to-bottom/pull/77).
 
 ## [4.1.0] - 2021-01-03
 
