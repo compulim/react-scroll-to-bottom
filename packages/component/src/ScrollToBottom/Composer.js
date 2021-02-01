@@ -53,13 +53,13 @@ const Composer = ({
   checkInterval,
   children,
   debounce,
-  debug: forceDebug,
+  debug: debugFromProp,
   initialScrollBehavior,
   mode,
   nonce,
   scroller
 }) => {
-  const debug = useMemo(() => createDebug(`<ScrollToBottom>`, { force: forceDebug }), [forceDebug]);
+  const debug = useMemo(() => createDebug(`<ScrollToBottom>`, { force: debugFromProp }), [debugFromProp]);
 
   mode = mode === MODE_TOP ? MODE_TOP : MODE_BOTTOM;
 
@@ -580,7 +580,7 @@ Composer.defaultProps = {
   checkInterval: 100,
   children: undefined,
   debounce: 17,
-  debug: false,
+  debug: undefined,
   initialScrollBehavior: 'smooth',
   mode: undefined,
   nonce: undefined,

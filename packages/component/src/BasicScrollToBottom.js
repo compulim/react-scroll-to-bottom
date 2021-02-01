@@ -75,7 +75,7 @@ BasicScrollToBottom.defaultProps = {
   children: undefined,
   className: undefined,
   debounce: undefined,
-  debug: false,
+  debug: undefined,
   followButtonClassName: undefined,
   initialScrollBehavior: 'smooth',
   mode: undefined,
