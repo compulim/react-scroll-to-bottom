@@ -20,52 +20,71 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x, 16.x]
 
     steps:
       - name: Checking out for ${{ github.ref }}
         uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Using Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Run npx version-from-git --no-git-tag-version
+      - name: Running npx version-from-git --no-git-tag-version
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
         run: npx version-from-git --no-git-tag-version
 
-      - run: npm ci
+      - name: Installing dependencies
+        run: npm ci
 
-      - run: npm run bootstrap
+      - name: Bootstrapping packages
+        run: npm run bootstrap
 
-      - name: Propagate versions
+      - name: Propagating versions
         run: |
           node_modules/.bin/lerna version --force-publish --no-git-tag-version --no-push --yes `cat package.json | jq -r .version`
 
-      - run: npm run build --if-present
+      - name: Building for instrumentation
+        env:
+          NODE_ENV: test
+          SKIP_PREFLIGHT_CHECK: 'true'
+        run: npm run build --if-present
 
-      - run: npm test
+      - name: Starting Docker Compose
+        run: npm run docker:up -- --detach
 
-      - name: Copy documents
+      - name: Testing
+        run: npm test -- --coverage
+
+      - name: Stopping Docker Compose
+        run: npm run docker:down
+
+      - name: Building for production
+        env:
+          NODE_ENV: production
+          SKIP_PREFLIGHT_CHECK: 'true'
+        run: npm run build --if-present
+
+      - name: Copying documents
         run: |
           cp CHANGELOG.md packages/component
           cp LICENSE packages/component
           cp README.md packages/component
 
-      - name: Run npm pack
+      - name: Running npm pack
         run: |
           cd packages/component
           npm pack
 
-      - name: Upload npm-tarball
+      - name: Uploading npm-tarball
         uses: actions/upload-artifact@v2
         if: ${{ matrix.node-version == '14.x' }}
         with:
           name: npm-tarball
           path: 'packages/component/*.tgz'
 
-      - name: Upload gh-pages
+      - name: Uploading gh-pages
         uses: actions/upload-artifact@v2
         if: ${{ matrix.node-version == '14.x' }}
         with:
@@ -78,18 +97,18 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/heads/') || startsWith(github.ref, 'refs/tags/') }}
 
     steps:
-      - name: Download npm-tarball
+      - name: Downloading npm-tarball
         uses: actions/download-artifact@v2
         with:
           name: npm-tarball
 
-      - name: Download gh-pages
+      - name: Downloading gh-pages
         uses: actions/download-artifact@v2
         with:
           name: gh-pages
           path: gh-pages/
 
-      - name: Read package.json
+      - name: Reading package.json
         id: read-package-json
         run: |
           echo "::set-output name=name::$(tar xOf *.tgz package/package.json | jq -r '.name')"
@@ -97,17 +116,17 @@ jobs:
           echo "::set-output name=tarball::$(ls *.tgz)"
           echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      - name: Run npm publish ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
+      - name: Publishing ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm publish *.tgz --tag master
 
-      - name: Run npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
+      - name: Tagging dist-tag ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
           npm dist-tag add ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
 
-      - name: Draft a new release
+      - name: Drafting a new release
         uses: actions/create-release@v1
         id: create-release
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -118,7 +137,7 @@ jobs:
           release_name: '[${{ steps.read-package-json.outputs.version }}] - ${{ steps.read-package-json.outputs.date }}'
           draft: true
 
-      - name: Upload tarball to release
+      - name: Uploading tarball to release
         uses: actions/upload-release-asset@v1
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         env:
@@ -129,7 +148,7 @@ jobs:
           asset_name: ${{ steps.read-package-json.outputs.tarball }}
           asset_content_type: application/octet-stream
 
-      - name: Deploy to GitHub Pages
+      - name: Deploying to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

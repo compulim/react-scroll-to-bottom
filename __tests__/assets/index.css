@@ -1,0 +1,19 @@
+body,
+html {
+  height: 100%;
+}
+
+body {
+  align-items: center;
+  background: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.react-scroll-to-bottom {
+  background: White;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  height: 640px;
+  width: 360px;
+}

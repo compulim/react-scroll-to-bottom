@@ -1,0 +1,46 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "destination": "/__tests__/",
+      "source": "/"
+    },
+    {
+      "destination": "/",
+      "source": "/.git"
+    },
+    {
+      "destination": "/",
+      "source": "/.git/*"
+    }
+  ],
+  "rewrites": [
+    {
+      "destination": "/packages/component/dist/test-harness.js",
+      "source": "/test-harness.js"
+    },
+    {
+      "destination": "/packages/component/dist/test-harness.js.map",
+      "source": "/test-harness.js.map"
+    },
+    {
+      "destination": "/packages/component/dist/react-scroll-to-bottom.development.js",
+      "source": "/react-scroll-to-bottom.development.js"
+    },
+    {
+      "destination": "/packages/component/dist/react-scroll-to-bottom.development.js.map",
+      "source": "/react-scroll-to-bottom.development.js.map"
+    },
+    {
+      "destination": "/__tests__/assets/:filename",
+      "source": "/assets/:filename"
+    }
+  ],
+  "unlisted": [
+    "/__image_snapshots__",
+    "/**/*.ico",
+    "/**/*.js",
+    "/**/*.json",
+    "/**/*.map"
+  ]
+}

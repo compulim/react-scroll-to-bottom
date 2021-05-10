@@ -14,5 +14,5 @@ export default function useObserveScrollPosition(observer, deps = []) {
   const { observeScrollPosition } = useInternalContext();
 
   /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  useEffect(() => observer && observeScrollPosition(observer), [...deps, observeScrollPosition]);
+  useEffect(() => observer && observeScrollPosition(observer), [...deps, !observer, observeScrollPosition]);
 }

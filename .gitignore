@@ -1,3 +1,6 @@
+/.env
+/chromedriver*
+/coverage
 /lerna-debug.log
 /lib
 /node_modules

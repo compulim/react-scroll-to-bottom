@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    const RunFunction = ({ fn }) => {
+      fn && fn();
+
+      return false;
+    };
+
+    async function render(fn) {
+      let called;
+      const once =
+        fn &&
+        (() => {
+          !called && fn();
+          called = 1;
+        });
+
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <div className="react-scroll-to-bottom">
+            <ReactScrollToBottom.Composer>
+              <ReactScrollToBottom.Panel className="scrollable">
+                {pageObjects.paragraphs.map(paragraph => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </ReactScrollToBottom.Panel>
+              {once && <RunFunction fn={once} />}
+            </ReactScrollToBottom.Composer>
+          </div>,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+    }
+
+    run(async function () {
+      await render();
+
+      await pageObjects.scrollStabilizedAtBottom();
+
+      let scrollPositions = [];
+
+      await render(() => ReactScrollToBottom.useObserveScrollPosition(position => scrollPositions.push(position)));
+
+      await pageObjects.mouseWheel(-100);
+      await pageObjects.scrollStabilized();
+
+      expect(scrollPositions.length).toBeTruthy();
+
+      const { length: currentLength } = scrollPositions;
+
+      await render(() => ReactScrollToBottom.useObserveScrollPosition());
+
+      await pageObjects.mouseWheel(-100);
+      await pageObjects.scrollStabilized();
+
+      expect(scrollPositions.length).toBe(currentLength);
+    });
+  </script>
+</html>
