@@ -1,3 +1,5 @@
+/* eslint no-magic-numbers: "off" */
+
 import { LoremIpsum, loremIpsum } from 'lorem-ipsum';
 import classNames from 'classnames';
 import createEmotion from 'create-emotion';
@@ -147,6 +149,14 @@ const App = ({ nonce }) => {
 
     requestAnimationFrame(() => setParagraphs([...nextParagraphs, lorem.generateParagraphs(5)]));
   }, [paragraphs, setParagraphs]);
+  const handleAddAndRemove = useCallback(() => {
+    const lorem = new LoremIpsum();
+    const [, ...nextParagraphs] = paragraphs;
+
+    nextParagraphs.push(lorem.generateParagraphs(1));
+
+    setParagraphs(nextParagraphs);
+  }, [paragraphs, setParagraphs]);
   const handleClear = useCallback(() => setParagraphs([]), [setParagraphs]);
   const handleCommandBarVisibleChange = useCallback(({ target: { checked } }) => setCommandBarVisible(checked), [
     setCommandBarVisible
@@ -243,6 +253,14 @@ const App = ({ nonce }) => {
             title='When combined with "limit auto scroll" checkbox, this button should pause auto-scroll.'
           >
             Add successively
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={handleAddAndRemove}
+            title='Add a new paragraph and remove the first paragraph'
+          >
+            Add and remove
           </button>
         </li>
         <li>

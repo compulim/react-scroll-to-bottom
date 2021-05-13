@@ -23,6 +23,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^4.0.3"
   }
 }

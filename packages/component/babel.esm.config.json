@@ -1,0 +1,16 @@
+{
+  "extends": "./babel.config.json",
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions"
+          ]
+        },
+        "modules": false
+      }
+    ]
+  ]
+}

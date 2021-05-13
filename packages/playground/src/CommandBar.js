@@ -1,3 +1,5 @@
+/* eslint no-magic-numbers: "off" */
+
 import classNames from 'classnames';
 import createEmotion from 'create-emotion';
 import React, { useCallback, useMemo, useState } from 'react';

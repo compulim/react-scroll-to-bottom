@@ -1,15 +1,12 @@
 /* eslint no-console: ["off"] */
-/* global process */
 
 import styleConsole from './styleConsole';
-
-const { NODE_ENV } = (process && process.env) || {};
 
 function format(category, arg0, ...args) {
   return [`%c${category}%c ${arg0}`, ...styleConsole('green', 'white'), ...args];
 }
 
-export default function debug(category, { force = NODE_ENV === 'development' } = {}) {
+export default function debug(category, { force = false } = {}) {
   if (!force) {
     return () => 0;
   }

@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  # On Windows, run with COMPOSE_CONVERT_WINDOWS_PATHS=1
+
+  chromium:
+    image: selenium/node-chrome:4.0.0-beta-3-20210426
+    depends_on:
+    - selenium-hub
+    - webserver
+    environment:
+    - SE_EVENT_BUS_HOST=selenium-hub
+    - SE_EVENT_BUS_PUBLISH_PORT=4442
+    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  selenium-hub:
+    image: selenium/hub:4.0.0-beta-3-20210426
+    container_name: selenium-hub
+    environment:
+    - GRID_BROWSER_TIMEOUT=15
+    - GRID_TIMEOUT=15
+    ports:
+    - "4444:4444"
+
+  webserver:
+    build:
+      context: ./
+    ports:
+    - "5080:80"
+    stop_grace_period: 0s

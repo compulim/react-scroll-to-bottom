@@ -1,18 +1,29 @@
 {
-  "name": "react-scroll-to-bottom",
+  "name": "root",
   "version": "4.1.1-0",
   "description": "React container that will auto scroll to bottom",
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "browser": "node packages/test-harness/src/host/dev/index.js http://localhost:5000/__tests__/",
     "build": "lerna run build --stream",
+    "docker": "concurrently \"npm run docker:up\" \"npm run docker:watch\"",
+    "docker:down": "docker-compose down --rmi all",
+    "docker:up": "docker-compose down && docker-compose build --parallel && docker-compose up --scale chromium=2",
+    "docker:watch": "nodemon --exec \"docker-compose build --quiet -- webserver && docker-compose kill webserver && docker-compose rm --force --stop webserver && docker-compose up --detach -- webserver\" --ext html,js,json,map --on-change-only --watch __tests__ --watch packages/component/dist",
     "eslint": "lerna run eslint --parallel",
-    "start": "lerna run start --parallel --scope=react-scroll-to-bottom --stream",
-    "test": "lerna run test --stream"
+    "start": "concurrently \"npm run start:*\"",
+    "start:build": "lerna run start --ignore=playground --parallel --stream",
+    "start:serve": "serve -c __tests__/serve.json",
+    "test": "jest"
   },
   "devDependencies": {
+    "concurrently": "^6.1.0",
+    "jest": "^26.6.3",
     "lerna": "^3.20.2",
+    "nodemon": "^2.0.7",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "serve": "^11.3.2"
   }
 }

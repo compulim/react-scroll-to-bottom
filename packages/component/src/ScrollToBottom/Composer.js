@@ -12,6 +12,7 @@ import State1Context from './State1Context';
 import State2Context from './State2Context';
 import StateContext from './StateContext';
 import styleConsole from '../utils/styleConsole';
+import useStateRef from '../hooks/internal/useStateRef';
 
 const DEFAULT_SCROLLER = () => Infinity;
 const MIN_CHECK_INTERVAL = 17; // 1 frame
@@ -65,8 +66,8 @@ const Composer = ({
 
   const ignoreScrollEventBeforeRef = useRef(0);
   const initialScrollBehaviorRef = useRef(initialScrollBehavior);
-  const [animateTo, setAnimateTo] = useState(mode === MODE_TOP ? 0 : '100%');
-  const [target, setTarget] = useState(null);
+  const [animateTo, setAnimateTo, animateToRef] = useStateRef(mode === MODE_TOP ? 0 : '100%');
+  const [target, setTarget, targetRef] = useStateRef(null);
 
   // Internal context
   const animateFromRef = useRef(0);
@@ -74,17 +75,18 @@ const Composer = ({
   const scrollHeightRef = useRef(0);
 
   // State context
-  const animating = animateTo !== null;
   const [atBottom, setAtBottom] = useState(true);
   const [atEnd, setAtEnd] = useState(true);
   const [atTop, setAtTop] = useState(true);
   const [atStart, setAtStart] = useState(false);
-  const [sticky, setSticky] = useState(true);
+  const [sticky, setSticky, stickyRef] = useStateRef(true);
 
   // High-rate state context
   const scrollPositionObserversRef = useRef([]);
   const observeScrollPosition = useCallback(
     fn => {
+      const { current: target } = targetRef;
+
       scrollPositionObserversRef.current.push(fn);
       target && fn({ scrollTop: target.scrollTop });
 
@@ -95,10 +97,12 @@ const Composer = ({
         ~index && scrollPositionObservers.splice(index, 1);
       };
     },
-    [scrollPositionObserversRef, target]
+    [scrollPositionObserversRef, targetRef]
   );
 
   const handleSpineToEnd = useCallback(() => {
+    const { current: animateTo } = animateToRef;
+
     debug(() => [
       '%cSpineTo%c: %conEnd%c is fired.',
       ...styleConsole('magenta'),
@@ -119,11 +123,13 @@ const Composer = ({
 
     isEnd(animateTo, mode) || setSticky(false);
     setAnimateTo(null);
-  }, [animateTo, debug, ignoreScrollEventBeforeRef, mode, setAnimateTo, setSticky]);
+  }, [animateToRef, debug, ignoreScrollEventBeforeRef, mode, setAnimateTo, setSticky]);
 
   // Function context
   const scrollTo = useCallback(
     (nextAnimateTo, { behavior } = {}) => {
+      const { current: target } = targetRef;
+
       if (typeof nextAnimateTo !== 'number' && nextAnimateTo !== '100%') {
         return console.warn('react-scroll-to-bottom: Arguments passed to scrollTo() must be either number or "100%".');
       }
@@ -163,9 +169,20 @@ const Composer = ({
       }
 
       // This is for handling a case. When calling scrollTo('100%', { behavior: 'auto' }) multiple times, it would lose stickiness.
-      isEnd(nextAnimateTo, mode) && setSticky(true);
+      if (isEnd(nextAnimateTo, mode)) {
+        debug(() => [
+          [
+            `%cscrollTo%c: Scrolling to end, will set sticky to %ctrue%c.`,
+            ...styleConsole('lime', ''),
+            ...styleConsole('purple')
+          ],
+          [{ mode, nextAnimateTo }]
+        ]);
+
+        setSticky(true);
+      }
     },
-    [debug, handleSpineToEnd, mode, setAnimateTo, setSticky, target]
+    [debug, handleSpineToEnd, mode, setAnimateTo, setSticky, targetRef]
   );
 
   const scrollToBottom = useCallback(
@@ -229,6 +246,8 @@ const Composer = ({
   );
 
   const scrollToSticky = useCallback(() => {
+    const { current: target } = targetRef;
+
     if (target) {
       if (initialScrollBehaviorRef.current === 'auto') {
         debug(() => [`%ctarget changed%c: Initial scroll`, ...styleConsole('blue')]);
@@ -289,10 +308,15 @@ const Composer = ({
 
       scrollTo(nextAnimateTo, { behavior: 'smooth' });
     }
-  }, [animateFromRef, debug, mode, scroller, scrollTo, target]);
+  }, [animateFromRef, debug, mode, scroller, scrollTo, targetRef]);
 
   const handleScroll = useCallback(
     ({ timeStampLow }) => {
+      const { current: animateTo } = animateToRef;
+      const { current: target } = targetRef;
+
+      const animating = animateTo !== null;
+
       // Currently, there are no reliable way to check if the "scroll" event is trigger due to
       // user gesture, programmatic scrolling, or Chrome-synthesized "scroll" event to compensate size change.
       // Thus, we use our best-effort to guess if it is triggered by user gesture, and disable sticky if it is heading towards the start direction.
@@ -340,7 +364,7 @@ const Composer = ({
         // We can be "animating but not sticky" by calling "scrollTo(100)" where the container scrollHeight is 200px.
         const nextSticky = (animating && isEnd(animateTo, mode)) || atEnd;
 
-        if (sticky !== nextSticky) {
+        if (stickyRef.current !== nextSticky) {
           debug(() => [
             [
               `%conScroll%c: %csetSticky%c(%c${nextSticky}%c)`,
@@ -368,7 +392,7 @@ const Composer = ({
 
           setSticky(nextSticky);
         }
-      } else if (sticky) {
+      } else if (stickyRef.current) {
         debug(() => [
           [
             `%conScroll%c: Size changed while sticky, calling %cscrollToSticky()%c`,
@@ -395,8 +419,7 @@ const Composer = ({
       scrollPositionObserversRef.current.forEach(observer => observer({ scrollTop: actualScrollTop }));
     },
     [
-      animateTo,
-      animating,
+      animateToRef,
       debug,
       ignoreScrollEventBeforeRef,
       mode,
@@ -409,8 +432,8 @@ const Composer = ({
       setAtStart,
       setAtTop,
       setSticky,
-      sticky,
-      target
+      stickyRef,
+      targetRef
     ]
   );
 
@@ -419,7 +442,10 @@ const Composer = ({
       let stickyButNotAtEndSince = false;
 
       const timeout = setImmediateInterval(() => {
-        if (sticky) {
+        const { current: target } = targetRef;
+        const animating = animateToRef.current !== null;
+
+        if (stickyRef.current) {
           if (!computeViewState({ mode, target }).atEnd) {
             if (!stickyButNotAtEndSince) {
               stickyButNotAtEndSince = Date.now();
@@ -449,8 +475,23 @@ const Composer = ({
           } else {
             stickyButNotAtEndSince = false;
           }
-        } else if (target.scrollHeight <= target.offsetHeight && !sticky) {
+        } else if (target.scrollHeight <= target.offsetHeight && !stickyRef.current) {
           // When the container is emptied, we will set sticky back to true.
+
+          debug(() => [
+            [
+              `%cInterval check%c: Container is emptied, setting sticky back to %ctrue%c`,
+              ...styleConsole('navy'),
+              ...styleConsole('purple')
+            ],
+            [
+              {
+                offsetHeight: target.offsetHeight,
+                scrollHeight: target.scrollHeight,
+                sticky: stickyRef.current
+              }
+            ]
+          ]);
 
           setSticky(true);
         }
@@ -458,7 +499,7 @@ const Composer = ({
 
       return () => clearInterval(timeout);
     }
-  }, [animating, checkInterval, debug, mode, scrollToSticky, setSticky, sticky, target]);
+  }, [animateToRef, checkInterval, debug, mode, scrollToSticky, setSticky, stickyRef, target, targetRef]);
 
   const styleToClassName = useMemo(() => {
     const emotion =
@@ -488,14 +529,15 @@ const Composer = ({
     [atBottom, atEnd, atStart, atTop, mode]
   );
 
-  const state2Context = useMemo(
-    () => ({
+  const state2Context = useMemo(() => {
+    const animating = animateTo !== null;
+
+    return {
       animating,
       animatingToEnd: animating && isEnd(animateTo, mode),
       sticky
-    }),
-    [animating, animateTo, debug, mode, sticky]
-  );
+    };
+  }, [animateTo, debug, mode, sticky]);
 
   const combinedStateContext = useMemo(
     () => ({
@@ -551,7 +593,7 @@ const Composer = ({
     [`%cRender%c: Render`, ...styleConsole('cyan', '')],
     {
       animateTo,
-      animating,
+      animating: animateTo !== null,
       sticky,
       target
     }

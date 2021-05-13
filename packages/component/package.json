@@ -17,16 +17,24 @@
     "tail"
   ],
   "main": "lib/index.js",
+  "module": "lib/esm/index.js",
   "files": [
     "lib/**/*"
   ],
   "scripts": {
-    "build": "npm run build:babel",
-    "build:babel": "babel --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
+    "build": "npm run build:babel && npm run build:esbuild && npm run build:test-harness",
+    "build:babel": "concurrently \"npm run build:babel:*\"",
+    "build:babel:cjs": "babel --config-file ./babel.cjs.config.json --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
+    "build:babel:esm": "babel --config-file ./babel.esm.config.json --out-dir lib/esm --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
+    "build:esbuild": "esbuild lib/esm/browser.js --bundle --define:process=\"{\\\"env\\\":{}}\" --outfile=dist/react-scroll-to-bottom.development.js --sourcemap --target=chrome80",
+    "build:test-harness": "cp ../test-harness/dist/* dist/",
     "eslint": "eslint src/**/*.js --ignore-pattern *.spec.js --ignore-pattern *.test.js",
     "prestart": "npm run build:babel",
-    "start": "npm run start:babel",
-    "start:babel": "npm run build:babel -- --skip-initial-build --watch"
+    "start": "concurrently \"npm run start:*\"",
+    "start:babel:cjs": "npm run build:babel:cjs -- --skip-initial-build --watch",
+    "start:babel:esm": "npm run build:babel:esm -- --skip-initial-build --watch",
+    "start:esbuild": "npm run build:esbuild -- --watch",
+    "start:test-harness": "nodemon --exec \"npm run build:test-harness\" --watch ../test-harness/dist"
   },
   "author": "William Wong <compulim@hotmail.com> (http://compulim.info/)",
   "license": "MIT",
@@ -46,11 +54,15 @@
     "@babel/preset-react": "^7.10.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "concurrently": "^6.1.0",
+    "esbuild": "^0.11.20",
     "eslint": "^7.3.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4",
-    "prettier": "^2.0.5"
+    "nodemon": "^2.0.7",
+    "prettier": "^2.0.5",
+    "test-harness": "^0.0.0-0"
   },
   "dependencies": {
     "classnames": "2.2.6",

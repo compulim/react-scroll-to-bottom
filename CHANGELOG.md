@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added a test harness, in PR [#85](https://github.com/compulim/react-scroll-to-bottom/pull/85)
+
 ### Fixed
 
 - Fixed [#75](https://github.com/compulim/react-scroll-to-bottom/issues/75). If `debug` is set, it will show debug in console log. If not specified, it will fallback to `NODE_ENV === 'production'`, in PR [#77](https://github.com/compulim/react-scroll-to-bottom/pull/77).
+- Fixed [#84](https://github.com/compulim/react-scroll-to-bottom/issues/84). Fixed a race condition: while under heavy load, sticky, and at the end, calling `useScrollTo()` to any positions, the scroll view may scroll back to the bottom immediately, in PR [#85](https://github.com/compulim/react-scroll-to-bottom/pull/85)
 
 ## [4.1.0] - 2021-01-03
 
