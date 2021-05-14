@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+    <style type="text/css">
+      .react-scroll-to-bottom.small {
+        height: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    function appendParagraph(paragraphs) {
+      return [...paragraphs, pageObjects.paragraphs[~~(Math.random() * pageObjects.paragraphs.length)]];
+    }
+
+    async function render(paragraphs, className) {
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <ReactScrollToBottom.default
+            className={`react-scroll-to-bottom ${className || ''}`}
+            followButtonClassName="follow"
+            scrollViewClassName="scrollable"
+          >
+            {paragraphs.map((paragraph, index) => (
+              <p key={index}>
+                {index}: {paragraph}
+              </p>
+            ))}
+          </ReactScrollToBottom.default>,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+    }
+
+    // This is testing of 4-1-5-1-1 on the test page. It should not lose stickiness.
+    run(async function () {
+      let paragraphs = pageObjects.paragraphs;
+
+      await render(paragraphs);
+
+      await render(paragraphs, 'small');
+      await pageObjects.scrollStabilizedAtBottom();
+
+      paragraphs = appendParagraph(paragraphs);
+      await render(paragraphs, 'small');
+      await pageObjects.scrollStabilizedAtBottom();
+
+      await render(paragraphs);
+      await pageObjects.scrollStabilizedAtBottom();
+
+      paragraphs = appendParagraph(paragraphs);
+      await render(paragraphs);
+      await pageObjects.scrollStabilizedAtBottom();
+
+      paragraphs = appendParagraph(paragraphs);
+      await render(paragraphs);
+      await pageObjects.scrollStabilizedAtBottom();
+    });
+  </script>
+</html>

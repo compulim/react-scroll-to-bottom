@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    const Panel = () => {
+      const [sticky] = ReactScrollToBottom.useSticky();
+
+      return (
+        <ReactScrollToBottom.Panel className={`scrollable ${sticky ? 'sticky' : ''}`}>
+          {pageObjects.paragraphs.map(paragraph => (
+            <div key={paragraph}>
+              <div>{paragraph}</div>
+              {/* Adds an element with complex layout to slow down rendering. */}
+              {new Array(1000).fill().map((_, index) => (
+                <div key={index} />
+              ))}
+            </div>
+          ))}
+        </ReactScrollToBottom.Panel>
+      );
+    };
+
+    const RunFunction = ({ fn }) => {
+      fn && fn();
+
+      return false;
+    };
+
+    async function render(fn) {
+      let called;
+      const once =
+        fn &&
+        (() => {
+          !called && fn();
+          called = 1;
+        });
+
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <div className="react-scroll-to-bottom">
+            {/* Set checkInterval to 1 to increase the probability of race condition. */}
+            <ReactScrollToBottom.Composer checkInterval={1}>
+              <Panel />
+              <RunFunction fn={once} />
+            </ReactScrollToBottom.Composer>
+          </div>,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+    }
+
+    run(async function () {
+      await render();
+
+      for (let i = 0; i < 20; i++) {
+        await pageObjects.scrollStabilizedAtBottom();
+        await became('sticky', () => document.getElementsByClassName('sticky').length, 5000);
+
+        if (i % 2) {
+          document.getElementsByClassName('scrollable')[0].scrollTo({ behavior: 'auto', top: 0 });
+        } else {
+          document.getElementsByClassName('scrollable')[0].children[0].scrollIntoView({ behavior: 'auto' });
+        }
+
+        // The race condition occurs in this place:
+        // - When under load
+        // - Call `scrollTo` or `scrollIntoView` with `behavior` set to `auto`, it will scroll up
+        // - The race condition will cause it to scroll back down immediately
+
+        await pageObjects.scrollStabilizedAtTop();
+        await became('not sticky', () => !document.getElementsByClassName('sticky').length, 5000);
+
+        await render(() => ReactScrollToBottom.useScrollTo()('100%', { behavior: 'smooth' }));
+      }
+    });
+  </script>
+</html>

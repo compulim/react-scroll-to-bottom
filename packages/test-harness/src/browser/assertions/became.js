@@ -1,7 +1,3 @@
-import sleep from '../../common/utils/sleep';
-
-const CHECK_INTERVAL = 100;
-
 export default async function became(message, fn, timeout) {
   if (typeof timeout !== 'number') {
     throw new Error('"timeout" argument must be set.');
@@ -12,7 +8,7 @@ export default async function became(message, fn, timeout) {
       return;
     }
 
-    await sleep(CHECK_INTERVAL);
+    await new Promise(requestAnimationFrame);
   }
 
   throw new Error(`Timed out while waiting for page condition "${message}" after ${timeout / 1000} seconds.`);
