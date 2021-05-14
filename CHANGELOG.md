@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.1.1] - 2021-05-13
+
 ### Added
 
 - Added a test harness, in PR [#85](https://github.com/compulim/react-scroll-to-bottom/pull/85)
