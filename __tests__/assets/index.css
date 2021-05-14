@@ -1,5 +1,6 @@
 body,
-html {
+html,
+#app {
   height: 100%;
 }
 
@@ -11,9 +12,16 @@ body {
   margin: 0;
 }
 
+#app {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .react-scroll-to-bottom {
   background: White;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  height: 640px;
+  height: 100%;
+  max-height: 640px;
   width: 360px;
 }
