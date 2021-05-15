@@ -7,12 +7,14 @@ on:
   push:
     branches:
       - main
+      - master
     tags:
       - '*'
 
   pull_request:
     branches:
       - main
+      - master
 
 jobs:
   build:
@@ -45,20 +47,20 @@ jobs:
         run: |
           node_modules/.bin/lerna version --force-publish --no-git-tag-version --no-push --yes `cat package.json | jq -r .version`
 
-      - name: Building for instrumentation
-        env:
-          NODE_ENV: test
-          SKIP_PREFLIGHT_CHECK: 'true'
-        run: npm run build --if-present
+      # - name: Building for instrumentation
+      #   env:
+      #     NODE_ENV: test
+      #     SKIP_PREFLIGHT_CHECK: 'true'
+      #   run: npm run build --if-present
 
-      - name: Starting Docker Compose
-        run: npm run docker:up -- --detach
+      # - name: Starting Docker Compose
+      #   run: npm run docker:up -- --detach
 
-      - name: Testing
-        run: npm test -- --coverage
+      # - name: Testing
+      #   run: npm test -- --coverage
 
-      - name: Stopping Docker Compose
-        run: npm run docker:down
+      # - name: Stopping Docker Compose
+      #   run: npm run docker:down
 
       - name: Building for production
         env:
@@ -79,14 +81,14 @@ jobs:
 
       - name: Uploading npm-tarball
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.node-version == '14.x' }}
+        if: ${{ matrix.node-version == '16.x' }}
         with:
           name: npm-tarball
           path: 'packages/component/*.tgz'
 
       - name: Uploading gh-pages
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.node-version == '14.x' }}
+        if: ${{ matrix.node-version == '16.x' }}
         with:
           name: gh-pages
           path: 'packages/playground/build/**/*'
@@ -115,11 +117,12 @@ jobs:
           echo "::set-output name=version::$(tar xOf *.tgz package/package.json | jq -r '.version')"
           echo "::set-output name=tarball::$(ls *.tgz)"
           echo "::set-output name=date::$(date +%Y-%m-%d)"
+          echo "::set-output name=branch::$(git branch --show-current)"
 
       - name: Publishing ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm publish *.tgz --tag main
+          npm publish *.tgz --tag ${{ steps.read-package-json.outputs.branch }}
 
       - name: Tagging dist-tag ${{ steps.read-package-json.outputs.name }}@${{ steps.read-package-json.outputs.version }} latest
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
