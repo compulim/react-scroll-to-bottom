@@ -123,10 +123,11 @@ jobs:
         name: Stopping Docker Compose
         run: npm run docker:down
 
+  # "public" job will only run when merging a commit or tag.
+  # It does not depends on "test" because we assume it already passed pull request status checks and "test" can be unreliable at times.
   publish:
     needs:
       - build
-      - test
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/heads/') || startsWith(github.ref, 'refs/tags/') }}
 
