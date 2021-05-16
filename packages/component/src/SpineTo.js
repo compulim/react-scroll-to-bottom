@@ -1,7 +1,7 @@
 /* eslint no-magic-numbers: ["error", { "ignore": [0, 1, 1.5, 5] }] */
 
-import { useCallback, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
 function squareStepper(current, to) {
   const sign = Math.sign(to - current);
