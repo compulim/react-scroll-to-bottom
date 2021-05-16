@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import createEmotion from 'create-emotion';
+import createEmotion from '@emotion/css/create-instance';
 import React, { useMemo, useRef } from 'react';
 
 import {
@@ -56,7 +56,7 @@ const ROOT_STYLE = {
 };
 
 const StatusBar = ({ className, nonce }) => {
-  const rootCSS = useMemo(() => createEmotion({ nonce }).css(ROOT_STYLE), [nonce]);
+  const rootCSS = useMemo(() => createEmotion({ key: 'playground--css-', nonce }).css(ROOT_STYLE), [nonce]);
 
   const scrollTopRef = useRef();
   const [animating] = useAnimating();

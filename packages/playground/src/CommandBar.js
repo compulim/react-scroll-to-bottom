@@ -1,7 +1,7 @@
 /* eslint no-magic-numbers: "off" */
 
 import classNames from 'classnames';
-import createEmotion from 'create-emotion';
+import createEmotion from '@emotion/css/create-instance';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import {
@@ -36,7 +36,7 @@ const ROOT_STYLE = {
 };
 
 const CommandBar = ({ nonce }) => {
-  const rootCSS = useMemo(() => createEmotion({ nonce }).css(ROOT_STYLE), [nonce]);
+  const rootCSS = useMemo(() => createEmotion({ key: 'playground--css-', nonce }).css(ROOT_STYLE), [nonce]);
 
   const scrollTo = useScrollTo();
   const scrollToBottom = useScrollToBottom();

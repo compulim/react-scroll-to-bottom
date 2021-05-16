@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Bumped dependencies, by [@compulim](https://github.com/compulim) in PR [#95](https://github.com/compulim/react-scroll-to-bottom/pull/95)
+   - Updated `playground` scaffold
+   - Production dependencies
+      - [`@emotion/css@11.1.3`](https://npmjs.com/packages/@emotion/css) from [`create-emotion@10.0.27`](https://npmjs.com/packages/create-emotion)
+      - [`classnames@2.3.1`](https://npmjs.com/packages/classnames)
+   - Non-production dependencies
+      - [`@babel/cli@7.13.16`](https://npmjs.com/packages/@babel/cli)
+      - [`@babel/core@7.14.2`](https://npmjs.com/packages/@babel/core)
+      - [`@babel/preset-env@7.14.2`](https://npmjs.com/packages/@babel/preset-env)
+      - [`@babel/preset-react@7.13.13`](https://npmjs.com/packages/@babel/preset-react)
+      - [`esbuild@0.11.22`](https://npmjs.com/packages/esbuild)
+      - [`prettier@2.3.0`](https://npmjs.com/packages/prettier)
+      - [`react-interval@2.1.2`](https://npmjs.com/packages/react-interval)
+      - [`react-scripts@4.0.3`](https://npmjs.com/packages/react-scripts)
+
 ### Fixed
 
 - Fixed [#90](https://github.com/compulim/react-scroll-to-bottom/issues/90). Added `@babel/runtime-corejs3` and `core-js@3` for transforming for Internet Explorer 11, by [@compulim](https://github.com/compulim), in PR [#93](https://github.com/compulim/react-scroll-to-bottom/pull/93).
