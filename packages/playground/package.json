@@ -16,7 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "serve": "nodemon --exec \"npx serve -p 5000\" --watch build --watch serve.json"
+    "serve": "npx nodemon --exec \"npx serve -p 5000\" --watch build --watch serve.json"
   },
   "browserslist": [
     ">0.2%",
