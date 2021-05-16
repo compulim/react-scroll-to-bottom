@@ -26,7 +26,7 @@
     "build:babel": "concurrently \"npm run build:babel:*\"",
     "build:babel:cjs": "babel --config-file ./babel.cjs.config.json --out-dir lib --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
     "build:babel:esm": "babel --config-file ./babel.esm.config.json --out-dir lib/esm --ignore **/*.spec.js,**/*.test.js --source-maps inline --verbose src/",
-    "build:esbuild": "esbuild lib/esm/browser.js --bundle --define:process=\"{\\\"env\\\":{}}\" --outfile=dist/react-scroll-to-bottom.development.js --sourcemap --target=chrome80",
+    "build:esbuild": "esbuild lib/esm/browser.js --bundle --define:process=\"{\\\"env\\\":{}}\" --metafile=dist/meta.json --outfile=dist/react-scroll-to-bottom.development.js --sourcemap --target=chrome80",
     "build:test-harness": "cp ../test-harness/dist/* dist/",
     "eslint": "eslint src/**/*.js --ignore-pattern *.spec.js --ignore-pattern *.test.js",
     "prestart": "npm run build:babel",
@@ -66,9 +66,9 @@
     "test-harness": "^0.0.0-0"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "7.14.0",
+    "@babel/runtime-corejs3": "^7.14.0",
     "classnames": "2.2.6",
-    "core-js": "3.12.1",
+    "core-js": "^3.12.1",
     "create-emotion": "10.0.27",
     "math-random": "2.0.1",
     "prop-types": "15.7.2",
