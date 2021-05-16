@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed [#90](https://github.com/compulim/react-scroll-to-bottom/issues/90). Added `@babel/runtime-corejs3` and `core-js@3` for transforming for Internet Explorer 11, by [@compulim](https://github.com/compulim), in PR [#93](https://github.com/compulim/react-scroll-to-bottom/pull/93).
+
 ## [4.1.1] - 2021-05-13
 
 ### Added

@@ -4,12 +4,10 @@
     [
       "@babel/env",
       {
-        "targets": {
-          "browsers": [
-            "last 2 versions"
-          ]
-        },
-        "modules": false
+        "corejs": 3,
+        "forceAllTransforms": true,
+        "modules": false,
+        "useBuiltIns": "usage"
       }
     ]
   ]
