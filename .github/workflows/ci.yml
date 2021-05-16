@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Continuous integration and deployment
 
 on:
   push:
@@ -15,7 +15,71 @@ on:
       - main
 
 jobs:
+  # "build" job will build artifacts for production.
   build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checking out for ${{ github.ref }}
+        uses: actions/checkout@v2
+
+      - name: Using Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Running npx version-from-git --no-git-tag-version
+        if: ${{ startsWith(github.ref, 'refs/heads/') }}
+        run: npx version-from-git --no-git-tag-version
+
+      - name: Installing dependencies
+        run: npm ci
+
+      - name: Bootstrapping packages
+        run: npm run bootstrap
+
+      - name: Propagating versions
+        run: |
+          node_modules/.bin/lerna version --force-publish --no-git-tag-version --no-push --yes `cat package.json | jq -r .version`
+
+      - name: Building for production
+        env:
+          NODE_ENV: production
+          SKIP_PREFLIGHT_CHECK: 'true'
+        run: npm run build --if-present
+
+      - name: Copying documents
+        run: |
+          cp CHANGELOG.md packages/component
+          cp LICENSE packages/component
+          cp README.md packages/component
+
+      - name: Running npm pack
+        run: |
+          cd packages/component
+          npm pack
+
+      - name: Uploading npm-tarball
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix.node-version == '14.x' }}
+        with:
+          name: npm-tarball
+          path: 'packages/component/*.tgz'
+
+      - name: Uploading gh-pages
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix.node-version == '14.x' }}
+        with:
+          name: gh-pages
+          path: 'packages/playground/build/**/*'
+
+  # "test" job will only run when not deploying, will build for instrumentation.
+  test:
+    if: ${{ !startsWith(github.ref, 'refs/heads/') && !startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -57,42 +121,14 @@ jobs:
       - name: Testing
         run: npm test -- --coverage
 
-      - name: Stopping Docker Compose
+      - if: always()
+        name: Stopping Docker Compose
         run: npm run docker:down
 
-      - name: Building for production
-        env:
-          NODE_ENV: production
-          SKIP_PREFLIGHT_CHECK: 'true'
-        run: npm run build --if-present
-
-      - name: Copying documents
-        run: |
-          cp CHANGELOG.md packages/component
-          cp LICENSE packages/component
-          cp README.md packages/component
-
-      - name: Running npm pack
-        run: |
-          cd packages/component
-          npm pack
-
-      - name: Uploading npm-tarball
-        uses: actions/upload-artifact@v2
-        if: ${{ matrix.node-version == '14.x' }}
-        with:
-          name: npm-tarball
-          path: 'packages/component/*.tgz'
-
-      - name: Uploading gh-pages
-        uses: actions/upload-artifact@v2
-        if: ${{ matrix.node-version == '14.x' }}
-        with:
-          name: gh-pages
-          path: 'packages/playground/build/**/*'
-
   publish:
-    needs: build
+    needs:
+      - build
+      - test
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/heads/') || startsWith(github.ref, 'refs/tags/') }}
 
