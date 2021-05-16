@@ -19,7 +19,7 @@ export default function useStateRef(initialState) {
         setValue(nextValue);
       }
     },
-    [ref, setState]
+    [ref]
   );
 
   ref.current = state;

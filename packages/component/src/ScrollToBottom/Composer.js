@@ -384,7 +384,7 @@ const Composer = ({
                 mode,
                 offsetHeight: target.offsetHeight,
                 scrollHeight: target.scrollHeight,
-                sticky,
+                sticky: stickyRef.current,
                 nextSticky
               }
             ]
@@ -537,7 +537,7 @@ const Composer = ({
       animatingToEnd: animating && isEnd(animateTo, mode),
       sticky
     };
-  }, [animateTo, debug, mode, sticky]);
+  }, [animateTo, mode, sticky]);
 
   const combinedStateContext = useMemo(
     () => ({

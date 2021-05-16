@@ -1,11 +1,12 @@
 /* eslint no-magic-numbers: "off" */
 
 import { LoremIpsum, loremIpsum } from 'lorem-ipsum';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import ReactScrollToBottom, { StateContext } from 'react-scroll-to-bottom';
+
 import classNames from 'classnames';
 import createEmotion from 'create-emotion';
 import Interval from 'react-interval';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import ReactScrollToBottom, { StateContext } from 'react-scroll-to-bottom';
 
 import CommandBar from './CommandBar';
 import StatusBar from './StatusBar';
@@ -131,10 +132,10 @@ const App = ({ nonce }) => {
     [setDisableScrollToTopPanel]
   );
 
-  const handleAdd = useCallback(count => setParagraphs([...paragraphs, ...createParagraphs(count)]), [
-    paragraphs,
-    setParagraphs
-  ]);
+  const handleAdd = useCallback(
+    count => setParagraphs([...paragraphs, ...createParagraphs(count)]),
+    [paragraphs, setParagraphs]
+  );
   const handleAdd1 = useCallback(() => handleAdd(1), [handleAdd]);
   const handleAdd10 = useCallback(() => handleAdd(10), [handleAdd]);
   const handleAddButton = useCallback(
@@ -158,9 +159,10 @@ const App = ({ nonce }) => {
     setParagraphs(nextParagraphs);
   }, [paragraphs, setParagraphs]);
   const handleClear = useCallback(() => setParagraphs([]), [setParagraphs]);
-  const handleCommandBarVisibleChange = useCallback(({ target: { checked } }) => setCommandBarVisible(checked), [
-    setCommandBarVisible
-  ]);
+  const handleCommandBarVisibleChange = useCallback(
+    ({ target: { checked } }) => setCommandBarVisible(checked),
+    [setCommandBarVisible]
+  );
   const handleContainerSizeLarge = useCallback(() => setContainerSize('large'), [setContainerSize]);
   const handleContainerSizeNormal = useCallback(() => setContainerSize(''), [setContainerSize]);
   const handleContainerSizeSmall = useCallback(() => setContainerSize('small'), [setContainerSize]);
@@ -256,10 +258,7 @@ const App = ({ nonce }) => {
           </button>
         </li>
         <li>
-          <button
-            onClick={handleAddAndRemove}
-            title='Add a new paragraph and remove the first paragraph'
-          >
+          <button onClick={handleAddAndRemove} title="Add a new paragraph and remove the first paragraph">
             Add and remove
           </button>
         </li>

@@ -1,12 +1,15 @@
-env:
-  browser: true
-  es6: true
-  jest: true
 extends:
-- eslint:recommended
-globals:
-  React: readonly
+  - eslint:recommended
+
+parserOptions:
+  ecmaVersion: 12
+  sourceType: module
+
+plugins:
+  - prettier
+
 root: true
+
 rules:
   # Only list rules that are not in *:recommended set
   # If rules are set to disable the one in *:recommended, please elaborate the reason
@@ -15,10 +18,10 @@ rules:
   no-async-promise-executor: error
   no-await-in-loop: error
   no-console:
-  - error
-  - allow:
     - error
-    - warn
+    - allow:
+        - error
+        - warn
   # no-extra-parens: error # conflicts with prettier
   no-misleading-character-class: error
   no-template-curly-in-string: error
@@ -26,17 +29,17 @@ rules:
   accessor-pairs: error
   block-scoped-var: error
   class-methods-use-this:
-  - error
-  - exceptMethods:
-    - render
+    - error
+    - exceptMethods:
+        - render
   complexity: error
   curly: error
   default-case: error
   dot-notation: error
   eqeqeq: error
   max-classes-per-file:
-  - error
-  - 2
+    - error
+    - 2
   no-alert: error
   no-caller: error
   no-div-regex: error
@@ -54,13 +57,13 @@ rules:
   no-labels: error
   no-lone-blocks: error
   no-magic-numbers:
-  - error
-  - ignore:
-    - 0
-    - 1
+    - error
+    - ignore:
+        - 0
+        - 1
   no-multi-spaces:
-  - error
-  - ignoreEOLComments: true
+    - error
+    - ignoreEOLComments: true
   no-multi-str: error
   no-new: error
   no-new-func: error
@@ -75,9 +78,9 @@ rules:
   no-throw-literal: error
   no-unmodified-loop-condition: error
   no-unused-expressions:
-  - error
-  - allowShortCircuit: true
-    allowTernary: true
+    - error
+    - allowShortCircuit: true
+      allowTernary: true
   no-useless-call: error
   no-useless-catch: error
   no-useless-concat: error
@@ -94,11 +97,11 @@ rules:
   # Group - Variables
   no-label-var: error
 
-  # Re-enable later
+  # Too easy for false positive
   # no-shadow:
-  # - error
-  # - builtinGlobals: true
-  #   hoist: all
+  #   - error
+  #   - builtinGlobals: true
+  #     hoist: all
 
   no-shadow-restricted-names: error
   no-undef-init: error
@@ -107,33 +110,28 @@ rules:
   # no-undefined: off
 
   no-unused-vars:
-  - error
-  - argsIgnorePattern: ^_$
-    varsIgnorePattern: ^_
-  no-use-before-define: error
+    - error
+    - argsIgnorePattern: ^_$
+      varsIgnorePattern: ^_
 
-  # Group - Node.js and CommonJS
-  callback-return: error
-  global-require: error
-  handle-callback-err: error
-  no-buffer-constructor: error
-  no-mixed-requires: error
-  no-new-require: error
-  no-path-concat: error
-  no-sync: error
+  no-use-before-define: error
 
   # Group - ECMAScript 6
   arrow-body-style:
-  - error
-  - as-needed
+    - error
+    - as-needed
+
   arrow-parens:
-  - error
-  - as-needed
+    - error
+    - as-needed
+
   arrow-spacing:
-  - error
-  - after: true
-    before: true
-  # generator-star-spacing: # conflicts with prettier
+    - error
+    - after: true
+      before: true
+
+  # Conflicts with Prettier
+  # generator-star-spacing:
   # - error
   # - after
 
@@ -158,20 +156,27 @@ rules:
   # prefer-template: error
 
   rest-spread-spacing:
-  - error
-  - never
+    - error
+    - never
 
   # Cannot group global or local imports and sort in differently
-  # sort-imports:
-  # - error
-  # - ignoreCase: true
+  sort-imports:
+    - error
+    - allowSeparatedGroups: true
+      ignoreCase: true
+      memberSyntaxSortOrder:
+        - none
+        - all
+        - single
+        - multiple
 
   template-curly-spacing:
-  - error
-  - never
+    - error
+    - never
+
   yield-star-spacing:
-  - error
-  - after
-settings:
-  react:
-    version: detect
+    - error
+    - after
+
+  # plugin:prettier
+  prettier/prettier: error

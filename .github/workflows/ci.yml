@@ -104,8 +104,12 @@ jobs:
         run: npm run bootstrap
 
       - name: Propagating versions
+        run: node_modules/.bin/lerna version --force-publish --no-git-tag-version --no-push --yes `cat package.json | jq -r .version`
+
+      - name: Running static code analysis
         run: |
-          node_modules/.bin/lerna version --force-publish --no-git-tag-version --no-push --yes `cat package.json | jq -r .version`
+          cd packages/component
+          npm run precommit src/
 
       - name: Building for instrumentation
         env:
