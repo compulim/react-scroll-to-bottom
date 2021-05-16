@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactScrollToBottom, { StateContext } from 'react-scroll-to-bottom';
 
 import classNames from 'classnames';
-import createEmotion from 'create-emotion';
+import createEmotion from '@emotion/css/create-instance';
 import Interval from 'react-interval';
 
 import CommandBar from './CommandBar';
@@ -92,7 +92,7 @@ const App = ({ nonce }) => {
     smallContainerCSS,
     statusBarCSS
   } = useMemo(() => {
-    const { css, keyframes } = createEmotion({ nonce });
+    const { css, keyframes } = createEmotion({ key: 'playground--css-', nonce });
 
     return {
       containerCSS: css(CONTAINER_STYLE),

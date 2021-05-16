@@ -1,4 +1,4 @@
-import createEmotion from 'create-emotion';
+import createEmotion from '@emotion/css/create-instance';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
