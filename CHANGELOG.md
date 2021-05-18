@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.1.2] - 2021-05-17
+
 ### Changed
 
 - Bumped dependencies, by [@compulim](https://github.com/compulim) in PR [#95](https://github.com/compulim/react-scroll-to-bottom/pull/95)
