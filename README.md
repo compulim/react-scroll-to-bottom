@@ -391,7 +391,7 @@ const ScrollContent = () => {
 
 > If you want to turn off the hook, in the render call, pass a falsy value, e.g. `useObserveScrollPosition(false)`.
 
-Please note that the observer will called very frequently, it is recommended:
+Please note that the observer will be called very frequently, it is recommended:
 
 - Only observe the scroll position when needed
 - Don't put too much logic inside the callback function
