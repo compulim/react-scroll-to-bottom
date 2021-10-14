@@ -55,7 +55,9 @@
       await render(() => {
         const scrollToTop = ReactScrollToBottom.useScrollToTop();
 
-        scrollToTop();
+        React.useEffect(() => {
+          scrollToTop();
+        }, [scrollToTop]);
       });
 
       await pageObjects.scrollStabilizedAtTop();
@@ -63,7 +65,9 @@
       await render(() => {
         const scrollToBottom = ReactScrollToBottom.useScrollToBottom();
 
-        scrollToBottom();
+        React.useEffect(() => {
+          scrollToBottom();
+        }, [scrollToBottom]);
       });
 
       await pageObjects.scrollStabilizedAtBottom();
@@ -71,7 +75,9 @@
       await render(() => {
         const scrollToStart = ReactScrollToBottom.useScrollToStart();
 
-        scrollToStart();
+        React.useEffect(() => {
+          scrollToStart();
+        }, [scrollToStart]);
       });
 
       await pageObjects.scrollStabilizedAtTop();
@@ -79,7 +85,9 @@
       await render(() => {
         const scrollToEnd = ReactScrollToBottom.useScrollToEnd();
 
-        scrollToEnd();
+        React.useEffect(() => {
+          scrollToEnd();
+        }, [scrollToEnd]);
       });
 
       await pageObjects.scrollStabilizedAtBottom();

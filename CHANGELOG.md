@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Added support of GitHub Codespaces, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
+- Changed peer dependencies requirement to `react >= 16.8.6`, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
+- Bumped dependencies, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
+   - Production dependencies
+      - [`@babel/runtime-corejs3@7.15.4`](https://npmjs.com/package/@babel/runtime-corejs3)
+      - [`@emotion/css@11.1.3`](https://npmjs.com/package/@emotion/css)
+      - [`core-js@3.18.3`](https://npmjs.com/package/core-js)
+   - Non-production dependencies
+      - [`@babel/cli@7.15.7`](https://npmjs.com/package/@babel/cli)
+      - [`@babel/core@7.15.8`](https://npmjs.com/package/@babel/core)
+      - [`@babel/preset-env@7.15.8`](https://npmjs.com/package/@babel/preset-env)
+      - [`@testing-library/jest-dom@5.14.1`](https://npmjs.com/package/@testing-library/jest-dom)
+      - [`concurrently@6.3.0`](https://npmjs.com/package/concurrently)
+      - [`esbuild@0.13.5`](https://npmjs.com/package/esbuild)
+      - [`eslint-plugin-prettier@4.0.0`](https://npmjs.com/package/eslint-plugin-prettier)
+      - [`eslint-plugin-react@7.26.1`](https://npmjs.com/package/eslint-plugin-react)
+      - [`eslint@7.32.0`](https://npmjs.com/package/eslint)
+      - [`husky@7.0.2`](https://npmjs.com/package/husky)
+      - [`istanbul-lib-coverage@3.0.2`](https://npmjs.com/package/istanbul-lib-coverage)
+      - [`jest-environment-node@27.2.5`](https://npmjs.com/package/jest-environment-node)
+      - [`jest-image-snapshot@4.5.1`](https://npmjs.com/package/jest-image-snapshot)
+      - [`jest@27.2.5`](https://npmjs.com/package/jest)
+      - [`lerna@4.0.0`](https://npmjs.com/package/lerna)
+      - [`lint-staged@11.2.3`](https://npmjs.com/package/lint-staged)
+      - [`lorem-ipsum@2.0.4`](https://npmjs.com/package/lorem-ipsum)
+      - [`node-fetch@2.6.5`](https://npmjs.com/package/node-fetch)
+      - [`nodemon@2.0.13`](https://npmjs.com/package/nodemon)
+      - [`prettier@2.4.1`](https://npmjs.com/package/prettier)
+      - [`react-dom@16.14.0`](https://npmjs.com/package/react-dom)
+      - [`react-scripts@4.0.3`](https://npmjs.com/package/react-scripts)
+      - [`react@16.14.0`](https://npmjs.com/package/react)
+      - [`selenium-webdriver@4.0.0-rc-2`](https://npmjs.com/package/selenium-webdriver)
+      - [`serve@12.0.1`](https://npmjs.com/package/serve)
+      - [`strip-ansi@6.0.1`](https://npmjs.com/package/strip-ansi)
+
 ## [4.1.2] - 2021-05-17
 
 ### Changed

@@ -65,11 +65,11 @@
     run(async function () {
       await render();
 
-      for (let i = 0; i < 20; i++) {
+      for (let index = 0; index < 20; index++) {
         await pageObjects.scrollStabilizedAtBottom();
         await became('sticky', () => document.getElementsByClassName('sticky').length, 5000);
 
-        if (i % 2) {
+        if (index % 2) {
           document.getElementsByClassName('scrollable')[0].scrollTo({ behavior: 'auto', top: 0 });
         } else {
           document.getElementsByClassName('scrollable')[0].children[0].scrollIntoView({ behavior: 'auto' });
@@ -83,7 +83,13 @@
         await pageObjects.scrollStabilizedAtTop();
         await became('not sticky', () => !document.getElementsByClassName('sticky').length, 5000);
 
-        await render(() => ReactScrollToBottom.useScrollTo()('100%', { behavior: 'smooth' }));
+        await render(() => {
+          const scrollTo = ReactScrollToBottom.useScrollTo();
+
+          React.useEffect(() => {
+            scrollTo('100%', { behavior: 'smooth' });
+          }, [index, scrollTo]);
+        });
       }
     });
   </script>
