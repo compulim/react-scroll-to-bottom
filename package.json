@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "4.1.3-0",
+  "version": "4.2.0",
   "description": "React container that will auto scroll to bottom",
   "private": true,
   "scripts": {
