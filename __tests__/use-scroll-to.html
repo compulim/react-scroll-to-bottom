@@ -47,7 +47,9 @@
       await render(() => {
         const scrollTo = ReactScrollToBottom.useScrollTo();
 
-        scrollTo(100, { behavior: 'auto' });
+        React.useEffect(() => {
+          scrollTo(100, { behavior: 'auto' });
+        }, [scrollTo]);
       });
 
       await became(

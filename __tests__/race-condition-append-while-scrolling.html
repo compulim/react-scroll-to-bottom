@@ -53,9 +53,16 @@
     run(async function () {
       let paragraphs = pageObjects.paragraphs;
 
-      for (let i = 0; i < 20; i++) {
+      for (let index = 0; index < 20; index++) {
         // Preparation: scrollable should stay at the bottom before start.
-        await render(paragraphs, () => ReactScrollToBottom.useScrollTo()('100%', { behavior: 'auto' }));
+        await render(paragraphs, () => {
+          const scrollTo = ReactScrollToBottom.useScrollTo();
+
+          React.useEffect(() => {
+            scrollTo('100%', { behavior: 'auto' });
+          }, [index, scrollTo]);
+        });
+
         await pageObjects.scrollStabilizedAtBottom();
 
         const scrollable = document.getElementsByClassName('scrollable')[0];
@@ -64,7 +71,7 @@
         const scrolling = new Promise(resolve => scrollable.addEventListener('scroll', resolve, { once: true }));
 
         // Alternate between discrete and smooth scrolling.
-        scrollable.scrollTo({ behavior: i % 2 ? 'auto' : 'smooth', top: 0 });
+        scrollable.scrollTo({ behavior: index % 2 ? 'auto' : 'smooth', top: 0 });
 
         // "scroll" event dispatched after we call scrollTo(), it should be safe to append a new element.
         // Withou the "scroll" event, the component can't guarantee if it is safe to append, due to technical difficulties.

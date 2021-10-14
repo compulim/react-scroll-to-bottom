@@ -5,5 +5,5 @@ jest.setTimeout(30000);
 
 describe('when under heavy load', () => {
   test('append an element while scrolling to the top should continue to scroll', () =>
-    runHTML('race-condition-scroll-into-view'));
+    runHTML('race-condition-append-while-scrolling'));
 });
