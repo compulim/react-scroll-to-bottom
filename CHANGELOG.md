@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.2.0] - 2021-10-14
+
 ### Changed
 
 - Added support of GitHub Codespaces, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
