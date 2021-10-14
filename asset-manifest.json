@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/react-scroll-to-bottom/static/js/main.6dd18e3a.chunk.js",
-    "main.js.map": "/react-scroll-to-bottom/static/js/main.6dd18e3a.chunk.js.map",
+    "main.js": "/react-scroll-to-bottom/static/js/main.eb12f7ce.chunk.js",
+    "main.js.map": "/react-scroll-to-bottom/static/js/main.eb12f7ce.chunk.js.map",
     "runtime-main.js": "/react-scroll-to-bottom/static/js/runtime-main.65408b3d.js",
     "runtime-main.js.map": "/react-scroll-to-bottom/static/js/runtime-main.65408b3d.js.map",
     "static/js/2.49ba095e.chunk.js": "/react-scroll-to-bottom/static/js/2.49ba095e.chunk.js",
@@ -14,6 +14,6 @@
   "entrypoints": [
     "static/js/runtime-main.65408b3d.js",
     "static/js/2.49ba095e.chunk.js",
-    "static/js/main.6dd18e3a.chunk.js"
+    "static/js/main.eb12f7ce.chunk.js"
   ]
 }
