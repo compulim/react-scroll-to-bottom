@@ -332,7 +332,7 @@ This context contains state of the container.
 The following sample code will put a button inside the content view only if the view is not at the bottom. When the button is clicked, it will scroll the view to the bottom.
 
 ```jsx
-import ScrollToBottom from 'react-scroll-to-bottom';
+import ScrollToBottom, { FunctionContext, StateContext } from 'react-scroll-to-bottom';
 
 const Content = ({ scrollToBottom, sticky }) => {
   return (
