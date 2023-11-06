@@ -22,11 +22,6 @@ const Panel = ({ children, className }) => {
   );
 };
 
-Panel.defaultProps = {
-  children: undefined,
-  className: undefined
-};
-
 Panel.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string
