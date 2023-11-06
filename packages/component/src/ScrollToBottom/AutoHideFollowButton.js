@@ -27,7 +27,7 @@ const ROOT_STYLE = {
   }
 };
 
-const AutoHideFollowButton = ({ children, className }) => {
+const AutoHideFollowButton = ({ children, className = '' }) => {
   const [sticky] = useSticky();
   const rootCSS = useStyleToClassName()(ROOT_STYLE);
   const scrollToEnd = useScrollToEnd();
@@ -39,11 +39,6 @@ const AutoHideFollowButton = ({ children, className }) => {
       </button>
     )
   );
-};
-
-AutoHideFollowButton.defaultProps = {
-  children: undefined,
-  className: ''
 };
 
 AutoHideFollowButton.propTypes = {
