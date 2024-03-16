@@ -25,6 +25,7 @@
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.8",
+    "@babel/plugin-transform-object-rest-spread": "^7.24.0",
     "@babel/preset-env": "^7.15.8",
     "concurrently": "^6.3.0",
     "esbuild": "^0.13.6",
