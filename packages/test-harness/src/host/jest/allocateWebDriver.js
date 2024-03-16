@@ -13,7 +13,7 @@ module.exports = async function allocateWebDriver({ webDriverURL }) {
     .setChromeOptions(
       new ChromeOptions()
         .addArguments("--single-process")
-        .headless()
+        .addArguments("--headless")
         .setLoggingPrefs(preferences)
     );
 

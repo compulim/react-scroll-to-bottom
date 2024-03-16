@@ -1,7 +1,7 @@
 require("global-agent/bootstrap");
 
 const { join } = require("path");
-const NodeEnvironment = require("jest-environment-node");
+const NodeEnvironment = require("jest-environment-node").TestEnvironment;
 
 class WebDriverEnvironment extends NodeEnvironment {
   constructor(config, context) {
@@ -13,8 +13,7 @@ class WebDriverEnvironment extends NodeEnvironment {
       webDriverURL: "http://localhost:4444/wd/hub/",
       ...config.testEnvironmentOptions,
     };
-
-    config.setupFilesAfterEnv.push(
+    config.projectConfig.setupFilesAfterEnv.push(
       join(__dirname, "runHTML.js"),
       join(__dirname, "setupToMatchImageSnapshot.js")
     );

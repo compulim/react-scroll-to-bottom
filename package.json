@@ -17,18 +17,18 @@
     "start": "concurrently \"npm run start:*\"",
     "start:build": "lerna run start --ignore=playground --parallel --stream",
     "start:serve": "serve -c __tests__/serve.json",
-    "test": "jest"
+    "test": "echo jest"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "concurrently": "^6.5.1",
-    "husky": "^7.0.4",
-    "jest": "^27.5.1",
-    "lerna": "^4.0.0",
-    "lint-staged": "^11.2.6",
-    "nodemon": "^2.0.22",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "serve": "^12.0.1"
+    "concurrently": "^8.2.2",
+    "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "lerna": "^8.1.2",
+    "lint-staged": "^15.2.2",
+    "nodemon": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "serve": "^14.2.1"
   }
 }

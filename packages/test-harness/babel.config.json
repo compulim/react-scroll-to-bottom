@@ -5,7 +5,7 @@
       {
         "modules": false,
         "targets": {
-          "chrome": "80"
+          "chrome": "122"
         }
       }
     ]
