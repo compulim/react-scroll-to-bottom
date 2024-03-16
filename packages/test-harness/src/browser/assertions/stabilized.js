@@ -1,4 +1,4 @@
-import became from './became';
+import became from "./became";
 
 export default function stabilized(name, getValue, count, timeout) {
   const values = [];
@@ -17,7 +17,10 @@ export default function stabilized(name, getValue, count, timeout) {
       }
 
       // Check if we already got X number of values, and all of them are the same value.
-      if (values.length === count && values.every(value => Object.is(value, values[0]))) {
+      if (
+        values.length === count &&
+        values.every((value) => Object.is(value, values[0]))
+      ) {
         return true;
       }
 

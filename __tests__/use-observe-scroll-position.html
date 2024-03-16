@@ -12,7 +12,7 @@
     <div id="app"></div>
   </body>
   <script type="text/babel" data-presets="react">
-    'use strict';
+    "use strict";
 
     const RunFunction = ({ fn }) => {
       fn && fn();
@@ -29,19 +29,19 @@
           called = 1;
         });
 
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         ReactDOM.render(
           <div className="react-scroll-to-bottom">
             <ReactScrollToBottom.Composer>
               <ReactScrollToBottom.Panel className="scrollable">
-                {pageObjects.paragraphs.map(paragraph => (
+                {pageObjects.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </ReactScrollToBottom.Panel>
               {once && <RunFunction fn={once} />}
             </ReactScrollToBottom.Composer>
           </div>,
-          document.getElementById('app'),
+          document.getElementById("app"),
           resolve
         )
       );
@@ -54,7 +54,11 @@
 
       let scrollPositions = [];
 
-      await render(() => ReactScrollToBottom.useObserveScrollPosition(position => scrollPositions.push(position)));
+      await render(() =>
+        ReactScrollToBottom.useObserveScrollPosition((position) =>
+          scrollPositions.push(position)
+        )
+      );
 
       await pageObjects.mouseWheel(-100);
       await pageObjects.scrollStabilized();

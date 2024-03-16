@@ -9,6 +9,6 @@ export default function createHost() {
     error: () => {},
     getLogs: () => {},
     ready: () => {},
-    snapshot: () => {}
+    snapshot: () => {},
   };
 }

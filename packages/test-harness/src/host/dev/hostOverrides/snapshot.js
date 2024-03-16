@@ -1,6 +1,6 @@
 // In dev mode, we output the screenshot in console, instead of checking against a PNG file.
 
-module.exports = webDriver =>
+module.exports = (webDriver) =>
   async function snapshot() {
     const base64 = await webDriver.takeScreenshot();
 
@@ -11,7 +11,7 @@ module.exports = webDriver =>
         console.log(url);
         console.groupEnd();
       },
-      '[TESTHARNESS] Snapshot taken.',
+      "[TESTHARNESS] Snapshot taken.",
       `data:image/png;base64,${base64}`
     );
   };

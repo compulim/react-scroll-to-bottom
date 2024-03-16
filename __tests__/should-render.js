@@ -1,3 +1,3 @@
 /** @jest-environment ./packages/test-harness/JestEnvironment */
 
-test('should render', () => runHTML('should-render.html'));
+test("should render", () => runHTML("should-render.html"));

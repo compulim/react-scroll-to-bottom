@@ -1,8 +1,8 @@
 // "selenium-webdriver" is undefined if running under browser.
-const random = require('math-random');
+const random = require("math-random");
 
-const marshal = require('./marshal');
-const unmarshal = require('./unmarshal');
+const marshal = require("./marshal");
+const unmarshal = require("./unmarshal");
 
 /**
  * Enables remoting to an object over receive/send ports using a RPC mechanism.
@@ -13,7 +13,7 @@ const unmarshal = require('./unmarshal');
 module.exports = function rpc(rpcName, fns, [receivePort, sendPort]) {
   const invocations = {};
 
-  receivePort.addEventListener('message', async ({ data }) => {
+  receivePort.addEventListener("message", async ({ data }) => {
     const { type } = data || {};
 
     if (!/^rpc:/u.test(type) || data.rpcName !== rpcName) {
@@ -24,8 +24,12 @@ module.exports = function rpc(rpcName, fns, [receivePort, sendPort]) {
 
     /* eslint-disable-next-line default-case */
     switch (type) {
-      case 'rpc:call':
-        if (data.fn === '__proto__' || data.fn === 'constructor' || data.fn === 'prototype') {
+      case "rpc:call":
+        if (
+          data.fn === "__proto__" ||
+          data.fn === "constructor" ||
+          data.fn === "prototype"
+        ) {
           return;
         }
 
@@ -36,20 +40,20 @@ module.exports = function rpc(rpcName, fns, [receivePort, sendPort]) {
             invocationID: data.invocationID,
             returnValue,
             rpcName,
-            type: 'rpc:return'
+            type: "rpc:return",
           });
         } catch ({ message, stack }) {
           sendPort.postMessage({
             error: { message, stack },
             invocationID: data.invocationID,
             rpcName,
-            type: 'rpc:error'
+            type: "rpc:error",
           });
         }
 
         break;
 
-      case 'rpc:return':
+      case "rpc:return":
         {
           const { [data.invocationID]: { resolve } = {} } = invocations;
 
@@ -58,7 +62,7 @@ module.exports = function rpc(rpcName, fns, [receivePort, sendPort]) {
 
         break;
 
-      case 'rpc:error':
+      case "rpc:error":
         {
           const { [data.invocationID]: { reject } = {} } = invocations;
           const error = new Error(data.error.message);
@@ -75,7 +79,7 @@ module.exports = function rpc(rpcName, fns, [receivePort, sendPort]) {
   return Object.fromEntries(
     Object.entries(fns).map(([fn, value]) => [
       fn,
-      typeof value === 'function'
+      typeof value === "function"
         ? (...args) =>
             new Promise((resolve, reject) => {
               // eslint-disable-next-line no-magic-numbers
@@ -83,9 +87,11 @@ module.exports = function rpc(rpcName, fns, [receivePort, sendPort]) {
 
               invocations[invocationID] = { reject, resolve };
 
-              sendPort.postMessage(marshal({ args, fn, invocationID, rpcName, type: 'rpc:call' }));
+              sendPort.postMessage(
+                marshal({ args, fn, invocationID, rpcName, type: "rpc:call" })
+              );
             })
-        : value
+        : value,
     ])
   );
 };

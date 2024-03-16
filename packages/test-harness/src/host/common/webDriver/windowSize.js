@@ -3,6 +3,9 @@ module.exports = function createWindowSize(webDriver) {
     const window = webDriver.manage().window();
     const { height, width } = await window.getRect();
 
-    await window.setRect({ height: nextHeight || height, width: nextWidth || width });
+    await window.setRect({
+      height: nextHeight || height,
+      width: nextWidth || width,
+    });
   };
 };

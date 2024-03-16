@@ -12,7 +12,7 @@
     <div id="app"></div>
   </body>
   <script type="text/babel" data-presets="react">
-    'use strict';
+    "use strict";
 
     const RunFunction = ({ fn }) => {
       fn && fn();
@@ -21,19 +21,19 @@
     };
 
     async function render(fn) {
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         ReactDOM.render(
           <div className="react-scroll-to-bottom">
             <ReactScrollToBottom.Composer>
               <ReactScrollToBottom.Panel className="scrollable">
-                {pageObjects.paragraphs.map(paragraph => (
+                {pageObjects.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </ReactScrollToBottom.Panel>
               <RunFunction fn={fn} />
             </ReactScrollToBottom.Composer>
           </div>,
-          document.getElementById('app'),
+          document.getElementById("app"),
           resolve
         )
       );
@@ -48,13 +48,14 @@
         const scrollTo = ReactScrollToBottom.useScrollTo();
 
         React.useEffect(() => {
-          scrollTo(100, { behavior: 'auto' });
+          scrollTo(100, { behavior: "auto" });
         }, [scrollTo]);
       });
 
       await became(
-        'scrollTop is at 100 px',
-        () => document.getElementsByClassName('scrollable')[0].scrollTop === 100,
+        "scrollTop is at 100 px",
+        () =>
+          document.getElementsByClassName("scrollable")[0].scrollTop === 100,
         5000
       );
     });

@@ -12,14 +12,16 @@
     <div id="app"></div>
   </body>
   <script type="text/babel" data-presets="react">
-    'use strict';
+    "use strict";
 
     const Panel = () => {
       const [sticky] = ReactScrollToBottom.useSticky();
 
       return (
-        <ReactScrollToBottom.Panel className={`scrollable ${sticky ? 'sticky' : ''}`}>
-          {pageObjects.paragraphs.map(paragraph => (
+        <ReactScrollToBottom.Panel
+          className={`scrollable ${sticky ? "sticky" : ""}`}
+        >
+          {pageObjects.paragraphs.map((paragraph) => (
             <div key={paragraph}>
               <div>{paragraph}</div>
               {/* Adds an element with complex layout to slow down rendering. */}
@@ -47,7 +49,7 @@
           called = 1;
         });
 
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         ReactDOM.render(
           <div className="react-scroll-to-bottom">
             {/* Set checkInterval to 1 to increase the probability of race condition. */}
@@ -56,7 +58,7 @@
               <RunFunction fn={once} />
             </ReactScrollToBottom.Composer>
           </div>,
-          document.getElementById('app'),
+          document.getElementById("app"),
           resolve
         )
       );
@@ -67,12 +69,20 @@
 
       for (let index = 0; index < 20; index++) {
         await pageObjects.scrollStabilizedAtBottom();
-        await became('sticky', () => document.getElementsByClassName('sticky').length, 5000);
+        await became(
+          "sticky",
+          () => document.getElementsByClassName("sticky").length,
+          5000
+        );
 
         if (index % 2) {
-          document.getElementsByClassName('scrollable')[0].scrollTo({ behavior: 'auto', top: 0 });
+          document
+            .getElementsByClassName("scrollable")[0]
+            .scrollTo({ behavior: "auto", top: 0 });
         } else {
-          document.getElementsByClassName('scrollable')[0].children[0].scrollIntoView({ behavior: 'auto' });
+          document
+            .getElementsByClassName("scrollable")[0]
+            .children[0].scrollIntoView({ behavior: "auto" });
         }
 
         // The race condition occurs in this place:
@@ -81,13 +91,17 @@
         // - The race condition will cause it to scroll back down immediately
 
         await pageObjects.scrollStabilizedAtTop();
-        await became('not sticky', () => !document.getElementsByClassName('sticky').length, 5000);
+        await became(
+          "not sticky",
+          () => !document.getElementsByClassName("sticky").length,
+          5000
+        );
 
         await render(() => {
           const scrollTo = ReactScrollToBottom.useScrollTo();
 
           React.useEffect(() => {
-            scrollTo('100%', { behavior: 'smooth' });
+            scrollTo("100%", { behavior: "smooth" });
           }, [index, scrollTo]);
         });
       }

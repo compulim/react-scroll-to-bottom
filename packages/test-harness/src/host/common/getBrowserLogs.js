@@ -1,20 +1,27 @@
-const { logging } = require('selenium-webdriver');
+const { logging } = require("selenium-webdriver");
 
 const IGNORE_CONSOLE_MESSAGE_FRAGMENTS = [
-  '[TESTHARNESS]',
-  'favicon.ico',
-  'in-browser Babel transformer',
-  'react-devtools'
+  "[TESTHARNESS]",
+  "favicon.ico",
+  "in-browser Babel transformer",
+  "react-devtools",
 ];
 
-module.exports = async function getBrowserLogs(webDriver, { clear = false } = {}) {
+module.exports = async function getBrowserLogs(
+  webDriver,
+  { clear = false } = {}
+) {
   // Every calls to webDriver.manage().logs().get() will clean up the log.
   // This function will persist the logs across function calls, until `clear` is set to `true`.
-  const newLogs = (await webDriver.manage().logs().get(logging.Type.BROWSER)).filter(
+  const newLogs = (
+    await webDriver.manage().logs().get(logging.Type.BROWSER)
+  ).filter(
     // Ignore console entries that contains specified fragments.
     ({ message }) =>
-      !IGNORE_CONSOLE_MESSAGE_FRAGMENTS.some(ignoreFragment =>
-        ignoreFragment instanceof RegExp ? ignoreFragment.test(message) : ~message.indexOf(ignoreFragment)
+      !IGNORE_CONSOLE_MESSAGE_FRAGMENTS.some((ignoreFragment) =>
+        ignoreFragment instanceof RegExp
+          ? ignoreFragment.test(message)
+          : ~message.indexOf(ignoreFragment)
       )
   );
 

@@ -8,7 +8,7 @@ on:
     branches:
       - main
     tags:
-      - '*'
+      - "*"
 
   pull_request:
     branches:
@@ -49,7 +49,7 @@ jobs:
       - name: Building for production
         env:
           NODE_ENV: production
-          SKIP_PREFLIGHT_CHECK: 'true'
+          SKIP_PREFLIGHT_CHECK: "true"
         run: npm run build --if-present
 
       - name: Copying documents
@@ -67,13 +67,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: npm-tarball
-          path: 'packages/component/*.tgz'
+          path: "packages/component/*.tgz"
 
       - name: Uploading gh-pages
         uses: actions/upload-artifact@v2
         with:
           name: gh-pages
-          path: 'packages/playground/build/**/*'
+          path: "packages/playground/build/**/*"
 
   # "test" job will only run when not deploying, will build for instrumentation.
   test:
@@ -114,7 +114,7 @@ jobs:
       - name: Building for instrumentation
         env:
           NODE_ENV: test
-          SKIP_PREFLIGHT_CHECK: 'true'
+          SKIP_PREFLIGHT_CHECK: "true"
         run: npm run build --if-present
 
       - name: Starting Docker Compose
@@ -173,7 +173,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: '[${{ steps.read-package-json.outputs.version }}] - ${{ steps.read-package-json.outputs.date }}'
+          release_name: "[${{ steps.read-package-json.outputs.version }}] - ${{ steps.read-package-json.outputs.date }}"
           draft: true
 
       - name: Uploading tarball to release

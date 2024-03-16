@@ -12,34 +12,34 @@
     <div id="app"></div>
   </body>
   <script type="text/babel" data-presets="react">
-    'use strict';
+    "use strict";
 
     run(async function () {
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         ReactDOM.render(
           <ReactScrollToBottom.default
             className="react-scroll-to-bottom"
             followButtonClassName="follow"
             scrollViewClassName="scrollable"
           >
-            {pageObjects.paragraphs.map(paragraph => (
+            {pageObjects.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </ReactScrollToBottom.default>,
-          document.getElementById('app'),
+          document.getElementById("app"),
           resolve
         )
       );
 
       await pageObjects.scrollStabilizedAtBottom();
 
-      expect(document.getElementsByClassName('follow')[0]).toBeFalsy();
+      expect(document.getElementsByClassName("follow")[0]).toBeFalsy();
 
       await pageObjects.mouseWheel(-100);
 
       await pageObjects.scrollStabilized();
 
-      expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
+      expect(document.getElementsByClassName("follow")[0]).toBeTruthy();
     });
   </script>
 </html>

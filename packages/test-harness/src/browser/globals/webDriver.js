@@ -1,19 +1,19 @@
-import rpc from '../../common/rpc';
-import webDriverPort from './webDriverPort';
+import rpc from "../../common/rpc";
+import webDriverPort from "./webDriverPort";
 
 const CHAINABLES = [
-  'click',
-  'contextClick',
-  'doubleClick',
-  'dragAndDrop',
-  'keyDown',
-  'keyUp',
-  'move',
-  'pause',
-  'press',
-  'release',
-  'sendKeys',
-  'synchronize'
+  "click",
+  "contextClick",
+  "doubleClick",
+  "dragAndDrop",
+  "keyDown",
+  "keyUp",
+  "move",
+  "pause",
+  "press",
+  "release",
+  "sendKeys",
+  "synchronize",
 ];
 
 function createActions(proxy) {
@@ -21,7 +21,7 @@ function createActions(proxy) {
     const chain = [];
     const target = {};
 
-    CHAINABLES.forEach(name => {
+    CHAINABLES.forEach((name) => {
       target[name] = (...args) => {
         chain.push([name, ...args]);
 
@@ -37,13 +37,13 @@ function createActions(proxy) {
 
 export default function () {
   const proxy = rpc(
-    'webDriver',
+    "webDriver",
     {
       click: () => {},
       performActions: () => {},
       sendDevToolsCommand: () => {},
       takeScreenshot: () => {},
-      windowSize: () => {}
+      windowSize: () => {},
     },
     [window, webDriverPort()]
   );
@@ -53,7 +53,7 @@ export default function () {
     (window.webDriver = {
       ...proxy,
       actions: createActions(proxy),
-      performActions: undefined
+      performActions: undefined,
     })
   );
 }

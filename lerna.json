@@ -1,14 +1,10 @@
 {
   "lerna": "3.4.3",
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "0.0.0",
   "command": {
     "bootstrap": {
-      "npmClientArgs": [
-        "--legacy-peer-deps"
-      ]
+      "npmClientArgs": ["--legacy-peer-deps"]
     }
   }
 }

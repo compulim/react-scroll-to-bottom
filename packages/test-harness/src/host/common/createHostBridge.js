@@ -1,7 +1,7 @@
-const { EventTarget, Event } = require('event-target-shim');
-const AbortController = require('abort-controller');
+const { EventTarget, Event } = require("event-target-shim");
+const AbortController = require("abort-controller");
 
-const sleep = require('../../common/utils/sleep');
+const sleep = require("../../common/utils/sleep");
 
 class HostBridgePort {
   constructor(driver, signal) {
@@ -15,11 +15,11 @@ class HostBridgePort {
     }
 
     /* istanbul ignore next */
-    this.driver.executeScript(data => {
-      const event = new Event('message');
+    this.driver.executeScript((data) => {
+      const event = new Event("message");
 
       event.data = data;
-      event.origin = 'wd://';
+      event.origin = "wd://";
 
       window.dispatchEvent(event);
     }, data);
@@ -47,7 +47,9 @@ class HostBridge extends EventTarget {
     try {
       for (; !this.abortController.signal.aborted; ) {
         /* istanbul ignore next */
-        const result = await driver.executeScript(() => window.webDriverPort && window.webDriverPort.__queue.shift());
+        const result = await driver.executeScript(
+          () => window.webDriverPort && window.webDriverPort.__queue.shift()
+        );
 
         if (this.abortController.signal.aborted) {
           break;
@@ -56,7 +58,7 @@ class HostBridge extends EventTarget {
         if (!result) {
           await sleep(100);
         } else {
-          const event = new Event('message');
+          const event = new Event("message");
 
           event.data = result.data;
           event.origin = result.origin;
@@ -65,7 +67,11 @@ class HostBridge extends EventTarget {
         }
       }
     } catch (err) {
-      if (err.name !== 'NoSuchSessionError' && err.name !== 'NoSuchWindowError' && err.name !== 'WebDriverError') {
+      if (
+        err.name !== "NoSuchSessionError" &&
+        err.name !== "NoSuchWindowError" &&
+        err.name !== "WebDriverError"
+      ) {
         throw err;
       }
     }

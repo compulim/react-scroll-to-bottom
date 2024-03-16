@@ -3,18 +3,21 @@
 // This will run an instance of Chrome via Web Driver locally.
 // It will be headed (vs. headless) and is used for development purpose only.
 
-const { Builder, logging } = require('selenium-webdriver');
-const { Options: ChromeOptions, ServiceBuilder: ChromeServiceBuilder } = require('selenium-webdriver/chrome');
-const AbortController = require('abort-controller');
-const expect = require('expect');
-const fetch = require('node-fetch');
+const { Builder, logging } = require("selenium-webdriver");
+const {
+  Options: ChromeOptions,
+  ServiceBuilder: ChromeServiceBuilder,
+} = require("selenium-webdriver/chrome");
+const AbortController = require("abort-controller");
+const expect = require("expect");
+const fetch = require("node-fetch");
 
-const createDevProxies = require('./createDevProxies');
-const findHostIP = require('./utils/findHostIP');
-const findLocalIP = require('./utils/findLocalIP');
-const registerProxies = require('../common/registerProxies');
-const setAsyncInterval = require('./utils/setAsyncInterval');
-const sleep = require('../../common/utils/sleep');
+const createDevProxies = require("./createDevProxies");
+const findHostIP = require("./utils/findHostIP");
+const findLocalIP = require("./utils/findLocalIP");
+const registerProxies = require("../common/registerProxies");
+const setAsyncInterval = require("./utils/setAsyncInterval");
+const sleep = require("../../common/utils/sleep");
 
 const ONE_DAY = 86400000;
 
@@ -25,10 +28,10 @@ async function main() {
   const hostIP = await findHostIP();
   const localIP = await findLocalIP();
 
-  const service = await new ChromeServiceBuilder('./chromedriver.exe')
-    .addArguments('--allowed-ips', localIP)
+  const service = await new ChromeServiceBuilder("./chromedriver.exe")
+    .addArguments("--allowed-ips", localIP)
     .setHostname(hostIP)
-    .setStdio(['ignore', 'ignore', 'ignore'])
+    .setStdio(["ignore", "ignore", "ignore"])
     .build();
 
   const webDriverURL = await service.start(10000);
@@ -39,7 +42,7 @@ async function main() {
     preferences.setLevel(logging.Type.BROWSER, logging.Level.ALL);
 
     const webDriver = await new Builder()
-      .forBrowser('chrome')
+      .forBrowser("chrome")
       .setChromeOptions(new ChromeOptions().setLoggingPrefs(preferences))
       .usingServer(webDriverURL)
       .build();
@@ -55,17 +58,20 @@ async function main() {
       try {
         webDriver.quit(); // Don't await or Promise.all on quit().
 
-        await fetch(new URL(sessionId, webDriverURL), { method: 'DELETE', timeout: 2000 });
+        await fetch(new URL(sessionId, webDriverURL), {
+          method: "DELETE",
+          timeout: 2000,
+        });
 
         // eslint-disable-next-line no-empty
       } catch (err) {}
     };
 
-    process.once('SIGINT', terminate);
-    process.once('SIGTERM', terminate);
+    process.once("SIGINT", terminate);
+    process.once("SIGTERM", terminate);
 
     try {
-      await webDriver.get(process.argv[2] || 'http://localhost:5000/');
+      await webDriver.get(process.argv[2] || "http://localhost:5000/");
 
       registerProxies(webDriver, createDevProxies(webDriver));
 
@@ -90,8 +96,8 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  err.message === 'aborted' || console.error(err);
+main().catch((err) => {
+  err.message === "aborted" || console.error(err);
 
   process.exit();
 });

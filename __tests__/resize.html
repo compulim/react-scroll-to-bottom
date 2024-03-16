@@ -17,17 +17,22 @@
     <div id="app"></div>
   </body>
   <script type="text/babel" data-presets="react">
-    'use strict';
+    "use strict";
 
     function appendParagraph(paragraphs) {
-      return [...paragraphs, pageObjects.paragraphs[~~(Math.random() * pageObjects.paragraphs.length)]];
+      return [
+        ...paragraphs,
+        pageObjects.paragraphs[
+          ~~(Math.random() * pageObjects.paragraphs.length)
+        ],
+      ];
     }
 
     async function render(paragraphs, className) {
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         ReactDOM.render(
           <ReactScrollToBottom.default
-            className={`react-scroll-to-bottom ${className || ''}`}
+            className={`react-scroll-to-bottom ${className || ""}`}
             followButtonClassName="follow"
             scrollViewClassName="scrollable"
           >
@@ -37,7 +42,7 @@
               </p>
             ))}
           </ReactScrollToBottom.default>,
-          document.getElementById('app'),
+          document.getElementById("app"),
           resolve
         )
       );
@@ -49,11 +54,11 @@
 
       await render(paragraphs);
 
-      await render(paragraphs, 'small');
+      await render(paragraphs, "small");
       await pageObjects.scrollStabilizedAtBottom();
 
       paragraphs = appendParagraph(paragraphs);
-      await render(paragraphs, 'small');
+      await render(paragraphs, "small");
       await pageObjects.scrollStabilizedAtBottom();
 
       await render(paragraphs);

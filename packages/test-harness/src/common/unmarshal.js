@@ -1,4 +1,4 @@
-const SeleniumWebDriver = require('selenium-webdriver');
+const SeleniumWebDriver = require("selenium-webdriver");
 
 // "selenium-webdriver" is undefined if running under browser.
 const { WebElement } = SeleniumWebDriver || {};
@@ -7,26 +7,31 @@ const { WebElement } = SeleniumWebDriver || {};
 module.exports = function unmarshal(value) {
   if (!value) {
     return value;
-  } else if (typeof window !== 'undefined' && value instanceof window.HTMLElement) {
+  } else if (
+    typeof window !== "undefined" &&
+    value instanceof window.HTMLElement
+  ) {
     return value;
-  } else if (typeof WebElement !== 'undefined' && value instanceof WebElement) {
+  } else if (typeof WebElement !== "undefined" && value instanceof WebElement) {
     return value;
   } else if (Array.isArray(value)) {
-    return value.map(value => unmarshal(value));
-  } else if ([].toString.call(value) === '[object Object]') {
-    if (value.__type === 'error') {
+    return value.map((value) => unmarshal(value));
+  } else if ([].toString.call(value) === "[object Object]") {
+    if (value.__type === "error") {
       const error = new Error(value.message);
 
       error.stack = value.stack;
 
       return error;
-    } else if (value.__type === 'undefined') {
+    } else if (value.__type === "undefined") {
       return;
     }
 
     return Object.fromEntries(
       Object.entries(value).map(([name, value]) =>
-        name !== '__proto__' && name !== 'constructor' && name !== 'prototype' ? [name, unmarshal(value)] : [name]
+        name !== "__proto__" && name !== "constructor" && name !== "prototype"
+          ? [name, unmarshal(value)]
+          : [name]
       )
     );
   }

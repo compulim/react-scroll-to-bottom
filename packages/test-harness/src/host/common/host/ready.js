@@ -1,4 +1,4 @@
-module.exports = resolve =>
+module.exports = (resolve) =>
   function ready() {
     resolve();
   };

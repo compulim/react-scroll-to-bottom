@@ -1,4 +1,4 @@
-import getHost from './host';
+import getHost from "./host";
 
 export default function () {
   return (
@@ -6,7 +6,7 @@ export default function () {
     (window.run = (fn, doneOptions) => {
       const host = getHost();
 
-      window.addEventListener('error', event => host.error(event.error));
+      window.addEventListener("error", (event) => host.error(event.error));
 
       // Run the test, signal start by host.ready().
       // On success or failure, call host.done() or host.error() correspondingly.

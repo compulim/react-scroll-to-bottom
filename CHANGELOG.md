@@ -14,56 +14,56 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added support of GitHub Codespaces, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
 - Changed peer dependencies requirement to `react >= 16.8.6`, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
 - Bumped dependencies, by [@compulim](https://github.com/compulim) in PR [#104](https://github.com/compulim/react-scroll-to-bottom/pull/104)
-   - Production dependencies
-      - [`@babel/runtime-corejs3@7.15.4`](https://npmjs.com/package/@babel/runtime-corejs3)
-      - [`@emotion/css@11.1.3`](https://npmjs.com/package/@emotion/css)
-      - [`core-js@3.18.3`](https://npmjs.com/package/core-js)
-   - Non-production dependencies
-      - [`@babel/cli@7.15.7`](https://npmjs.com/package/@babel/cli)
-      - [`@babel/core@7.15.8`](https://npmjs.com/package/@babel/core)
-      - [`@babel/preset-env@7.15.8`](https://npmjs.com/package/@babel/preset-env)
-      - [`@testing-library/jest-dom@5.14.1`](https://npmjs.com/package/@testing-library/jest-dom)
-      - [`concurrently@6.3.0`](https://npmjs.com/package/concurrently)
-      - [`esbuild@0.13.5`](https://npmjs.com/package/esbuild)
-      - [`eslint-plugin-prettier@4.0.0`](https://npmjs.com/package/eslint-plugin-prettier)
-      - [`eslint-plugin-react@7.26.1`](https://npmjs.com/package/eslint-plugin-react)
-      - [`eslint@7.32.0`](https://npmjs.com/package/eslint)
-      - [`husky@7.0.2`](https://npmjs.com/package/husky)
-      - [`istanbul-lib-coverage@3.0.2`](https://npmjs.com/package/istanbul-lib-coverage)
-      - [`jest-environment-node@27.2.5`](https://npmjs.com/package/jest-environment-node)
-      - [`jest-image-snapshot@4.5.1`](https://npmjs.com/package/jest-image-snapshot)
-      - [`jest@27.2.5`](https://npmjs.com/package/jest)
-      - [`lerna@4.0.0`](https://npmjs.com/package/lerna)
-      - [`lint-staged@11.2.3`](https://npmjs.com/package/lint-staged)
-      - [`lorem-ipsum@2.0.4`](https://npmjs.com/package/lorem-ipsum)
-      - [`node-fetch@2.6.5`](https://npmjs.com/package/node-fetch)
-      - [`nodemon@2.0.13`](https://npmjs.com/package/nodemon)
-      - [`prettier@2.4.1`](https://npmjs.com/package/prettier)
-      - [`react-dom@16.14.0`](https://npmjs.com/package/react-dom)
-      - [`react-scripts@4.0.3`](https://npmjs.com/package/react-scripts)
-      - [`react@16.14.0`](https://npmjs.com/package/react)
-      - [`selenium-webdriver@4.0.0-rc-2`](https://npmjs.com/package/selenium-webdriver)
-      - [`serve@12.0.1`](https://npmjs.com/package/serve)
-      - [`strip-ansi@6.0.1`](https://npmjs.com/package/strip-ansi)
+  - Production dependencies
+    - [`@babel/runtime-corejs3@7.15.4`](https://npmjs.com/package/@babel/runtime-corejs3)
+    - [`@emotion/css@11.1.3`](https://npmjs.com/package/@emotion/css)
+    - [`core-js@3.18.3`](https://npmjs.com/package/core-js)
+  - Non-production dependencies
+    - [`@babel/cli@7.15.7`](https://npmjs.com/package/@babel/cli)
+    - [`@babel/core@7.15.8`](https://npmjs.com/package/@babel/core)
+    - [`@babel/preset-env@7.15.8`](https://npmjs.com/package/@babel/preset-env)
+    - [`@testing-library/jest-dom@5.14.1`](https://npmjs.com/package/@testing-library/jest-dom)
+    - [`concurrently@6.3.0`](https://npmjs.com/package/concurrently)
+    - [`esbuild@0.13.5`](https://npmjs.com/package/esbuild)
+    - [`eslint-plugin-prettier@4.0.0`](https://npmjs.com/package/eslint-plugin-prettier)
+    - [`eslint-plugin-react@7.26.1`](https://npmjs.com/package/eslint-plugin-react)
+    - [`eslint@7.32.0`](https://npmjs.com/package/eslint)
+    - [`husky@7.0.2`](https://npmjs.com/package/husky)
+    - [`istanbul-lib-coverage@3.0.2`](https://npmjs.com/package/istanbul-lib-coverage)
+    - [`jest-environment-node@27.2.5`](https://npmjs.com/package/jest-environment-node)
+    - [`jest-image-snapshot@4.5.1`](https://npmjs.com/package/jest-image-snapshot)
+    - [`jest@27.2.5`](https://npmjs.com/package/jest)
+    - [`lerna@4.0.0`](https://npmjs.com/package/lerna)
+    - [`lint-staged@11.2.3`](https://npmjs.com/package/lint-staged)
+    - [`lorem-ipsum@2.0.4`](https://npmjs.com/package/lorem-ipsum)
+    - [`node-fetch@2.6.5`](https://npmjs.com/package/node-fetch)
+    - [`nodemon@2.0.13`](https://npmjs.com/package/nodemon)
+    - [`prettier@2.4.1`](https://npmjs.com/package/prettier)
+    - [`react-dom@16.14.0`](https://npmjs.com/package/react-dom)
+    - [`react-scripts@4.0.3`](https://npmjs.com/package/react-scripts)
+    - [`react@16.14.0`](https://npmjs.com/package/react)
+    - [`selenium-webdriver@4.0.0-rc-2`](https://npmjs.com/package/selenium-webdriver)
+    - [`serve@12.0.1`](https://npmjs.com/package/serve)
+    - [`strip-ansi@6.0.1`](https://npmjs.com/package/strip-ansi)
 
 ## [4.1.2] - 2021-05-17
 
 ### Changed
 
 - Bumped dependencies, by [@compulim](https://github.com/compulim) in PR [#95](https://github.com/compulim/react-scroll-to-bottom/pull/95)
-   - Updated `playground` scaffold
-   - Production dependencies
-      - [`@emotion/css@11.1.3`](https://npmjs.com/packages/@emotion/css) from [`create-emotion@10.0.27`](https://npmjs.com/packages/create-emotion)
-      - [`classnames@2.3.1`](https://npmjs.com/packages/classnames)
-   - Non-production dependencies
-      - [`@babel/cli@7.13.16`](https://npmjs.com/packages/@babel/cli)
-      - [`@babel/core@7.14.2`](https://npmjs.com/packages/@babel/core)
-      - [`@babel/preset-env@7.14.2`](https://npmjs.com/packages/@babel/preset-env)
-      - [`@babel/preset-react@7.13.13`](https://npmjs.com/packages/@babel/preset-react)
-      - [`esbuild@0.11.22`](https://npmjs.com/packages/esbuild)
-      - [`prettier@2.3.0`](https://npmjs.com/packages/prettier)
-      - [`react-interval@2.1.2`](https://npmjs.com/packages/react-interval)
-      - [`react-scripts@4.0.3`](https://npmjs.com/packages/react-scripts)
+  - Updated `playground` scaffold
+  - Production dependencies
+    - [`@emotion/css@11.1.3`](https://npmjs.com/packages/@emotion/css) from [`create-emotion@10.0.27`](https://npmjs.com/packages/create-emotion)
+    - [`classnames@2.3.1`](https://npmjs.com/packages/classnames)
+  - Non-production dependencies
+    - [`@babel/cli@7.13.16`](https://npmjs.com/packages/@babel/cli)
+    - [`@babel/core@7.14.2`](https://npmjs.com/packages/@babel/core)
+    - [`@babel/preset-env@7.14.2`](https://npmjs.com/packages/@babel/preset-env)
+    - [`@babel/preset-react@7.13.13`](https://npmjs.com/packages/@babel/preset-react)
+    - [`esbuild@0.11.22`](https://npmjs.com/packages/esbuild)
+    - [`prettier@2.3.0`](https://npmjs.com/packages/prettier)
+    - [`react-interval@2.1.2`](https://npmjs.com/packages/react-interval)
+    - [`react-scripts@4.0.3`](https://npmjs.com/packages/react-scripts)
 
 ### Fixed
 
@@ -108,33 +108,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Breaking changes
 
 - `scrollToBottom`/`scrollToEnd`/`scrollToStart`/`scrollToTop` now accept an option `{ behavior: 'auto' | 'smooth' }`
-   - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
-   - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
-   - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
+  - Without the option, it is by default to artificial smooth scrolling (`smooth`), to keep existing behavior
+  - This behavior may change in the future, by defaulting to discrete scrolling (`auto`), to better align with HTML `DOMElement.scrollIntoView` standard
+  - During the transition, please always pass `{ behavior: 'smooth' }` to keep existing behavior
 
 ### Changed
 
 - Bump dependencies, in PR [#50](https://github.com/compulim/react-scroll-to-bottom/pull/50)
-   - [`@babel/cli@7.10.3`](https://www.npmjs.com/package/@babel/cli)
-   - [`@babel/core@7.10.3`](https://www.npmjs.com/package/@babel/core)
-   - [`@babel/plugin-proposal-object-rest-spread@7.10.3`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
-   - [`@babel/preset-env@7.10.3`](https://www.npmjs.com/package/@babel/preset-env)
-   - [`@babel/preset-react@7.10.1`](https://www.npmjs.com/package/@babel/preset-react)
-   - [`eslint@7.3.0`](https://www.npmjs.com/package/eslint)
-   - [`eslint-plugin-prettier@3.1.4`](https://www.npmjs.com/package/eslint-plugin-prettier)
-   - [`eslint-plugin-react@7.20.0`](https://www.npmjs.com/package/eslint-plugin-react)
-   - [`eslint-plugin-react-hooks@4.0.4`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
+  - [`@babel/cli@7.10.3`](https://www.npmjs.com/package/@babel/cli)
+  - [`@babel/core@7.10.3`](https://www.npmjs.com/package/@babel/core)
+  - [`@babel/plugin-proposal-object-rest-spread@7.10.3`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+  - [`@babel/preset-env@7.10.3`](https://www.npmjs.com/package/@babel/preset-env)
+  - [`@babel/preset-react@7.10.1`](https://www.npmjs.com/package/@babel/preset-react)
+  - [`eslint@7.3.0`](https://www.npmjs.com/package/eslint)
+  - [`eslint-plugin-prettier@3.1.4`](https://www.npmjs.com/package/eslint-plugin-prettier)
+  - [`eslint-plugin-react@7.20.0`](https://www.npmjs.com/package/eslint-plugin-react)
+  - [`eslint-plugin-react-hooks@4.0.4`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
 
 ### Added
 
 - Added version number to `<meta name="react-scroll-to-bottom:version">` for diagnostic purpose, in PR [#51](https://github.com/compulim/react-scroll-to-bottom/pull/51)
 - Added `useAnimatingToEnd` getter to indicate if it is animating towards to the end, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
-   - The existing `useAnimating` getter only indicate if it is animating to any scroll positions
+  - The existing `useAnimating` getter only indicate if it is animating to any scroll positions
 - Added `scrollTo` function to scroll to a specific `scrollTop` value, this is similar to `DOMElement.scrollIntoView()`, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
-   - The signature is `scrollTo(scrollTop: number, options: { behavior: 'auto' | 'smooth' })`
-   - Pass `{ behavior: 'smooth' }` for synthetic smooth scrolling
+  - The signature is `scrollTo(scrollTop: number, options: { behavior: 'auto' | 'smooth' })`
+  - Pass `{ behavior: 'smooth' }` for synthetic smooth scrolling
 - Added `useObserveScrollTop` hook to observe scroll event, in PR [#49](https://github.com/compulim/react-scroll-to-bottom/pull/49)
-   - This effect function will be called rapidly on scroll, please avoid expensive code such as calling setter of `useState` and any code that would cause re-render
+  - This effect function will be called rapidly on scroll, please avoid expensive code such as calling setter of `useState` and any code that would cause re-render
 
 ### Fixed
 
@@ -146,45 +146,45 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Breaking changes
 
 - We moved to React Hooks and it requires React 16.8.6 or up
-   - Hooks will allow us to write simpler and more maintainable code
-   - Developers can use our React Hooks to perform various operations
+  - Hooks will allow us to write simpler and more maintainable code
+  - Developers can use our React Hooks to perform various operations
 
 ### Changed
 
 - Moved all code to React functional components, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
 - `*`: bump dependencies, in PR [#47](https://github.com/compulim/react-scroll-to-bottom/pull/47)
-   - [`@babel/cli@7.8.4`](https://www.npmjs.com/package/@babel/cli)
-   - [`@babel/core@7.9.6`](https://www.npmjs.com/package/@babel/core)
-   - [`@babel/plugin-proposal-object-rest-spread@7.9.6`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
-   - [`@babel/preset-env@7.9.6`](https://www.npmjs.com/package/@babel/preset-env)
-   - [`@babel/preset-react@7.9.4`](https://www.npmjs.com/package/@babel/preset-react)
-   - [`babel-eslint@10.1.0`](https://www.npmjs.com/package/babel-eslint)
-   - [`babel-jest@26.0.1`](https://www.npmjs.com/package/babel-jest)
-   - [`eslint-plugin-prettier@3.1.3`](https://www.npmjs.com/package/eslint-plugin-prettier)
-   - [`eslint-plugin-react-hooks@4.0.0`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
-   - [`eslint-plugin-react@7.19.0`](https://www.npmjs.com/package/eslint-plugin-react)
-   - [`eslint@6.8.0`](https://www.npmjs.com/package/eslint)
-   - [`jest@26.0.1`](https://www.npmjs.com/package/jest)
-   - [`lerna@3.20.2`](https://www.npmjs.com/package/lerna)
-   - [`lorem-ipsum@2.0.3`](https://www.npmjs.com/package/lorem-ipsum)
-   - [`prettier@2.0.5`](https://www.npmjs.com/package/prettier)
-   - [`react-interval@2.1.1`](https://www.npmjs.com/package/react-interval)
-   - [`react-scripts@3.4.1`](https://www.npmjs.com/package/react-scripts)
+  - [`@babel/cli@7.8.4`](https://www.npmjs.com/package/@babel/cli)
+  - [`@babel/core@7.9.6`](https://www.npmjs.com/package/@babel/core)
+  - [`@babel/plugin-proposal-object-rest-spread@7.9.6`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+  - [`@babel/preset-env@7.9.6`](https://www.npmjs.com/package/@babel/preset-env)
+  - [`@babel/preset-react@7.9.4`](https://www.npmjs.com/package/@babel/preset-react)
+  - [`babel-eslint@10.1.0`](https://www.npmjs.com/package/babel-eslint)
+  - [`babel-jest@26.0.1`](https://www.npmjs.com/package/babel-jest)
+  - [`eslint-plugin-prettier@3.1.3`](https://www.npmjs.com/package/eslint-plugin-prettier)
+  - [`eslint-plugin-react-hooks@4.0.0`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
+  - [`eslint-plugin-react@7.19.0`](https://www.npmjs.com/package/eslint-plugin-react)
+  - [`eslint@6.8.0`](https://www.npmjs.com/package/eslint)
+  - [`jest@26.0.1`](https://www.npmjs.com/package/jest)
+  - [`lerna@3.20.2`](https://www.npmjs.com/package/lerna)
+  - [`lorem-ipsum@2.0.3`](https://www.npmjs.com/package/lorem-ipsum)
+  - [`prettier@2.0.5`](https://www.npmjs.com/package/prettier)
+  - [`react-interval@2.1.1`](https://www.npmjs.com/package/react-interval)
+  - [`react-scripts@3.4.1`](https://www.npmjs.com/package/react-scripts)
 - `*`: bump dependencies, in PR [#31](https://github.com/compulim/react-scroll-to-bottom/pull/31)
-   - [`@babel/cli@^7.6.2`](https://www.npmjs.com/package/@babel/cli)
-   - [`@babel/core@^7.6.2`](https://www.npmjs.com/package/@babel/core)
-   - [`@babel/plugin-proposal-object-rest-spread@^7.6.2`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
-   - [`@babel/preset-env@^7.6.2`](https://www.npmjs.com/package/@babel/preset-env)
-   - [`babel-jest@^24.9.0`](https://www.npmjs.com/package/babel-jest)
-   - [`jest@^24.9.0`](https://www.npmjs.com/package/jest)
-   - [`react-dom@16.8.6`](https://www.npmjs.com/package/react-dom)
-   - [`react@16.8.6`](https://www.npmjs.com/package/react)
+  - [`@babel/cli@^7.6.2`](https://www.npmjs.com/package/@babel/cli)
+  - [`@babel/core@^7.6.2`](https://www.npmjs.com/package/@babel/core)
+  - [`@babel/plugin-proposal-object-rest-spread@^7.6.2`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+  - [`@babel/preset-env@^7.6.2`](https://www.npmjs.com/package/@babel/preset-env)
+  - [`babel-jest@^24.9.0`](https://www.npmjs.com/package/babel-jest)
+  - [`jest@^24.9.0`](https://www.npmjs.com/package/jest)
+  - [`react-dom@16.8.6`](https://www.npmjs.com/package/react-dom)
+  - [`react@16.8.6`](https://www.npmjs.com/package/react)
 - `*`: bump dependencies, in PR [#27](https://github.com/compulim/react-scroll-to-bottom/pull/27)
-   - [`@babel/cli@^7.5.5`](https://www.npmjs.com/package/@babel/cli)
-   - [`@babel/core@^7.5.5`](https://www.npmjs.com/package/@babel/core)
-   - [`@babel/plugin-proposal-object-rest-spread@^7.5.5`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
-   - [`@babel/preset-env@^7.5.5`](https://www.npmjs.com/package/@babel/preset-env)
-   - [`rimraf@^2.6.3`](https://www.npmjs.com/package/rimraf)
+  - [`@babel/cli@^7.5.5`](https://www.npmjs.com/package/@babel/cli)
+  - [`@babel/core@^7.5.5`](https://www.npmjs.com/package/@babel/core)
+  - [`@babel/plugin-proposal-object-rest-spread@^7.5.5`](https://www.npmjs.com/package/@babel/plugin-proposal-object-rest-spread)
+  - [`@babel/preset-env@^7.5.5`](https://www.npmjs.com/package/@babel/preset-env)
+  - [`rimraf@^2.6.3`](https://www.npmjs.com/package/rimraf)
 
 ### Added
 
@@ -234,7 +234,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `BasicScrollToBottom`: will now pass `debounce` and `threshold` to `Composer`, fix [#2](https://github.com/compulim/react-scroll-to-bottom/issues/2)
 - `Composer`: `debounce` prop to control debouncing on `onScroll` event, default to `17`
 - `FunctionContext`: `scrollTo` now support `"bottom"`, in addition to a `number`, fix [#1](https://github.com/compulim/react-scroll-to-bottom/issues/1)
-   - This will help when animating scroll position while new content was added to the panel
+  - This will help when animating scroll position while new content was added to the panel
 - `FunctionContext`: `scrollToStart` function to scroll to the start, depends on `mode`
 - `StateContext`: `animating` returns `true` if the scroll position is being animated
 - `StateContext`: `atStart` indicates if the scroll position is at the start or not, depend on `mode`
@@ -242,11 +242,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Performance improvements
-   - `Context` is now separated into `FunctionContext`, `InternalContext` and `StateContext` for better performance and reduce exposure
-      - `FunctionContext` is static and only hold functions for manipulating the panel
-      - `InternalContext` is static and for internal use (to overcome shortcomings of `React.createRef`)
-      - `StateContext` is dynamic and change when scroll position change
-   - `StateContext` will now only update if there are any meaningful changes
+  - `Context` is now separated into `FunctionContext`, `InternalContext` and `StateContext` for better performance and reduce exposure
+    - `FunctionContext` is static and only hold functions for manipulating the panel
+    - `InternalContext` is static and for internal use (to overcome shortcomings of `React.createRef`)
+    - `StateContext` is dynamic and change when scroll position change
+  - `StateContext` will now only update if there are any meaningful changes
 - Added `displayName` to context
 - [`lerna`](https://npmjs.com/package/lerna) bumped from `2.11.0` to `3.4.3`
 

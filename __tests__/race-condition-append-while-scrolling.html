@@ -12,7 +12,7 @@
     <div id="app"></div>
   </body>
   <script type="text/babel" data-presets="react">
-    'use strict';
+    "use strict";
 
     const RunFunction = ({ fn }) => {
       fn && fn();
@@ -29,7 +29,7 @@
           called = 1;
         });
 
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         ReactDOM.render(
           <div className="react-scroll-to-bottom">
             {/* Set checkInterval to 1 to increase the probability of race condition. */}
@@ -44,7 +44,7 @@
               <RunFunction fn={once} />
             </ReactScrollToBottom.Composer>
           </div>,
-          document.getElementById('app'),
+          document.getElementById("app"),
           resolve
         )
       );
@@ -59,26 +59,36 @@
           const scrollTo = ReactScrollToBottom.useScrollTo();
 
           React.useEffect(() => {
-            scrollTo('100%', { behavior: 'auto' });
+            scrollTo("100%", { behavior: "auto" });
           }, [index, scrollTo]);
         });
 
         await pageObjects.scrollStabilizedAtBottom();
 
-        const scrollable = document.getElementsByClassName('scrollable')[0];
+        const scrollable = document.getElementsByClassName("scrollable")[0];
 
         // Call scrollTo() and wait until the first "scroll" event.
-        const scrolling = new Promise(resolve => scrollable.addEventListener('scroll', resolve, { once: true }));
+        const scrolling = new Promise((resolve) =>
+          scrollable.addEventListener("scroll", resolve, { once: true })
+        );
 
         // Alternate between discrete and smooth scrolling.
-        scrollable.scrollTo({ behavior: index % 2 ? 'auto' : 'smooth', top: 0 });
+        scrollable.scrollTo({
+          behavior: index % 2 ? "auto" : "smooth",
+          top: 0,
+        });
 
         // "scroll" event dispatched after we call scrollTo(), it should be safe to append a new element.
         // Withou the "scroll" event, the component can't guarantee if it is safe to append, due to technical difficulties.
         await scrolling;
 
         // Add a new paragraph.
-        paragraphs = [...paragraphs, pageObjects.paragraphs[~~(Math.random() * pageObjects.paragraphs.length)]];
+        paragraphs = [
+          ...paragraphs,
+          pageObjects.paragraphs[
+            ~~(Math.random() * pageObjects.paragraphs.length)
+          ],
+        ];
 
         await render(paragraphs);
 

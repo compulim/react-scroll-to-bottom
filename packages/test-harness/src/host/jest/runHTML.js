@@ -1,13 +1,13 @@
 /* istanbul ignore file */
-const { basename, join } = require('path');
-const { tmpdir } = require('os');
-const { writeFile } = require('fs').promises;
-const allocateWebDriver = require('./allocateWebDriver');
-const createProxies = require('../common/createProxies');
-const dumpLogs = require('../common/dumpLogs');
-const mergeCoverageMap = require('./mergeCoverageMap');
-const registerProxies = require('../common/registerProxies');
-const sleep = require('../../common/utils/sleep');
+const { basename, join } = require("path");
+const { tmpdir } = require("os");
+const { writeFile } = require("fs").promises;
+const allocateWebDriver = require("./allocateWebDriver");
+const createProxies = require("../common/createProxies");
+const dumpLogs = require("../common/dumpLogs");
+const mergeCoverageMap = require("./mergeCoverageMap");
+const registerProxies = require("../common/registerProxies");
+const sleep = require("../../common/utils/sleep");
 
 afterEach(async () => {
   try {
@@ -17,7 +17,8 @@ afterEach(async () => {
     // eslint-disable-next-line no-empty
   } catch (err) {}
 
-  global.__operation__ && console.log(`Last operation was ${global.__operation__}`);
+  global.__operation__ &&
+    console.log(`Last operation was ${global.__operation__}`);
 
   const { webDriver } = global;
 
@@ -50,39 +51,47 @@ global.runHTML = async function runHTML(url, options) {
 
     await webDriver.get(absoluteURL);
 
-    global.__operation__ = 'setting class name for body element';
+    global.__operation__ = "setting class name for body element";
 
     /* istanbul ignore next */
     await webDriver.executeScript(() => {
-      document.body.className = 'jest';
+      document.body.className = "jest";
     });
 
     const proxies = createProxies(webDriver);
 
     global.webDriverBridge = registerProxies(webDriver, proxies);
 
-    global.__operation__ = 'waiting for the bridge to ready';
+    global.__operation__ = "waiting for the bridge to ready";
 
     // Wait until the page is loaded. This will generate a better errors.
     await expect(proxies.host.readyPromise).resolves.toBeUndefined();
 
-    global.__operation__ = 'running test code';
+    global.__operation__ = "running test code";
 
     // Wait until test call done() or errored out.
     await proxies.host.donePromise;
 
-    global.__operation__ = 'retrieving code coverage';
+    global.__operation__ = "retrieving code coverage";
 
-    const postCoverage = await webDriver.executeScript(() => window.__coverage__);
+    const postCoverage = await webDriver.executeScript(
+      () => window.__coverage__
+    );
 
     // Merge code coverage result.
     global.__coverage__ = mergeCoverageMap(global.__coverage__, postCoverage);
     global.__operation__ = undefined;
   } catch (err) {
     try {
-      const filename = join(tmpdir(), basename(global.jasmine.testPath, '.js') + '.png');
+      const filename = join(
+        tmpdir(),
+        basename(global.jasmine.testPath, ".js") + ".png"
+      );
 
-      writeFile(filename, Buffer.from(await webDriver.takeScreenshot(), 'base64'));
+      writeFile(
+        filename,
+        Buffer.from(await webDriver.takeScreenshot(), "base64")
+      );
 
       err.message += `\nSee screenshot for details: ${filename}\n`;
 
