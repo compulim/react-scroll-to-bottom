@@ -68,6 +68,7 @@ export default props => (
 | `className`             | `string`   |                              | Set the class name for the root element                                                                                        |
 | `debounce`              | `number`   | `17`                         | Set the debounce for tracking the `onScroll` event                                                                             |
 | `debug`                 | `bool`     | `NODE_ENV === 'development'` | Show debug information in console                                                                                              |
+| `emotionOptions`        | `object`   | `undefined`                  | Additional options for the internal Emotion instance                                                                           |
 | `followButtonClassName` | `string`   |                              | Set the class name for the follow button                                                                                       |
 | `initialScrollBehavior` | `string`   | `smooth`                     | Set the initial scroll behavior, either `"auto"` (discrete scrolling) or `"smooth"`                                            |
 | `mode`                  | `string`   | `"bottom"`                   | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |

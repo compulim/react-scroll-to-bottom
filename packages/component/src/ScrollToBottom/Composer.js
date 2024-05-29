@@ -1,4 +1,3 @@
-import createEmotion from '@emotion/css/create-instance';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -12,6 +11,7 @@ import State1Context from './State1Context';
 import State2Context from './State2Context';
 import StateContext from './StateContext';
 import styleConsole from '../utils/styleConsole';
+import useEmotion from '../useEmotion';
 import useStateRef from '../hooks/internal/useStateRef';
 
 const DEFAULT_SCROLLER = () => Infinity;
@@ -20,10 +20,6 @@ const MODE_BOTTOM = 'bottom';
 const MODE_TOP = 'top';
 const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
-
-// We pool the emotion object by nonce.
-// This is to make sure we don't generate too many unneeded <style> tags.
-const emotionPool = {};
 
 function setImmediateInterval(fn, ms) {
   fn();
@@ -55,6 +51,7 @@ const Composer = ({
   children,
   debounce,
   debug: debugFromProp,
+  emotionOptions,
   initialScrollBehavior,
   mode,
   nonce,
@@ -501,13 +498,16 @@ const Composer = ({
     }
   }, [animateToRef, checkInterval, debug, mode, scrollToSticky, setSticky, stickyRef, target, targetRef]);
 
-  const styleToClassName = useMemo(() => {
-    const emotion =
-      emotionPool[nonce] ||
-      (emotionPool[nonce] = createEmotion({ key: 'react-scroll-to-bottom--css-' + createCSSKey(), nonce }));
-
-    return style => emotion.css(style) + '';
-  }, [nonce]);
+  const emotionConfig = useMemo(
+    () => ({
+      key: 'react-scroll-to-bottom--css-' + createCSSKey(),
+      nonce,
+      ...emotionOptions
+    }),
+    [emotionOptions, nonce]
+  );
+  const emotion = useEmotion(emotionConfig);
+  const styleToClassName = useCallback(style => emotion.css(style) + '', [emotion]);
 
   const internalContext = useMemo(
     () => ({
@@ -623,6 +623,7 @@ Composer.defaultProps = {
   children: undefined,
   debounce: 17,
   debug: undefined,
+  emotionOptions: undefined,
   initialScrollBehavior: 'smooth',
   mode: undefined,
   nonce: undefined,
@@ -634,6 +635,7 @@ Composer.propTypes = {
   children: PropTypes.any,
   debounce: PropTypes.number,
   debug: PropTypes.bool,
+  emotionOptions: PropTypes.any,
   initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,
