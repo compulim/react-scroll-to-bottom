@@ -1,5 +1,5 @@
 import createEmotion from '@emotion/css/create-instance';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import createCSSKey from '../../createCSSKey';
 
@@ -24,9 +24,6 @@ export default function useEmotion(nonce, emotionOptions) {
     return emotion;
   }, [nonce, emotionOptions]);
 
-  const nonceRef = useRef();
-  nonceRef.current = nonce;
-
   useEffect(
     () =>
       emotion &&
@@ -40,8 +37,8 @@ export default function useEmotion(nonce, emotionOptions) {
 
         sharedEmotionUsedTimes.delete(emotion);
 
-        if (sharedEmotionByNonce.get(nonceRef.current) === emotion) {
-          sharedEmotionByNonce.delete(nonceRef.current);
+        if (emotion.nonce) {
+          sharedEmotionByNonce.delete(emotion.nonce);
         }
 
         const {
