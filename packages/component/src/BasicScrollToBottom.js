@@ -42,6 +42,7 @@ const BasicScrollToBottom = ({
   className,
   debounce,
   debug,
+  emotionOptions,
   followButtonClassName,
   initialScrollBehavior,
   mode,
@@ -53,6 +54,7 @@ const BasicScrollToBottom = ({
     checkInterval={checkInterval}
     debounce={debounce}
     debug={debug}
+    emotionOptions={emotionOptions}
     initialScrollBehavior={initialScrollBehavior}
     mode={mode}
     nonce={nonce}
@@ -74,6 +76,7 @@ BasicScrollToBottom.defaultProps = {
   className: undefined,
   debounce: undefined,
   debug: undefined,
+  emotionOptions: undefined,
   followButtonClassName: undefined,
   initialScrollBehavior: 'smooth',
   mode: undefined,
@@ -88,6 +91,7 @@ BasicScrollToBottom.propTypes = {
   className: PropTypes.string,
   debounce: PropTypes.number,
   debug: PropTypes.bool,
+  emotionOptions: PropTypes.any,
   followButtonClassName: PropTypes.string,
   initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
