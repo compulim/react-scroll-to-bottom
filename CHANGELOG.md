@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Changed
-- Added support for passing additional options for internal Emotion instance via `emotionOptions` property, by [@OEvgeny]() in PR [](https://github.com/compulim/react-scroll-to-bottom/pull/)
+
+- Added support for passing additional options for internal Emotion instance via `emotionOptions` property, by [@OEvgeny](https://github.com/OEvgeny) in PR [#137](https://github.com/compulim/react-scroll-to-bottom/pull/137)
 
 ## [4.2.0] - 2021-10-14
 
