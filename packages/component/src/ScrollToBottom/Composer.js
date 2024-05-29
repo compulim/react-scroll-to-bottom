@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import createCSSKey from '../createCSSKey';
 import createDebug from '../utils/debug';
 import EventSpy from '../EventSpy';
 import FunctionContext from './FunctionContext';
@@ -11,7 +10,7 @@ import State1Context from './State1Context';
 import State2Context from './State2Context';
 import StateContext from './StateContext';
 import styleConsole from '../utils/styleConsole';
-import useEmotion from '../useEmotion';
+import useEmotion from '../hooks/internal/useEmotion';
 import useStateRef from '../hooks/internal/useStateRef';
 
 const DEFAULT_SCROLLER = () => Infinity;
@@ -498,15 +497,7 @@ const Composer = ({
     }
   }, [animateToRef, checkInterval, debug, mode, scrollToSticky, setSticky, stickyRef, target, targetRef]);
 
-  const emotionConfig = useMemo(
-    () => ({
-      key: 'react-scroll-to-bottom--css-' + createCSSKey(),
-      nonce,
-      ...emotionOptions
-    }),
-    [emotionOptions, nonce]
-  );
-  const emotion = useEmotion(emotionConfig);
+  const emotion = useEmotion(nonce, emotionOptions);
   const styleToClassName = useCallback(style => emotion.css(style) + '', [emotion]);
 
   const internalContext = useMemo(
