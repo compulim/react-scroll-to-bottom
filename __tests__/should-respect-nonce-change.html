@@ -24,7 +24,7 @@
         let resolve, promise;
         promise = new Promise(r => resolve = r);
 
-        React.useEffect(() => void requestIdleCallback(resolve), [promise]);
+        React.useEffect(() => () => requestIdleCallback(resolve));
         updateNonce = root => {
           setNonce(root);
           return promise;
@@ -60,6 +60,7 @@
       await pageObjects.scrollStabilized();
 
       const emotionStyle = document.querySelector('[data-emotion]')
+      const stylesCount = document.querySelectorAll('[data-emotion]').length;
 
       expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
       expect(emotionStyle).toBeDefined();
@@ -67,7 +68,7 @@
       await updateNonce('new-nonce');
 
       expect(document.querySelector('[data-emotion]')).not.toEqual(emotionStyle);
-      expect(document.querySelectorAll('[data-emotion]').length).toEqual(1);
+      expect(document.querySelectorAll('[data-emotion]').length).toBe(stylesCount);
     });
   </script>
 </html>

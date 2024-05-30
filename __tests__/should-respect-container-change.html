@@ -24,7 +24,7 @@
         let resolve, promise;
         promise = new Promise(r => resolve = r);
 
-        React.useEffect(() => void requestIdleCallback(resolve), [promise]);
+        React.useEffect(() => () => requestIdleCallback(resolve));
         updateStylesRoot = root => {
           setStylesRoot(root);
           return promise;
