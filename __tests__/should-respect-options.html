@@ -15,8 +15,8 @@
   <script type="text/babel" data-presets="react">
     'use strict';
 
-    const additionalOptions = {
-      container: document.getElementById('styles')
+    const styleOptions = {
+      stylesRoot: document.getElementById('styles')
     };
 
     run(async function () {
@@ -26,7 +26,7 @@
             className="react-scroll-to-bottom"
             followButtonClassName="follow"
             scrollViewClassName="scrollable"
-            emotionOptions={additionalOptions}
+            styleOptions={styleOptions}
           >
             {pageObjects.paragraphs.map(paragraph => (
               <p key={paragraph}>{paragraph}</p>

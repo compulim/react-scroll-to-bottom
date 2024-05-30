@@ -62,19 +62,19 @@ export default props => (
 
 ## Props
 
-| Name                    | Type       | Default                      | Description                                                                                                                    |
-| ----------------------- | ---------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `checkInterval`         | `number`   | 150                          | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)                                                     |
-| `className`             | `string`   |                              | Set the class name for the root element                                                                                        |
-| `debounce`              | `number`   | `17`                         | Set the debounce for tracking the `onScroll` event                                                                             |
-| `debug`                 | `bool`     | `NODE_ENV === 'development'` | Show debug information in console                                                                                              |
-| `emotionOptions`        | `object`   | `undefined`                  | Additional options for the internal Emotion instance                                                                           |
-| `followButtonClassName` | `string`   |                              | Set the class name for the follow button                                                                                       |
-| `initialScrollBehavior` | `string`   | `smooth`                     | Set the initial scroll behavior, either `"auto"` (discrete scrolling) or `"smooth"`                                            |
-| `mode`                  | `string`   | `"bottom"`                   | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |
-| `nonce`                 | `string`   |                              | Set the nonce for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) |
-| `scroller`              | `function` | `() => Infinity`             | A function to determine how far should scroll when scroll is needed                                                            |
-| `scrollViewClassName`   | `string`   |                              | Set the class name for the container element that house all `props.children`                                                   |
+| Name                      | Type       | Default                      | Description                                                                                                                    |
+| ------------------------- | ---------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `checkInterval`           | `number`   | 150                          | Recurring interval of stickiness check, in milliseconds (minimum is 17 ms)                                                     |
+| `className`               | `string`   |                              | Set the class name for the root element                                                                                        |
+| `debounce`                | `number`   | `17`                         | Set the debounce for tracking the `onScroll` event                                                                             |
+| `debug`                   | `bool`     | `NODE_ENV === 'development'` | Show debug information in console                                                                                              |
+| `followButtonClassName`   | `string`   |                              | Set the class name for the follow button                                                                                       |
+| `initialScrollBehavior`   | `string`   | `smooth`                     | Set the initial scroll behavior, either `"auto"` (discrete scrolling) or `"smooth"`                                            |
+| `mode`                    | `string`   | `"bottom"`                   | Set it to `"bottom"` for scroll-to-bottom, `"top"` for scroll-to-top                                                           |
+| `nonce`                   | `string`   |                              | Set the nonce for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) |
+| `scroller`                | `function` | `() => Infinity`             | A function to determine how far should scroll when scroll is needed                                                            |
+| `scrollViewClassName`     | `string`   |                              | Set the class name for the container element that house all `props.children`                                                   |
+| `styleOptions.stylesRoot` | `Node`     | `undefined`                  | Set the container node for component styles to be placed into                                                                      |
 
 ## Hooks
 

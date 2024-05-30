@@ -3,47 +3,35 @@ import { useEffect, useMemo } from 'react';
 
 import createCSSKey from '../../createCSSKey';
 
-const sharedEmotionByNonce = new Map();
-const sharedEmotionUsedTimes = new WeakMap();
+const sharedEmotionInstances = [];
 
-export default function useEmotion(nonce, emotionOptions) {
+export default function useEmotion(nonce, container) {
   const emotion = useMemo(() => {
-    const defaultOptions = {
-      key: 'react-scroll-to-bottom--css-' + createCSSKey(),
-      nonce
-    };
-    if (emotionOptions) {
-      return createEmotion({
-        ...defaultOptions,
-        ...emotionOptions
-      });
-    }
-    const emotion = sharedEmotionByNonce.get(nonce) ?? createEmotion(defaultOptions);
-    sharedEmotionByNonce.set(nonce, emotion);
-    sharedEmotionUsedTimes.set(emotion, sharedEmotionUsedTimes.get(emotion) ?? 0 + 1);
+    const sharedEmotion = sharedEmotionInstances.find(
+      ({ sheet }) => sheet.nonce === nonce && sheet.container === container
+    );
+    const emotion = sharedEmotion ?? createEmotion({ key: createCSSKey(), nonce, container });
+
+    sharedEmotionInstances.push(emotion);
+
     return emotion;
-  }, [nonce, emotionOptions]);
+  }, [nonce, container]);
 
   useEffect(
     () =>
-      emotion &&
+      emotion?.sheet &&
       (() => {
-        if (sharedEmotionUsedTimes.has(emotion)) {
-          sharedEmotionUsedTimes.set(emotion, sharedEmotionUsedTimes.get(emotion) ?? 0 - 1);
-          if (sharedEmotionUsedTimes.get(emotion) > 0) {
-            return;
-          }
+        const { container, tags } = emotion.sheet;
+
+        const index = sharedEmotionInstances.lastIndexOf(emotion);
+        if (index >= 0) {
+          sharedEmotionInstances.splice(index, 1);
         }
 
-        sharedEmotionUsedTimes.delete(emotion);
-
-        if (emotion.nonce) {
-          sharedEmotionByNonce.delete(emotion.nonce);
+        if (sharedEmotionInstances.includes(emotion)) {
+          return;
         }
 
-        const {
-          sheet: { container, tags }
-        } = emotion;
         for (const child of tags) {
           container.removeChild(child);
         }

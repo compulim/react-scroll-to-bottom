@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Added support for passing additional options to internal Emotion instance via `emotionOptions` property, by [@OEvgeny](https://github.com/OEvgeny) in PR [#137](https://github.com/compulim/react-scroll-to-bottom/pull/137)
+- Added `styleOptions.stylesRoot` property which allows to specify a container node component styles are placed into, by [@OEvgeny](https://github.com/OEvgeny) in PR [#137](https://github.com/compulim/react-scroll-to-bottom/pull/137)
 
 ## [4.2.0] - 2021-10-14
 

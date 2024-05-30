@@ -50,11 +50,11 @@ const Composer = ({
   children,
   debounce,
   debug: debugFromProp,
-  emotionOptions,
   initialScrollBehavior,
   mode,
   nonce,
-  scroller
+  scroller,
+  styleOptions
 }) => {
   const debug = useMemo(() => createDebug(`<ScrollToBottom>`, { force: debugFromProp }), [debugFromProp]);
 
@@ -497,7 +497,7 @@ const Composer = ({
     }
   }, [animateToRef, checkInterval, debug, mode, scrollToSticky, setSticky, stickyRef, target, targetRef]);
 
-  const emotion = useEmotion(nonce, emotionOptions);
+  const emotion = useEmotion(nonce, styleOptions?.stylesRoot);
   const styleToClassName = useCallback(style => emotion.css(style) + '', [emotion]);
 
   const internalContext = useMemo(
@@ -614,11 +614,11 @@ Composer.defaultProps = {
   children: undefined,
   debounce: 17,
   debug: undefined,
-  emotionOptions: undefined,
   initialScrollBehavior: 'smooth',
   mode: undefined,
   nonce: undefined,
-  scroller: DEFAULT_SCROLLER
+  scroller: DEFAULT_SCROLLER,
+  styleOptions: undefined
 };
 
 Composer.propTypes = {
@@ -626,11 +626,11 @@ Composer.propTypes = {
   children: PropTypes.any,
   debounce: PropTypes.number,
   debug: PropTypes.bool,
-  emotionOptions: PropTypes.any,
   initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,
-  scroller: PropTypes.func
+  scroller: PropTypes.func,
+  styleOptions: PropTypes.any
 };
 
 export default Composer;
