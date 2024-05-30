@@ -68,6 +68,7 @@
       await updateNonce('new-nonce');
 
       expect(document.querySelector('[data-emotion]')).not.toEqual(emotionStyle);
+      expect(emotionStyle.parentElement).toBe(undefined);
       expect(document.querySelectorAll('[data-emotion]').length).toBe(stylesCount);
     });
   </script>

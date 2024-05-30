@@ -74,7 +74,7 @@ export default props => (
 | `nonce`                   | `string`   |                              | Set the nonce for [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) |
 | `scroller`                | `function` | `() => Infinity`             | A function to determine how far should scroll when scroll is needed                                                            |
 | `scrollViewClassName`     | `string`   |                              | Set the class name for the container element that house all `props.children`                                                   |
-| `styleOptions.stylesRoot` | `Node`     | `undefined`                  | Set the container node for component styles to be placed into                                                                      |
+| `styleOptions.stylesRoot` | `Node`     | `undefined`                  | Set the container node for component styles to be placed into. When set to `undefined`, will create a new container |
 
 ## Hooks
 
