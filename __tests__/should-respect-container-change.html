@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="styles-a"></div>
+    <div id="styles-b"></div>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    run(async function () {
+      let updateStylesRoot
+      const App = () => {
+        const [stylesRoot, setStylesRoot] = React.useState(document.getElementById('styles-a'));
+
+        let resolve, promise;
+        promise = new Promise(r => resolve = r);
+
+        React.useEffect(() => () => requestIdleCallback(resolve));
+        updateStylesRoot = root => {
+          setStylesRoot(root);
+          return promise;
+        }
+
+        return (
+          <ReactScrollToBottom.default
+            className="react-scroll-to-bottom"
+            followButtonClassName="follow"
+            scrollViewClassName="scrollable"
+            styleOptions={{ stylesRoot }}
+          >
+            {pageObjects.paragraphs.map(paragraph => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </ReactScrollToBottom.default>
+        );
+      }
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <App />,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+
+      await pageObjects.scrollStabilizedAtBottom();
+
+      expect(document.getElementsByClassName('follow')[0]).toBeFalsy();
+
+      await pageObjects.mouseWheel(-100);
+
+      await pageObjects.scrollStabilized();
+
+      expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
+      expect(document.getElementById('styles-a').childElementCount).toBeGreaterThan(0);
+      expect(document.getElementById('styles-b').childElementCount).toBe(0);
+
+      await updateStylesRoot(document.getElementById('styles-b'));
+
+      expect(document.getElementById('styles-a').childElementCount).toBe(0);
+      expect(document.getElementById('styles-b').childElementCount).toBeGreaterThan(0);
+    });
+  </script>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="styles"></div>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    const styleOptions = {
+      stylesRoot: document.getElementById('styles')
+    };
+
+    run(async function () {
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <ReactScrollToBottom.default
+            className="react-scroll-to-bottom"
+            followButtonClassName="follow"
+            scrollViewClassName="scrollable"
+            styleOptions={styleOptions}
+          >
+            {pageObjects.paragraphs.map(paragraph => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </ReactScrollToBottom.default>,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+
+      await pageObjects.scrollStabilizedAtBottom();
+
+      expect(document.getElementsByClassName('follow')[0]).toBeFalsy();
+
+      await pageObjects.mouseWheel(-100);
+
+      await pageObjects.scrollStabilized();
+
+      expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
+      expect(document.getElementById('styles').childElementCount).toBeGreaterThan(0);
+    });
+  </script>
+</html>

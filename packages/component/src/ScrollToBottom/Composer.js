@@ -1,8 +1,6 @@
-import createEmotion from '@emotion/css/create-instance';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import createCSSKey from '../createCSSKey';
 import createDebug from '../utils/debug';
 import EventSpy from '../EventSpy';
 import FunctionContext from './FunctionContext';
@@ -12,6 +10,7 @@ import State1Context from './State1Context';
 import State2Context from './State2Context';
 import StateContext from './StateContext';
 import styleConsole from '../utils/styleConsole';
+import useEmotion from '../hooks/internal/useEmotion';
 import useStateRef from '../hooks/internal/useStateRef';
 
 const DEFAULT_SCROLLER = () => Infinity;
@@ -20,10 +19,6 @@ const MODE_BOTTOM = 'bottom';
 const MODE_TOP = 'top';
 const NEAR_END_THRESHOLD = 1;
 const SCROLL_DECISION_DURATION = 34; // 2 frames
-
-// We pool the emotion object by nonce.
-// This is to make sure we don't generate too many unneeded <style> tags.
-const emotionPool = {};
 
 function setImmediateInterval(fn, ms) {
   fn();
@@ -58,7 +53,8 @@ const Composer = ({
   initialScrollBehavior,
   mode,
   nonce,
-  scroller
+  scroller,
+  styleOptions
 }) => {
   const debug = useMemo(() => createDebug(`<ScrollToBottom>`, { force: debugFromProp }), [debugFromProp]);
 
@@ -501,13 +497,8 @@ const Composer = ({
     }
   }, [animateToRef, checkInterval, debug, mode, scrollToSticky, setSticky, stickyRef, target, targetRef]);
 
-  const styleToClassName = useMemo(() => {
-    const emotion =
-      emotionPool[nonce] ||
-      (emotionPool[nonce] = createEmotion({ key: 'react-scroll-to-bottom--css-' + createCSSKey(), nonce }));
-
-    return style => emotion.css(style) + '';
-  }, [nonce]);
+  const emotion = useEmotion(nonce, styleOptions?.stylesRoot);
+  const styleToClassName = useCallback(style => emotion.css(style) + '', [emotion]);
 
   const internalContext = useMemo(
     () => ({
@@ -626,7 +617,8 @@ Composer.defaultProps = {
   initialScrollBehavior: 'smooth',
   mode: undefined,
   nonce: undefined,
-  scroller: DEFAULT_SCROLLER
+  scroller: DEFAULT_SCROLLER,
+  styleOptions: undefined
 };
 
 Composer.propTypes = {
@@ -637,7 +629,8 @@ Composer.propTypes = {
   initialScrollBehavior: PropTypes.oneOf(['auto', 'smooth']),
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,
-  scroller: PropTypes.func
+  scroller: PropTypes.func,
+  styleOptions: PropTypes.any
 };
 
 export default Composer;

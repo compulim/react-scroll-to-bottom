@@ -47,7 +47,8 @@ const BasicScrollToBottom = ({
   mode,
   nonce,
   scroller,
-  scrollViewClassName
+  scrollViewClassName,
+  styleOptions
 }) => (
   <Composer
     checkInterval={checkInterval}
@@ -57,6 +58,7 @@ const BasicScrollToBottom = ({
     mode={mode}
     nonce={nonce}
     scroller={scroller}
+    styleOptions={styleOptions}
   >
     <BasicScrollToBottomCore
       className={className}
@@ -79,7 +81,8 @@ BasicScrollToBottom.defaultProps = {
   mode: undefined,
   nonce: undefined,
   scroller: undefined,
-  scrollViewClassName: undefined
+  scrollViewClassName: undefined,
+  styleOptions: undefined
 };
 
 BasicScrollToBottom.propTypes = {
@@ -93,7 +96,8 @@ BasicScrollToBottom.propTypes = {
   mode: PropTypes.oneOf(['bottom', 'top']),
   nonce: PropTypes.string,
   scroller: PropTypes.func,
-  scrollViewClassName: PropTypes.string
+  scrollViewClassName: PropTypes.string,
+  styleOptions: PropTypes.any
 };
 
 export default BasicScrollToBottom;
