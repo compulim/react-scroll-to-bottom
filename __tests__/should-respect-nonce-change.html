@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="styles-a"></div>
+    <div id="styles-b"></div>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    run(async function () {
+      let updateNonce
+      const App = () => {
+        const [nonce, setNonce] = React.useState('old-nonce');
+
+        let resolve, promise;
+        promise = new Promise(r => resolve = r);
+
+        React.useEffect(() => void requestIdleCallback(resolve), [promise]);
+        updateNonce = root => {
+          setNonce(root);
+          return promise;
+        }
+
+        return (
+          <ReactScrollToBottom.default
+            className="react-scroll-to-bottom"
+            followButtonClassName="follow"
+            nonce={nonce}
+            scrollViewClassName="scrollable"
+          >
+            {pageObjects.paragraphs.map(paragraph => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </ReactScrollToBottom.default>
+        );
+      }
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <App />,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+
+      await pageObjects.scrollStabilizedAtBottom();
+
+      expect(document.getElementsByClassName('follow')[0]).toBeFalsy();
+
+      await pageObjects.mouseWheel(-100);
+
+      await pageObjects.scrollStabilized();
+
+      const emotionStyle = document.querySelector('[data-emotion]')
+
+      expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
+      expect(emotionStyle).toBeDefined();
+
+      await updateNonce('new-nonce');
+
+      expect(document.querySelector('[data-emotion]')).not.toEqual(emotionStyle);
+      expect(document.querySelectorAll('[data-emotion]').length).toEqual(1);
+    });
+  </script>
+</html>

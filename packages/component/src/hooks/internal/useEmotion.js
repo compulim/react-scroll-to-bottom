@@ -10,7 +10,8 @@ export default function useEmotion(nonce, container) {
     const sharedEmotion = sharedEmotionInstances.find(
       ({ sheet }) => sheet.nonce === nonce && sheet.container === container
     );
-    const emotion = sharedEmotion ?? createEmotion({ key: createCSSKey(), nonce, container });
+    const emotion =
+      sharedEmotion ?? createEmotion({ key: `react-scroll-to-bottom--css-${createCSSKey()}`, nonce, container });
 
     sharedEmotionInstances.push(emotion);
 
