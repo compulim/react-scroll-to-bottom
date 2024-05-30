@@ -61,6 +61,7 @@
 
       expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
       expect(document.getElementById('styles-a').childElementCount).toBeGreaterThan(0);
+      expect(document.getElementById('styles-b').childElementCount).toBe(0);
 
       await updateStylesRoot(document.getElementById('styles-b'));
 
