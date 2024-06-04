@@ -18,7 +18,9 @@
   ],
   "main": "lib/index.js",
   "module": "lib/esm/index.js",
+  "types": "types/index.d.ts",
   "files": [
+    "types/**/*",
     "lib/**/*"
   ],
   "scripts": {
