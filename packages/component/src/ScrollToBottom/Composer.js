@@ -46,14 +46,14 @@ function isEnd(animateTo, mode) {
 }
 
 const Composer = ({
-  checkInterval,
+  checkInterval = 100,
   children,
-  debounce,
+  debounce = 17,
   debug: debugFromProp,
-  initialScrollBehavior,
+  initialScrollBehavior = 'smooth',
   mode,
   nonce,
-  scroller,
+  scroller = DEFAULT_SCROLLER,
   styleOptions
 }) => {
   const debug = useMemo(() => createDebug(`<ScrollToBottom>`, { force: debugFromProp }), [debugFromProp]);
@@ -607,18 +607,6 @@ const Composer = ({
       </FunctionContext.Provider>
     </InternalContext.Provider>
   );
-};
-
-Composer.defaultProps = {
-  checkInterval: 100,
-  children: undefined,
-  debounce: 17,
-  debug: undefined,
-  initialScrollBehavior: 'smooth',
-  mode: undefined,
-  nonce: undefined,
-  scroller: DEFAULT_SCROLLER,
-  styleOptions: undefined
 };
 
 Composer.propTypes = {

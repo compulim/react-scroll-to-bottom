@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
 import debounceFn from './debounce';
 
-const EventSpy = ({ debounce, name, onEvent, target }) => {
+const EventSpy = ({ debounce = 200, name, onEvent, target }) => {
   // We need to save the "onEvent" to ref.
   // This is because "onEvent" may change from time to time, but debounce may still fire to the older callback.
   const onEventRef = useRef();
@@ -36,10 +36,6 @@ const EventSpy = ({ debounce, name, onEvent, target }) => {
   }, [name, handleEvent, target]);
 
   return false;
-};
-
-EventSpy.defaultProps = {
-  debounce: 200
 };
 
 export default EventSpy;
