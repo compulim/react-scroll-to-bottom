@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    run(async function () {
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <ReactScrollToBottom.default
+            className="react-scroll-to-bottom"
+            followButtonClassName="follow"
+            scrollViewClassName="scrollable"
+            autoScrollThreshold={50}
+          >
+            {pageObjects.paragraphs.map(paragraph => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </ReactScrollToBottom.default>,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+
+      await pageObjects.scrollStabilizedAtBottom();
+
+      expect(document.getElementsByClassName('follow')[0]).toBeFalsy();
+
+      // Scroll up by 40px, which is within the 50px threshold
+      // Note: mouseWheel(-40) might not translate exactly to 40px pixel scroll depending on implementation
+      // But typically it should be enough to test "small scroll" vs "large scroll".
+      // Let's try to set scrollTop directly if possible, but pageObjects is safer.
+      // Assuming mouseWheel units are pixels or close to it.
+      
+      // Let's use a explicit scroll to be safe if pageObjects allows, 
+      // otherwise use mouseWheel and hope it maps linearly or use step-by-step.
+      
+      // Checking pageObjects.scrollStabilized usage in other files...
+      
+      await pageObjects.mouseWheel(-40);
+      await pageObjects.scrollStabilized();
+
+      // Should still be sticky, so NO follow button
+      expect(document.getElementsByClassName('follow')[0]).toBeFalsy();
+
+      // Scroll up another 20px, total 60px (> 50px)
+      await pageObjects.mouseWheel(-20);
+      await pageObjects.scrollStabilized();
+
+      // Should show follow button now
+      expect(document.getElementsByClassName('follow')[0]).toBeTruthy();
+    });
+  </script>
+</html>

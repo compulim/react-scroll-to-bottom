@@ -17,7 +17,7 @@ const DEFAULT_SCROLLER = () => Infinity;
 const MIN_CHECK_INTERVAL = 17; // 1 frame
 const MODE_BOTTOM = 'bottom';
 const MODE_TOP = 'top';
-const NEAR_END_THRESHOLD = 1;
+
 const SCROLL_DECISION_DURATION = 34; // 2 frames
 
 function setImmediateInterval(fn, ms) {
@@ -26,9 +26,9 @@ function setImmediateInterval(fn, ms) {
   return setInterval(fn, ms);
 }
 
-function computeViewState({ mode, target: { offsetHeight, scrollHeight, scrollTop } }) {
-  const atBottom = scrollHeight - scrollTop - offsetHeight < NEAR_END_THRESHOLD;
-  const atTop = scrollTop < NEAR_END_THRESHOLD;
+function computeViewState({ mode, autoScrollThreshold, target: { offsetHeight, scrollHeight, scrollTop } }) {
+  const atBottom = scrollHeight - scrollTop - offsetHeight < autoScrollThreshold;
+  const atTop = scrollTop < autoScrollThreshold;
 
   const atEnd = mode === MODE_TOP ? atTop : atBottom;
   const atStart = mode !== MODE_TOP ? atTop : atBottom;
@@ -46,6 +46,7 @@ function isEnd(animateTo, mode) {
 }
 
 const Composer = ({
+  autoScrollThreshold,
   checkInterval,
   children,
   debounce,
@@ -325,7 +326,7 @@ const Composer = ({
         return;
       }
 
-      const { atBottom, atEnd, atStart, atTop } = computeViewState({ mode, target });
+      const { atBottom, atEnd, atStart, atTop } = computeViewState({ mode, autoScrollThreshold, target });
 
       setAtBottom(atBottom);
       setAtEnd(atEnd);
@@ -416,6 +417,7 @@ const Composer = ({
     },
     [
       animateToRef,
+      autoScrollThreshold,
       debug,
       ignoreScrollEventBeforeRef,
       mode,
@@ -442,7 +444,7 @@ const Composer = ({
         const animating = animateToRef.current !== null;
 
         if (stickyRef.current) {
-          if (!computeViewState({ mode, target }).atEnd) {
+          if (!computeViewState({ mode, autoScrollThreshold, target }).atEnd) {
             if (!stickyButNotAtEndSince) {
               stickyButNotAtEndSince = Date.now();
             } else if (Date.now() - stickyButNotAtEndSince > SCROLL_DECISION_DURATION) {
@@ -495,7 +497,18 @@ const Composer = ({
 
       return () => clearInterval(timeout);
     }
-  }, [animateToRef, checkInterval, debug, mode, scrollToSticky, setSticky, stickyRef, target, targetRef]);
+  }, [
+    animateToRef,
+    autoScrollThreshold,
+    checkInterval,
+    debug,
+    mode,
+    scrollToSticky,
+    setSticky,
+    stickyRef,
+    target,
+    targetRef
+  ]);
 
   const emotion = useEmotion(nonce, styleOptions?.stylesRoot);
   const styleToClassName = useCallback(style => emotion.css(style) + '', [emotion]);
@@ -610,6 +623,7 @@ const Composer = ({
 };
 
 Composer.defaultProps = {
+  autoScrollThreshold: 1,
   checkInterval: 100,
   children: undefined,
   debounce: 17,
@@ -622,6 +636,7 @@ Composer.defaultProps = {
 };
 
 Composer.propTypes = {
+  autoScrollThreshold: PropTypes.number,
   checkInterval: PropTypes.number,
   children: PropTypes.any,
   debounce: PropTypes.number,
