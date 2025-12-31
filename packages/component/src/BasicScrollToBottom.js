@@ -1,6 +1,7 @@
+import React from 'react';
+
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 import AutoHideFollowButton from './ScrollToBottom/AutoHideFollowButton';
 import Composer from './ScrollToBottom/Composer';
@@ -48,9 +49,11 @@ const BasicScrollToBottom = ({
   nonce,
   scroller,
   scrollViewClassName,
-  styleOptions
+  styleOptions,
+  autoScrollThreshold
 }) => (
   <Composer
+    autoScrollThreshold={autoScrollThreshold}
     checkInterval={checkInterval}
     debounce={debounce}
     debug={debug}
@@ -71,6 +74,7 @@ const BasicScrollToBottom = ({
 );
 
 BasicScrollToBottom.defaultProps = {
+  autoScrollThreshold: 1,
   checkInterval: undefined,
   children: undefined,
   className: undefined,
@@ -86,6 +90,7 @@ BasicScrollToBottom.defaultProps = {
 };
 
 BasicScrollToBottom.propTypes = {
+  autoScrollThreshold: PropTypes.number,
   checkInterval: PropTypes.number,
   children: PropTypes.any,
   className: PropTypes.string,
