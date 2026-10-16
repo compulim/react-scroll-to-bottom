@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link href="/assets/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/react-scroll-to-bottom.development.js"></script>
+    <script src="/test-harness.js"></script>
+    <script src="/assets/page-object-model.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script type="text/babel" data-presets="react">
+    'use strict';
+
+    async function render(key) {
+      await new Promise(resolve =>
+        ReactDOM.render(
+          <div id="container" style={{ height: 400 }}>
+            {/* Set debounce to 500 to make sure the "scroll" event dispatched before the animation ended is handled after it ended. */}
+            <ReactScrollToBottom.default
+              className="react-scroll-to-bottom"
+              debounce={500}
+              key={key}
+              scrollViewClassName="scrollable"
+            >
+              {pageObjects.paragraphs.map((paragraph, index) => (
+                <p key={index}>
+                  {index}: {paragraph}
+                </p>
+              ))}
+            </ReactScrollToBottom.default>
+          </div>,
+          document.getElementById('app'),
+          resolve
+        )
+      );
+    }
+
+    run(async function () {
+      for (let index = 0; index < 5; index++) {
+        // Mount a new instance, it will scroll to bottom.
+        await render(index);
+
+        const container = document.getElementById('container');
+        const scrollable = document.getElementsByClassName('scrollable')[0];
+
+        // React will not reset the height we changed directly.
+        container.style.height = '400px';
+
+        // When it is about to finish scrolling to bottom, make the container taller in a separate task, e.g. a sibling element is removed.
+        // As the scrollable can scroll less, the browser will move the scroll position to the new bottom, and the animation will end.
+        // The "scroll" event of this move is dispatched before the animation ended, but handled after it ended, thus, it is ignored.
+        const handleScroll = () => {
+          if (scrollable.scrollTop > scrollable.scrollHeight - scrollable.offsetHeight - 40) {
+            scrollable.removeEventListener('scroll', handleScroll);
+
+            setTimeout(() => {
+              container.style.height = '500px';
+
+              // Apply the new layout now.
+              container.offsetHeight;
+            });
+          }
+        };
+
+        scrollable.addEventListener('scroll', handleScroll, { passive: true });
+
+        await became('container is resized', () => container.offsetHeight === 500, 5000);
+        await pageObjects.scrollStabilizedAtBottom();
+
+        // Wait for the debounce, so the next "scroll" event is handled immediately.
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        // When the user scrolls up.
+        scrollable.scrollTop = 0;
+
+        // Then: it should stay at the top. It should not be mistaken as a resize, which scrolls back down.
+        await pageObjects.scrollStabilizedAtTop();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        expect(scrollable.scrollTop).toBe(0);
+      }
+    });
+  </script>
+</html>
