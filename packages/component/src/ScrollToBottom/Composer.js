@@ -322,6 +322,13 @@ const Composer = ({
         // We should ignore debounced event fired after scrollEnd, because without skipping them, the userInitiatedScroll calculated below will not be accurate.
         // Thus, on a fast machine, adding elements super fast will lose the "stickiness".
 
+        // Although the event is ignored, the container or content may have been resized, e.g. the container is taller and the browser moved the scroll position.
+        // We still need to remember the latest size, otherwise, the next "scroll" event (e.g. scrolling up by the user) will be mistaken as a resize while sticky and scroll back to the end.
+        if (target) {
+          offsetHeightRef.current = target.offsetHeight;
+          scrollHeightRef.current = target.scrollHeight;
+        }
+
         return;
       }
 

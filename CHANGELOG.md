@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added `styleOptions.stylesRoot` property which allows to specify a container node component styles will be placed into, by [@OEvgeny](https://github.com/OEvgeny) in PR [#137](https://github.com/compulim/react-scroll-to-bottom/pull/137)
 
+### Fixed
+
+- Fixed scrolling up being mistaken as a resize and scrolled back to the end, after the container is resized while scrolling to the end, by [@OEvgeny](https://github.com/OEvgeny) in PR [#145](https://github.com/compulim/react-scroll-to-bottom/pull/145)
+
 ## [4.2.0] - 2021-10-14
 
 ### Changed
